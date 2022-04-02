@@ -1,0 +1,33 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.selected{
+  background-color: #ed8b00;
+  color: #ffffff;
+  border-radius: 10px;
+}
+
+.selected:hover{
+  color: #ffffff !important;
+}
+
+#nprogress .bar{
+  background-color: #ed8b00 !important ;
+}
+#nprogress .peg {
+  box-shadow: 0 0 10px #ed8b00, 0 0 5px #ed8b00;
+}
