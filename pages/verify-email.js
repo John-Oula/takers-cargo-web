@@ -17,7 +17,7 @@ const VerifyEmail = () => {
     return (
         <>
         { verified && <Flex mt={`20%`} mb={`10%`} textAlign={`right`} justifyContent={`right`}>
-                        <Image  src={Truck} />
+                        <Image  src={Truck} alt={`shipping truck`} />
                         </Flex>}
                         <Flex  p={5} flexDirection={[`column`,`column`,`row`,`row`,`row`]} flex={1}>
                         {!verified && 

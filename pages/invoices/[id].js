@@ -68,7 +68,7 @@ const InvoiceDetails = () => {
                             <GridItem borderBottomWidth={1} colSpan={4} rowSpan={2}   >
                                 <Box color={`#000`} p={2} alignItems={`center`} h={`fit-content`} w={`100%`} >
                                     <Flex>
-                                    <Image src={route} />
+                                    <Image src={route} alt={`Route`} />
 
                                         <Flex flexDirection={`column`}>
                                             <Flex mb={2} textAlign={`left`} justifyContent={`left`} flexGrow={2} flexDirection={`column`}>

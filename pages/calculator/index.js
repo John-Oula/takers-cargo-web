@@ -360,7 +360,7 @@ unit:
                         <FirstRowHeader title={`Freight Calculation`} leftIcon={<BackButton />} />
 
                         <Flex>
-                            <Image src={route} />
+                            <Image src={route} alt={`Route`} />
 
                             <InputGroup p={2} flexDirection={`column`}>
                                 <Box backgroundImage={map} backgroundSize={`lg`}>

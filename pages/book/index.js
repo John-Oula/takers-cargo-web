@@ -359,7 +359,7 @@ unit:
                         <FirstRowHeader title={`Book your Shipment`} leftIcon={<BackButton />} />
 
                         <Flex>
-                            <Image src={route} />
+                            <Image alt={`Route`}  src={route} />
 
                             <InputGroup p={2} flexDirection={`column`}>
                                 <Box backgroundImage={map} backgroundSize={`lg`}>

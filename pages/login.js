@@ -46,7 +46,7 @@ const Login = () => {
             </ModalFooter>
           </ModalContent>
         </Modal>
-            <Image  src={truck} />
+            <Image  src={truck} alt={`shipping truck`}  />
             <Heading as={`h3`} size={`2xl`} mt={105} >
                 Welcome to <br/> Takers Cargo
             </Heading>
