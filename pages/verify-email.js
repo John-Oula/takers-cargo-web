@@ -50,7 +50,7 @@ Enter the 4 digit code we sent you to verify your phone number
     You are ready to book
  </Heading>
  <Text>Your account is now activated.You may book your first shipment.</Text>
- <Button  mb={5} w={`auto`} onClick={() =>{router.push(`/`)}}   color={`#ffffff`} bgColor={`#000000`} >Let's book</Button>
+ <Button  mb={5} w={`auto`} onClick={() =>{router.push(`/`)}}   color={`#ffffff`} bgColor={`#000000`} >Let`&apos;`s book</Button>
 
            </>
 }
