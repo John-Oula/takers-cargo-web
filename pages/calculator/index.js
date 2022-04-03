@@ -95,7 +95,7 @@ const Origin = ({ close }) => {
             {
                 addresses.map((each) => {
                     return (
-                        <div  onClick={() => selectItem(each)}  ref={ref} payload={each} >
+                        <div key={each?.id} onClick={() => selectItem(each)}  ref={ref} payload={each} >
                             <ListItem key={each?.id} data={each} selectable title={each?.fullName} label={each?.detailedAddress + ' ' + each?.phone} crud path={`address/1`} />
 
                         </div>
@@ -334,8 +334,8 @@ unit:
                         {!showAddressForm &&  <InputGroup p={4} flexDirection={`column`} alignItems={`center`}>
                                 <Input   {...register('expressNumber')} mt={5} placeholder='Express Number/ Tracking Number' type={`text`} />
                                 <Select id={`bailmentType`} {...register('type')} mt={5} variant='filled' placeholder='Type / Category of consignment' >
-                                   { bailments?.map(each => (
-                                        <option dummy={each}  onClick={() => setBailmentObj(each)} ref={bailmentRef}>{each.name}</option>
+                                   { bailments?.map((each,i) => (
+                                        <option key={i} dummy={each}  onClick={() => setBailmentObj(each)} ref={bailmentRef}>{each.name}</option>
                                     ))}
                                 </Select>
                                 <Input  {...register('unit')} mt={5} placeholder='Weight/pcs' type={`number`} />
