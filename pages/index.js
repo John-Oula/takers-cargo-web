@@ -17,8 +17,10 @@ function App() {
     <Flex justifyContent={`center`} alignItems={`center`} flexGrow={1}>
     <InputGroup w={`auto`}>
 
-      <InputLeftElement pointerEvents='none' children={<SearchIcon color='#000000' />}
-/>
+      <InputLeftElement pointerEvents='none' >
+        <SearchIcon color='#000000'/>
+      </InputLeftElement>
+
         <Input   bg={`#ffffff`} placeholder={`Tracking Number`} />
         </InputGroup>
 
