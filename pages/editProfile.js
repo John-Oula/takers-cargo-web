@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useRef} from 'react';
 import { Text,Center,Circle ,Radio,PinInput,PinInputField, Heading,Button ,FormControl, InputGroup ,InputLeftElement ,Input ,  Box, Container, Flex  } from '@chakra-ui/react'
 import picture from '../assets/PictureUpload.svg'
 import Image from 'next/image'
@@ -8,8 +8,8 @@ import { useForm } from "react-hook-form";
 
 
 
-const editProfile = () => {
-    const hiddenFileInput = React.useRef(null);
+const EditProfile = () => {
+    const hiddenFileInput = useRef(null);
     const [file, setFile] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
@@ -242,4 +242,4 @@ const editProfile = () => {
     );
 };
 
-export default editProfile;
+export default EditProfile;

@@ -94,7 +94,7 @@ const Origin = ({ close }) => {
             {
                 addresses.map((each) => {
                     return (
-                        <div key={each?.id} onClick={() => selectItem(each)} className={`q`} ref={ref} payload={each} >
+                        <div key={each?.id} onClick={() => selectItem(each)}  ref={ref} payload={each} >
                             <ListItem data={each} selectable title={each?.fullName} label={each?.detailedAddress + ' ' + each?.phone} crud path={`address/1`} />
 
                         </div>

@@ -6,6 +6,7 @@ import { useRouter } from 'next/dist/client/router';
 import { AiOutlineMail, AiOutlineArrowLeft } from 'react-icons/ai'
 import FirstRowHeader from '../Components/FirstRowHeader';
 
+import BackButton from '../Components/BackButton';
 
 const Signup = () => {
     const router = useRouter();

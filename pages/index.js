@@ -11,7 +11,6 @@ function App() {
   const router = useRouter()
 
   return (
-    <>
 <Box overflow={`hidden`} h={`100%`} w={`100%`} bgColor={`#000000`}>
   <Flex pt={[5]} pb={[5]} alignItems={`center`}>
     <Flex  justifyContent={`center`} flexGrow={1}><QrIcon  width={24} height={24} color={`#ffffff`} /></Flex>
@@ -54,7 +53,6 @@ function App() {
 </Box>
   </Box>
 </Box>
-    </>
   );
 }
 
