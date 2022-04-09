@@ -362,7 +362,7 @@ unit:
                         <ModalBody>
                         {!showAddressForm &&  <InputGroup p={4} flexDirection={`column`} alignItems={`center`}>
                                 <Input   {...register('expressNumber')} mt={5} placeholder='Express Number/ Tracking Number' type={`text`} />
-                                {bailmentSelectValue}
+                                
                                 <FormControl>
                                 <Select onChange={(e)=>setBailmentSelectValue(e.target.value)}  id={`bailmentType`} {...register('type')} mt={5} variant='filled' placeholder='Type / Category of consignment' >
                                    { bailments?.docs.map((each,i) => (
@@ -412,7 +412,7 @@ unit:
                                     <Divider />
                                     <Flex>
                                         <Box cursor={`pointer`} onClick={() =>{ setShowAddressForm(true);onOpen()}} _hover={{ color: '#ed8b00' }} p={4}>
-                                            <Heading as={`h6`} size={`md`}>{select ? select?.fullName : `Receiver Information`}</Heading>
+                                            <Heading as={`h6`} size={`md`}>{select ? select?.fullname : `Receiver Information`}</Heading>
                                             <Text fontSize={`sm`}>{select ? select?.detailedAddress + ' ' + select?.phone : `Click to fill in receiver information`}</Text>
                                             {/* <Divider orientation={`vertical`} /> */}
 

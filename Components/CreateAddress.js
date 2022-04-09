@@ -21,7 +21,7 @@ const CreateAdress = ({mode}) => {
 
         <Flex position={`relative`} p={4} flexDirection={`column`} justifyContent={`center`}>
             <InputGroup p={4} flexDirection={`column`}>
-                <Input   {...register('fullName')} mt={5}  placeholder='Full Name' type={`text`} />
+                <Input   {...register('fullname')} mt={5}  placeholder='Full Name' type={`text`} />
                 <Input   {...register('phone')} mt={5}  placeholder='Phone Number' type={`text`} />
                 <Input   {...register('email')} mt={5}  placeholder='Email' type={`text`} />
                 <Input   {...register('country')} mt={5}  placeholder='Country' type={`text`} />

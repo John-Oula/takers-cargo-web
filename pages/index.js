@@ -86,7 +86,7 @@ function App() {
         </Flex>
         <Flex flexGrow={1} pl={[3]} flexDirection={`column`}>
           <Button onClick={() =>{ router.push('/calculator')}} rightIcon={<ChevronRightIcon color='#ed8b00'/>} h={`auto`} p={[5]} mb={3} textAlign={`start`}  overflow={`break-word`} color={`#ffffff`} bgColor={`#000000`}>FREIGHT <br/> CALCULATOR</Button>
-          <Button onClick={() =>{ router.push('/orders')}} rightIcon={<ChevronRightIcon color='#ed8b00'/>} h={`auto`} p={[5]}  textAlign={`start`}  color={`#ffffff`} bgColor={`#000000`}>ORDERS</Button>
+          <Button onClick={() =>{ router.push('/user/orders')}} rightIcon={<ChevronRightIcon color='#ed8b00'/>} h={`auto`} p={[5]}  textAlign={`start`}  color={`#ffffff`} bgColor={`#000000`}>ORDERS</Button>
         </Flex>
       </Flex>
     </Center>
