@@ -2,13 +2,18 @@ import Head from 'next/head'
 import { Text , Box, Container, Flex,Link, LinkBox, LinkOverlay } from '@chakra-ui/react'
 ;
 import BottomNav from './BottomNav';
+import React,{useState,useContext} from 'react';
 
 import NProgress from 'nprogress';
 import Router from 'next/router';
 import { useRouter } from 'next/router';
+import AuthContext from '../contexts/AuthContext';
+import OrderContextWrapper from './OrderContextWrapper';
 
 function Layout({ children }) {
     const router = useRouter()
+    const { user,setUser } = useContext(AuthContext)
+
  NProgress.configure({ showSpinner: false });
 
     Router.events.on('routeChangeStart', () => {
@@ -36,8 +41,10 @@ function Layout({ children }) {
             </Head>
             <Box h={`100vh`} position={`relative`}>
             {children}
-            <BottomNav />
-           
+
+          
+            {user && user?.uid && <BottomNav user={user} />}
+         
             </Box>
 
         </>

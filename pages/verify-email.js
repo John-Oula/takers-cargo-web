@@ -3,7 +3,7 @@ import { Text,Center,HStack ,Radio,PinInput,PinInputField, Heading,Button ,FormC
 import Image from 'next/image';
 import truck from '../assets/openTruck.svg';
 import Link from 'next/link';
-import { useRouter } from 'next/dist/client/router';
+import {useRouter} from 'next/router'
 import {AiOutlineMail,AiOutlineArrowLeft} from 'react-icons/ai'
 import FirstRowHeader from '../Components/FirstRowHeader';
 import Truck from '../assets/truckFront.svg'

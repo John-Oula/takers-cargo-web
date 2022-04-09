@@ -18,6 +18,17 @@ import SelectAddressContext from '../../contexts/SelectAddressContext.js';
 import { useForm } from "react-hook-form";
 import CreateAdress from '../../Components/CreateAddress';
 import BackButton from '../../Components/BackButton';
+import { addDocument, updateDocument } from '../../lib';
+import { useRouter } from 'next/router'; 
+import { db } from '../../firebase/initFirebase';
+import {serverTimestamp} from 'firebase/firestore'
+import {  collection, getDocs } from 'firebase/firestore'
+import { useCollection } from 'react-firebase-hooks/firestore';
+
+import AuthContext from '../../contexts/AuthContext';
+
+var moment = require('moment'); // require
+
 
 const ShipperAddressBook = ({ close }) => {
 
@@ -36,40 +47,26 @@ const ShipperAddressBook = ({ close }) => {
     )
 }
 const Origin = ({ close }) => {
-    const addresses = [{
-        id: "D2KvZbLnZdqqyMW3RmBF",
-        country:
-            "Tanzania",
-        detailedAddress:
-            "Arusha, TZ ",
-        fullName:
-            "Takers",
-        phone:
-            "325636253465"
-    }, {
-        id: "D2KvZbLnZdqqyMW3RmB",
-        country:
-            "Tanzania",
-        detailedAddress:
-            "Arusha, TZ ",
-        fullName:
-            "CargoX",
-        phone:
-            "325636253465"
-    }, {
-        id: "D2KvZbLnZdqqyMW3RBF",
-        country:
-            "Tanzania",
-        detailedAddress:
-            "Arusha, TZ ",
-        fullName:
-            "Takerss cargo",
-        phone:
-            "325636253465"
-    }]
+ 
     const { origin, setOrigin } = useContext(SelectAddressContext)
     const ref = useRef()
+    const [address,setAddress] = useState()
+    const { user} = useContext(AuthContext)
+    const getAddress = async () =>{
+        let addresses = []
+        const colRef = collection(db, "Warehouse");
+        const docSnap =  await getDocs(colRef);
+        docSnap.forEach((doc) => {
+                    // doc.data() is never undefined for query doc snapshots
+                    addresses.push(doc.data())
+                  });
+                  setAddress(addresses)
+    }
+    useEffect( async  ()=>{
 
+        getAddress()
+       
+    },[])
 
     function selectItem(data) {
         if (!origin) {
@@ -92,10 +89,10 @@ const Origin = ({ close }) => {
         <Flex p={2} flexDirection={`column`} justifyContent={`center`}>
             <FirstRowHeader title={`Select origin address`} leftIcon={<BackButton />} />
             {
-                addresses.map((each) => {
+                address?.map((each) => {
                     return (
                         <div key={each?.id} onClick={() => selectItem(each)}  ref={ref} payload={each} >
-                            <ListItem key={each?.id}  data={each} selectable title={each?.fullName} label={each?.detailedAddress + ' ' + each?.phone} crud path={`address/1`} />
+                            <ListItem key={each?.id}  data={each} selectable title={each?.fullname} label={each?.detailedAddress + ' ' + each?.phone} crud path={`address/1`} />
 
                         </div>
 
@@ -108,38 +105,26 @@ const Origin = ({ close }) => {
     )
 }
 const AddressBook = ({ close }) => {
-    const addresses = [{
-        id: "D2KvZbLnZdqqyMW3RmBF",
-        country:
-            "Tanzania",
-        detailedAddress:
-            "Arusha, TZ ",
-        fullName:
-            "Peter Gumbo",
-        phone:
-            "325636253465"
-    }, {
-        id: "D2KvZbLnZdqqyMW3RmB",
-        country:
-            "Tanzania",
-        detailedAddress:
-            "Arusha, TZ ",
-        fullName:
-            "Peter mbo",
-        phone:
-            "325636253465"
-    }, {
-        id: "D2KvZbLnZdqqyMW3RBF",
-        country:
-            "Tanzania",
-        detailedAddress:
-            "Arusha, TZ ",
-        fullName:
-            "Peter Gumb",
-        phone:
-            "325636253465"
-    }]
+
     const { select, setSelect } = useContext(SelectAddressContext)
+    const [address,setAddress] = useState()
+    const { user} = useContext(AuthContext)
+    const getAddress = async () =>{
+        let addresses = []
+        const subColRef = collection(db, "Users", user?.uid, "address");
+        const docSnap =  await getDocs(subColRef);
+        console.log(docSnap);
+        docSnap.forEach((doc) => {
+                    // doc.data() is never undefined for query doc snapshots
+                    addresses.push(doc.data())
+                  });
+                  setAddress(addresses)
+    }
+    useEffect( async  ()=>{
+
+        getAddress()
+       
+    },[])
     const ref = useRef()
 
     function selectItem(data) {
@@ -160,14 +145,15 @@ const AddressBook = ({ close }) => {
 
     }
 
+
     return (
         <Flex p={2} flexDirection={`column`} justifyContent={`center`}>
             <FirstRowHeader title={`Address Book`} leftIcon={<BackButton />} />
             {
-                addresses.map((each) => {
+                address?.map((each) => {
                     return (
                         <div key={each?.id} onClick={() => selectItem(each)} className={`q`} ref={ref} payload={each} >
-                            <ListItem data={each} selectable title={each?.fullName} label={each?.detailedAddress + ' ' + each?.phone} crud path={`address/1`} />
+                            <ListItem data={each} selectable title={each?.fullname} label={each?.detailedAddress + ' ' + each?.phone} crud path={`address/1`} />
 
                         </div>
 
@@ -189,33 +175,18 @@ const Book = () => {
     const [bailmentObj, setBailmentObj] = useState(null)
     const [originAddressBook, setOriginAddressBook] = useState(false)
     const { isOpen, onOpen, onClose } = useDisclosure()
-    const { select, setSelect, cargo, origin, setCargo } = useContext(SelectAddressContext)
+    const { select, setSelect, cargo, origin, setOrigin ,setCargo } = useContext(SelectAddressContext)
     const { handleSubmit, register } = useForm();
-    const bailments = [
-      { id: '131e331', active:
-        true,
-        items:[
-        "phone",
-        
-        "laptops",
-        
-        "camera"],
-        name:
-        "Electronics",
-        unit:
-        "pcs"},
-        { id: '131331', active:
-            true,
-            items:[
-            "shirt",
-            
-            "trousers",
-            
-            "pants"],
-            name:
-            "Clothes",
-            unit:
-            "kg"}]
+    const [loading,setLoading] = useState(false)
+    const [error,setError] = useState(false)
+    const { user} = useContext(AuthContext)
+    const [rates,loadingRates,errorRates]  = useCollection(collection(db, 'Rates'))
+    const [bailments]  = useCollection(collection(db, 'Bailment'))
+    const [bailmentSelectValue,setBailmentSelectValue] = useState()
+
+    const router = useRouter()
+
+
      const rate = {
                 bailmentId:
 "131e331",
@@ -269,7 +240,12 @@ unit:
     }
 
     const submitForm = (e) => {
+        setError(null)
+        setLoading(true)
          e.preventDefault();
+         const date =  Date.now()
+         const firstDate = moment().add(45, 'days');
+         const secondDate = date +  24 * 60 * 60 * 1000
         //   setBailmentObj(e.target.delivery.value)
 
         const formData = {destination:{ ...select}, origin:{...origin},
@@ -278,10 +254,46 @@ unit:
           paymentMethod: e.target.payment_method.value,
           value: e.target.value.value,
           bailment:cargo,
-          price: estimatedPrice
+          price: estimatedPrice,
+          userId: user?.uid,
+          status: {message:`pending`,lastUpdatedTime:serverTimestamp()},
+          paymentStatus: `unpaid`,
+          expectedArrivalDate:secondDate,
+          creationDate: serverTimestamp()
 
         }
-        console.log(formData);
+        
+        addDocument('Bookings',formData)
+        .then(doc => {
+            if(doc.id){
+                updateDocument(doc.id,`Bookings`,{trackingNumber : doc.id})
+                .then(()=>{
+                    setLoading(false)
+                    router.push(`/user/orders/${doc.id}`)
+
+                })
+                .catch(error =>
+                    {
+
+                        setLoading(false)
+        
+                        console.log(error.message);
+                        setError(error)
+                    }
+                )
+               
+
+            }
+
+        })
+        .catch(error =>
+            {
+                setLoading(false)
+
+                console.log(error.message);
+                setError(error)
+            }
+        )
 
     }
     
@@ -332,11 +344,14 @@ unit:
                         <ModalBody>
                         {!showAddressForm &&  <InputGroup p={4} flexDirection={`column`} alignItems={`center`}>
                                 <Input   {...register('expressNumber')} mt={5} placeholder='Express Number/ Tracking Number' type={`text`} />
-                                <Select id={`bailmentType`} {...register('type')} mt={5} variant='filled' placeholder='Type / Category of consignment' >
-                                   { bailments?.map((each,i) => (
-                                        <option key={i} dummy={each}  onClick={() => setBailmentObj(each)} ref={bailmentRef}>{each.name}</option>
+                                {bailmentSelectValue}
+                                <FormControl>
+                                <Select onChange={(e)=>setBailmentSelectValue(e.target.value)}  id={`bailmentType`} {...register('type')} mt={5} variant='filled' placeholder='Type / Category of consignment' >
+                                   { bailments?.docs.map((each,i) => (
+                                        <option key={i} dummy={each.data()}  onClick={() => setBailmentObj(each.data())} ref={bailmentRef} value={each.data().name}>{each.data().name}</option>
                                     ))}
                                 </Select>
+                                </FormControl>
                                 <Input  {...register('unit')} mt={5} placeholder='Weight/pcs' type={`number`} />
                                 {/* <Input mt={5}  placeholder='Value (USD)' type={`number`} /> */}
                                 <Input  {...register('quantity')} mt={5} placeholder='Quantity' type={`number`} />
@@ -365,7 +380,7 @@ unit:
                                 <Box backgroundImage={map} backgroundSize={`lg`}>
                                     <Flex>
                                         <Box cursor={`pointer`} onClick={() =>{ setOriginAddressBook(true) }} _hover={{ color: '#ed8b00' }} p={4}>
-                                            <Heading as={`h6`} size={`md`}>{origin ? origin?.fullName : `Shipper Information`}</Heading>
+                                            <Heading as={`h6`} size={`md`}>{origin ? origin?.fullname : `Shipper Information`}</Heading>
                                             <Text fontSize={`sm`}>{origin ? origin?.detailedAddress + ' ' + origin?.phone : `Click to fill in shipper information`}</Text>
                                             {/* <Divider orientation={`vertical`} /> */}
 
@@ -379,7 +394,7 @@ unit:
                                     <Divider />
                                     <Flex>
                                         <Box cursor={`pointer`} onClick={() =>{ setShowAddressForm(true);onOpen()}} _hover={{ color: '#ed8b00' }} p={4}>
-                                            <Heading as={`h6`} size={`md`}>{select ? select?.fullName : `Receiver Information`}</Heading>
+                                            <Heading as={`h6`} size={`md`}>{select ? select?.fullname : `Receiver Information`}</Heading>
                                             <Text fontSize={`sm`}>{select ? select?.detailedAddress + ' ' + select?.phone : `Click to fill in receiver information`}</Text>
                                             {/* <Divider orientation={`vertical`} /> */}
 
@@ -438,10 +453,13 @@ unit:
 
                             </Flex>
                         </Flex>
-                        <Button type='submit' mt={5} color={`#ffffff`} bgColor={`#000000`} leftIcon={<AiOutlinePlus />}>Book</Button>
+                        <Button  isLoading={loading} loadingText='Booking' type='submit' w={`100%`} mt={5} color={`#ffffff`} bgColor={!error ? `#000000` : `red`} leftIcon={<AiOutlinePlus />}>Book</Button>
                         </form>
                     </>}
             </Flex>
+            <br/>
+            <br/>
+            <br/>
 
         </>
     );

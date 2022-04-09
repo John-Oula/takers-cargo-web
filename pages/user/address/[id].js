@@ -1,9 +1,9 @@
 import React from 'react';
 import { Box, Flex, Text, TextArea , Radio, Center, Heading, FormControl, Input, Button, InputGroup, Spacer } from "@chakra-ui/react";
-import FirstRowHeader from '../../Components/FirstRowHeader';
+import FirstRowHeader from '../../../Components/FirstRowHeader';
 import { AiOutlineCreditCard, AiOutlineArrowRight, AiOutlineCalculator, AiOutlineArrowLeft, AiOutlinePlus } from 'react-icons/ai'
-import ListItem from "../../Components/ListItem";
-import BackButton from '../../Components/BackButton';
+import ListItem from "../../../Components/ListItem";
+import BackButton from '../../../Components/BackButton';
  
 const CreateAdress = () => {
     return (

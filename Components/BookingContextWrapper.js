@@ -1,4 +1,4 @@
-import SelectAddressContext from "../contexts/SelectAddressContext.js.js";
+import SelectAddressContext from "../contexts/SelectAddressContext.js"
 import {useState} from "react";
 
 function BookingContextWrapper({children}) {

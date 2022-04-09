@@ -2,9 +2,9 @@ import React from 'react';
 import { Box, Flex, Divider , Text, TagLabel, Tag } from "@chakra-ui/react";
 import { AiOutlineArrowRight, AiOutlineDropbox } from 'react-icons/ai'
 import { useRouter } from 'next/router';
+import { dateTime } from '../lib';
 
-
-const Route = ({ id, status,leftContent }) => {
+const Route = ({ data,origin,destination }) => {
     const router = useRouter()
 
     return (
@@ -12,13 +12,13 @@ const Route = ({ id, status,leftContent }) => {
             <Flex>
                 <Flex flexDirection={`column`}>
                     <Flex mb={5} textAlign={`left`} justifyContent={`left`} flexGrow={2} flexDirection={`column`}>
-                        <Text  color={`#ed8b00`} w={`200px`} textAlign={`left`} >Guangzhou, ZH</Text>
-                        <Text fontSize={`sm`} color={`#ffffff`}>Jun 09, 13:40 EST</Text>
-
+                        <Text  color={`#ed8b00`} w={`200px`} textAlign={`left`} >{data?.origin?.city },{ data?.origin?.country}</Text>
+                        <Text fontSize={`sm`} color={`#ffffff`}>{!data?.creationDate  ? `---` : dateTime(data?.creationDate)}</Text>
+ 
                     </Flex>
                     <Flex textAlign={`left`} justifyContent={`left`} flexGrow={2} flexDirection={`column`}>
-                        <Text color={`#ed8b00`} w={`200px`} textAlign={`left`} >Guangzhou, ZH</Text>
-                        <Text fontSize={`sm`} color={`#ffffff`}>Jun 09, 13:40 EST</Text>
+                        <Text color={`#ed8b00`} w={`200px`} textAlign={`left`} >{data?.destination?.city },{ data?.destination?.country}</Text>
+                        <Text fontSize={`sm`} color={`#ffffff`}>{!data?.status?.lastUpdatedTime ? `---` : dateTime(data?.status?.lastUpdatedTime)}</Text>
 
                     </Flex>
                 </Flex>
