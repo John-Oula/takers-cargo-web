@@ -1,29 +1,71 @@
 
-import React from "react";
-import { Text,Center, Heading,Button ,FormControl, InputGroup ,InputLeftElement ,Input ,  Box, Container, Flex,Link, LinkBox, LinkOverlay } from '@chakra-ui/react'
+import React,{useState} from "react";
+import { Text,Modal,Grid,GridItem,
+  ModalOverlay, useDisclosure,
+  ModalContent,
+  ModalHeader,Spacer,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,Center, Heading,Button ,FormControl, InputGroup ,InputLeftElement ,Input ,  Box, Container, Flex,Link, LinkBox, LinkOverlay } from '@chakra-ui/react'
 import Slider from '../Components/Slider.js';
+import OrderCard from '../Components/OrderCard.js';
 import { useRouter } from 'next/router';
 import {QrIcon,LiveSupportAgentHeadsetIcon, SearchIcon ,ChevronRightIcon} from '../icons/dist/cjs'
+import { useForm } from "react-hook-form";
+import { db } from '../firebase/initFirebase';
+import {  getDoc,doc } from 'firebase/firestore'
 
 
 
 function App() {
   const router = useRouter()
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { handleSubmit, register } = useForm();
+  const [search,setSearch] = useState()
+
+  const onSubmit = async (values) =>{
+    onOpen();
+    const docRef = doc(db, `Bookings`, values?.search);
+    const docSnap = await getDoc(docRef)
+    setSearch({...docSnap.data(),id:docSnap.id})
+
+  }
+
 
   return (
 <Box overflow={`hidden`} h={`100%`} w={`100%`} bgColor={`#000000`}>
+<Modal size={[`sm`]} onClose={onClose} isOpen={isOpen} isCentered>
+    <ModalOverlay />
+    <ModalContent>
+
+
+        <ModalCloseButton />
+        <ModalBody >
+
+            <OrderCard data={search} />
+
+        </ModalBody>
+        <ModalFooter alignItems={`center`}>
+
+        </ModalFooter>
+    </ModalContent>
+</Modal>
   <Flex pt={[5]} pb={[5]} alignItems={`center`}>
     <Flex  justifyContent={`center`} flexGrow={1}><QrIcon  width={24} height={24} color={`#ffffff`} /></Flex>
     <Flex justifyContent={`center`} alignItems={`center`} flexGrow={1}>
+    <form onSubmit={handleSubmit(onSubmit)}>
     <InputGroup w={`auto`}>
 
       <InputLeftElement pointerEvents='none' >
         <SearchIcon color='#000000'/>
       </InputLeftElement>
 
-        <Input   bg={`#ffffff`} placeholder={`Tracking Number`} />
+        
+        <Input {...register('search')}   bg={`#ffffff`} placeholder={`Tracking Number`} />
+        <Button display={`none`} type={`submit`}></Button>
+        
         </InputGroup>
-
+</form>
       
       </Flex>
 

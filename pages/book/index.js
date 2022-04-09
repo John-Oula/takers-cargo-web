@@ -233,21 +233,20 @@ unit:
     }
 
     const addCargo = (values) => {
-        // const price = rate?.price * values.quantity * values.unit
-        // const data = {...values, price:price}
+        const price = rate?.price * values.quantity * values.unit
+        const data = {...values, price:price}
         if (cargo) {
-            cargoList.push(values)
+            cargoList.push(data)
             setCargo(state => {
                 setCargo([...state, ...cargoList])
             })
             onClose()
         }
         else {
-            cargoList.push(values)
-            setCargo(values)
+            cargoList.push(data)
+            setCargo(data)
         }
 
-        
     }
 
     const submitForm = (e) => {
@@ -333,12 +332,15 @@ unit:
                     })
         }
         else{
-            getShippingRate(`4CCu9NrRhzM3aS53CuRd`)
-            .then(rate =>{
-                setEstimatedPrice( shippingRate(rate.price,cargo[cargo.length-1]?.unit,cargo[cargo.length-1]?.quantity))
+            // getShippingRate(`4CCu9NrRhzM3aS53CuRd`)
+            // .then(rate =>{
+            //     shippingRate(rate.price,cargo.unit,cargo.quantity)
+            //                 setEstimatedPrice(cargo[cargo.length-1]?.price)
 
-            })
-            .catch(e => console.log(e.message))
+            // })
+            // .catch(e => console.log(e.message))
+            setEstimatedPrice(cargo[cargo.length-1]?.price)
+
         }
 
         () => {
@@ -410,7 +412,7 @@ unit:
                                     <Divider />
                                     <Flex>
                                         <Box cursor={`pointer`} onClick={() =>{ setShowAddressForm(true);onOpen()}} _hover={{ color: '#ed8b00' }} p={4}>
-                                            <Heading as={`h6`} size={`md`}>{select ? select?.fullname : `Receiver Information`}</Heading>
+                                            <Heading as={`h6`} size={`md`}>{select ? select?.fullName : `Receiver Information`}</Heading>
                                             <Text fontSize={`sm`}>{select ? select?.detailedAddress + ' ' + select?.phone : `Click to fill in receiver information`}</Text>
                                             {/* <Divider orientation={`vertical`} /> */}
 

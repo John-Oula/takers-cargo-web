@@ -34,12 +34,12 @@ const OrderCard = ({ id,origin ,data, destination, status }) => {
                 </Flex>
                 <Flex flexDirection={`column`}>
                     <Flex mb={5} textAlign={`left`} justifyContent={`left`} flexGrow={2} flexDirection={`column`}>
-                        <Text w={`200px`} textAlign={`left`} >{origin?.city}, {origin?.country}</Text>
+                        <Text w={`200px`} textAlign={`left`} >{data?.origin?.city}, {data?.origin?.country}</Text>
                         <small>{moment(data?.timestamp).format(`DD-MM-YY hh:mm a`)}</small>
 
                     </Flex>
                     <Flex textAlign={`left`} justifyContent={`left`} flexGrow={2} flexDirection={`column`}>
-                        <Text w={`200px`} textAlign={`left`} >{destination?.city}, {destination?.country}</Text>
+                        <Text w={`200px`} textAlign={`left`} >{data?.destination?.city}, {data?.destination?.country}</Text>
                         <small>{moment(data?.status?.lastUpdatedTime.toDate().getTime()).format(`DD-MM-YY hh:mm a`)}</small>
 
                     </Flex>
