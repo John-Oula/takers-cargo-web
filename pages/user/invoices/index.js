@@ -1,5 +1,5 @@
 import React,{useContext,useEffect, useState} from 'react';
-import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
+import { Flex } from '@chakra-ui/react'
 import OrderCard from '../../../Components/OrderCard';
 import { onSnapshot,collection, orderBy, limit,query, where, getFirestore } from "firebase/firestore";  
 import {db} from '../../../firebase/initFirebase';
