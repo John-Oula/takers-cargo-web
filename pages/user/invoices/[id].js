@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react';
-import { Text,Modal,Grid,GridItem,
+import { Text,Modal,Grid,GridItem,Flex,
     ModalOverlay, useDisclosure,
     ModalContent,
     ModalHeader,Spacer,

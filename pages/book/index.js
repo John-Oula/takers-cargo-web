@@ -22,7 +22,7 @@ import { addDocument, updateDocument } from '../../lib';
 import { useRouter } from 'next/router'; 
 import { db } from '../../firebase/initFirebase';
 import {serverTimestamp} from 'firebase/firestore'
-import {  collection, getDocs } from 'firebase/firestore'
+import {  collection, getDocs,getDoc } from 'firebase/firestore'
 import { useCollection } from 'react-firebase-hooks/firestore';
 
 import AuthContext from '../../contexts/AuthContext';
@@ -222,21 +222,32 @@ unit:
 
     }
 
+    const shippingRate = (rate,unit,quantity) =>{
+        return rate*unit*quantity
+
+    }
+    const getShippingRate = async  (id) =>{
+        const docRef = doc(db, `Rates`, id);
+        return await getDoc(docRef);
+
+    }
+
     const addCargo = (values) => {
-        const price = rate?.price * values.quantity * values.unit
-        const data = {...values, price:price}
+        // const price = rate?.price * values.quantity * values.unit
+        // const data = {...values, price:price}
         if (cargo) {
-            cargoList.push(data)
+            cargoList.push(values)
             setCargo(state => {
                 setCargo([...state, ...cargoList])
             })
             onClose()
         }
         else {
-            cargoList.push(data)
-            setCargo(data)
+            cargoList.push(values)
+            setCargo(values)
         }
 
+        
     }
 
     const submitForm = (e) => {
@@ -322,7 +333,12 @@ unit:
                     })
         }
         else{
-            setEstimatedPrice(cargo[cargo.length-1]?.price)
+            getShippingRate(`4CCu9NrRhzM3aS53CuRd`)
+            .then(rate =>{
+                setEstimatedPrice( shippingRate(rate.price,cargo[cargo.length-1]?.unit,cargo[cargo.length-1]?.quantity))
+
+            })
+            .catch(e => console.log(e.message))
         }
 
         () => {
