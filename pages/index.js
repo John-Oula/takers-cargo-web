@@ -1,5 +1,5 @@
 
-import React,{useState} from "react";
+import React,{useState,useContext,useEffect} from "react";
 import { Text,Modal,Grid,GridItem,
   ModalOverlay, useDisclosure,
   ModalContent,
@@ -14,6 +14,7 @@ import {QrIcon,LiveSupportAgentHeadsetIcon, SearchIcon ,ChevronRightIcon} from '
 import { useForm } from "react-hook-form";
 import { db } from '../firebase/initFirebase';
 import {  getDoc,doc } from 'firebase/firestore'
+import AuthContext from '../contexts/AuthContext';
 
 
 
@@ -22,6 +23,7 @@ function App() {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { handleSubmit, register } = useForm();
   const [search,setSearch] = useState()
+  const { user } = useContext(AuthContext)
 
   const onSubmit = async (values) =>{
     onOpen();
@@ -31,6 +33,11 @@ function App() {
 
   }
 
+  useEffect(() => {
+     if (user == null) {
+      router.push("/login");
+    }
+  }, [user]);
 
   return (
 <Box overflow={`hidden`} h={`100%`} w={`100%`} bgColor={`#000000`}>
