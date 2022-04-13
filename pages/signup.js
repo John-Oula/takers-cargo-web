@@ -22,7 +22,12 @@ const Signup = () => {
     const [emailVerified, setEmailVerified] = useState(false)
     const { setUser,signup ,updateUserProfile, emailVerification,user} = useContext(AuthContext)
     const toast = useToast()
-
+    useEffect(() => {
+        if (user) {
+          router.push("/");
+        }
+        
+      }, [user]);
     const showToast = (title,description,status) =>{
         
           toast({

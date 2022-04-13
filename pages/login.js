@@ -1,4 +1,4 @@
-import React,{useState,useContext} from 'react';
+import React,{useState,useContext,useEffect} from 'react';
 import { Text,Center, Heading,Button,  Modal,
     ModalOverlay,useDisclosure ,
     ModalContent,
@@ -19,15 +19,26 @@ import { addDocumentWithId } from '../lib';
 import AuthContext from '../contexts/AuthContext';
 
 
+
+
 const Login = () => {
     const router = useRouter();
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [withEmail,setWithEmail] = useState()
     const [phone,setPhone] = useState()
     const { handleSubmit, register } = useForm();
-    const { setUser,login ,googleSignin} = useContext(AuthContext)
+    const { setUser,login,user ,googleSignin} = useContext(AuthContext)
     const [error,setError] = useState()
     const [loading,setLoading] = useState()
+
+    useEffect(() => {
+      if (user) {
+        router.push("/");
+      } else if (user == null) {
+        router.push("/login");
+      }
+    }, [user]);
+    
 
     const generateRecaptcha = () => {
         window.recaptchaVerifier = new RecaptchaVerifier('sign-in-button', {

@@ -19,52 +19,58 @@ export const getServerSideProps = async (ctx) => {
 function UserMenu({data}) {
     const router = useRouter();
     const userData = JSON.parse(data)
-   const { user,setUser,logout } = useContext(AuthContext)
+   const { user,logout } = useContext(AuthContext)
    
 
 
     const onClickListItem = (path) =>{
         router.push(path)
     }
-
+    useEffect(() => {
+        if (user == null) {
+         router.push("/login");
+       }
+     }, [user]);
 
     return (
-        <Box p={5} h={`100%`}>
+        <>
+        {user && <Box p={5} h={`100%`}>
 
 
-            <Flex mb={10} mt={3} >
-            <Heading as={`h3`} size={`lg`}>Account</Heading>
-            <Spacer />
-            <SettingsIcon size={24} color={`#000000`} />
+<Flex mb={10} mt={3} >
+<Heading as={`h3`} size={`lg`}>Account</Heading>
+<Spacer />
+<SettingsIcon size={24} color={`#000000`} />
 
-            </Flex>
-            <Flex mb={10} alignItems={`center`}>
-                <Circle mr={10} p={4}  borderWidth={`1px`} borderColor={`black`}>
-                   <CameraIcon size={24} color={`#000000`} /> 
-                </Circle>
-               
-                <Heading as={`h6`} size={`sm`}>{userData?.fullname}</Heading>
+</Flex>
+<Flex mb={10} alignItems={`center`}>
+    <Circle mr={10} p={4}  borderWidth={`1px`} borderColor={`black`}>
+       <CameraIcon size={24} color={`#000000`} /> 
+    </Circle>
+   
+    <Heading as={`h6`} size={`sm`}>{userData?.fullname}</Heading>
 
-            </Flex>
-            <ListItem click={() => onClickListItem(`/user/address?uid=${user?.uid}`)} leftIcon={<MapIcon color={`#000`} />} rightIcon={<ChevronRightIcon size={24} color={`#000000`} />}  title={`Address Book`}  />
-            <ListItem click={() => onClickListItem(`/user/editProfile/${user?.uid}`)} leftIcon={<UserIcon color={`#000`} />} rightIcon={<ChevronRightIcon size={24} color={`#000000`} />}  title={`Personal Data`} label={`Label`} />
-            <ListItem click={() => onClickListItem(`/user/invoices`)} leftIcon={<CreditCardIcon color={`#000`} />} rightIcon={<ChevronRightIcon size={24} color={`#000000`} />}  title={`Invoices`} label={`Label`} />
-            <ListItem click={() => onClickListItem(`/user/returns`)} leftIcon={<Trash2Icon color={`#000`} />} rightIcon={<ChevronRightIcon size={24} color={`#000000`} />}  title={`Returns`} label={`Label`} />
-            <ListItem click={() => onClickListItem(`/warehouse`)} leftIcon={<MapPinIcon color={`#000`} />} rightIcon={<ChevronRightIcon size={24} color={`#000000`} />}  title={`Warehouse address`} label={`Label`} />
-            <ListItem click={() => onClickListItem(`/faq`)} leftIcon={<CircleQuestionMarkIcon color={`#000`} />} rightIcon={<ChevronRightIcon size={24} color={`#000000`} />}  title={`FAQ's`} label={`Label`} />
-            <ListItem click={() => {logout(user);onClickListItem(`/login`)}} leftIcon={<LogOutIcon color={`#000`} />} rightIcon={<ChevronRightIcon size={24} color={`#000000`} />}  title={`Sign Out`} label={`Label`} />
-
-
-
-           <br/>
-           <br/>
-           <br/>
-           <br/>
-               <br/>
-                            
+</Flex>
+<ListItem click={() => onClickListItem(`/user/address?uid=${user?.uid}`)} leftIcon={<MapIcon color={`#000`} />} rightIcon={<ChevronRightIcon size={24} color={`#000000`} />}  title={`Address Book`}  />
+<ListItem click={() => onClickListItem(`/user/editProfile/${user?.uid}`)} leftIcon={<UserIcon color={`#000`} />} rightIcon={<ChevronRightIcon size={24} color={`#000000`} />}  title={`Personal Data`} label={`Label`} />
+<ListItem click={() => onClickListItem(`/user/invoices`)} leftIcon={<CreditCardIcon color={`#000`} />} rightIcon={<ChevronRightIcon size={24} color={`#000000`} />}  title={`Invoices`} label={`Label`} />
+<ListItem click={() => onClickListItem(`/user/returns`)} leftIcon={<Trash2Icon color={`#000`} />} rightIcon={<ChevronRightIcon size={24} color={`#000000`} />}  title={`Returns`} label={`Label`} />
+<ListItem click={() => onClickListItem(`/warehouse`)} leftIcon={<MapPinIcon color={`#000`} />} rightIcon={<ChevronRightIcon size={24} color={`#000000`} />}  title={`Warehouse address`} label={`Label`} />
+<ListItem click={() => onClickListItem(`/faq`)} leftIcon={<CircleQuestionMarkIcon color={`#000`} />} rightIcon={<ChevronRightIcon size={24} color={`#000000`} />}  title={`FAQ's`} label={`Label`} />
+<ListItem click={() => {logout(user);onClickListItem(`/login`)}} leftIcon={<LogOutIcon color={`#000`} />} rightIcon={<ChevronRightIcon size={24} color={`#000000`} />}  title={`Sign Out`} label={`Label`} />
 
 
-        </Box>
+
+<br/>
+<br/>
+<br/>
+<br/>
+   <br/>
+                
+
+
+</Box>}
+        </>
     );
 }
 

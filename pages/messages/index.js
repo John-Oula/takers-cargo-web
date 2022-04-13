@@ -26,7 +26,11 @@ const Messages = () => {
   
   const arrivedSubtitle = ``
      const router = useRouter()
-
+     useEffect(() => {
+      if (user == null) {
+       router.push("/login");
+     }
+   }, [user]);
   // const db = getFirestore(app)
 // useEffect(()=>{
   
