@@ -4,7 +4,7 @@ import { BoxIcon ,ChevronRightIcon} from '../icons/dist/cjs'
 import { useRouter } from 'next/router';
 var moment = require('moment'); // require
 
-const OrderCard = ({ id,origin ,data, destination, status }) => {
+const OrderCard = ({ data}) => {
     const router = useRouter()
 
     return (
@@ -20,7 +20,7 @@ const OrderCard = ({ id,origin ,data, destination, status }) => {
                         bgColor={`green`}
                     >
 
-                        <TagLabel>{data?.status ? data?.status?.message : 'unknown'}</TagLabel>
+                        <TagLabel>{data?.status ? data?.status : 'unknown'}</TagLabel>
 
                     </Tag>
                 </Flex>
@@ -40,7 +40,7 @@ const OrderCard = ({ id,origin ,data, destination, status }) => {
                     </Flex>
                     <Flex textAlign={`left`} justifyContent={`left`} flexGrow={2} flexDirection={`column`}>
                         <Text w={`200px`} textAlign={`left`} >{data?.destination?.city}, {data?.destination?.country}</Text>
-                        <small>{moment(data?.status?.lastUpdatedTime.toDate().getTime()).format(`DD-MM-YY hh:mm a`)}</small>
+                        <small>{moment(data?.lastUpdatedTime.toDate().getTime()).format(`DD-MM-YY hh:mm a`)}</small>
 
                     </Flex>
                 </Flex>

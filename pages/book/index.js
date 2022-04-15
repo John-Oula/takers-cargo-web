@@ -18,7 +18,7 @@ import SelectAddressContext from '../../contexts/SelectAddressContext.js';
 import { useForm } from "react-hook-form";
 import CreateAdress from '../../Components/CreateAddress';
 import BackButton from '../../Components/BackButton';
-import { addDocument, updateDocument } from '../../lib';
+import { addDocument, addDocumentWithId, updateDocument } from '../../lib';
 import { useRouter } from 'next/router'; 
 import { db } from '../../firebase/initFirebase';
 import {serverTimestamp} from 'firebase/firestore'
@@ -178,11 +178,13 @@ const Book = () => {
     const { select, setSelect, cargo, origin, setOrigin ,setCargo } = useContext(SelectAddressContext)
     const { handleSubmit, register } = useForm();
     const [loading,setLoading] = useState(false)
+    const [groupedBailment,setGroupedBailment] = useState([])
     const [error,setError] = useState(false)
     const { user} = useContext(AuthContext)
     const [rates,loadingRates,errorRates]  = useCollection(collection(db, 'Rates'))
     const [bailments]  = useCollection(collection(db, 'Bailment'))
     const [bailmentSelectValue,setBailmentSelectValue] = useState()
+    const [transportation,setTransportation] = useState('')
     useEffect(() => {
          if (user == null) {
           router.push("/login");
@@ -253,13 +255,14 @@ unit:
 
     }
 
-    const submitForm = (e) => {
+    const submitForm =  (e) => {
         setError(null)
         setLoading(true)
          e.preventDefault();
          const date =  Date.now()
          const firstDate = moment().add(45, 'days');
          const secondDate = date +  24 * 60 * 60 * 1000
+         const trackingNumber = `TC`+ date.toString()
         //   setBailmentObj(e.target.delivery.value)
 
         const formData = {destination:{ ...select}, origin:{...origin},
@@ -270,34 +273,26 @@ unit:
           bailment:cargo,
           price: estimatedPrice,
           userId: user?.uid,
-          status: {message:`pending`,lastUpdatedTime:serverTimestamp()},
+          trackingNumber: trackingNumber,
+          status: `pending`,
           paymentStatus: `unpaid`,
+          lastUpdatedTime:serverTimestamp(),
           expectedArrivalDate:secondDate,
           creationDate: serverTimestamp()
 
         }
         
-        addDocument('Bookings',formData)
+          addDocumentWithId('Bookings',formData,trackingNumber)
         .then(doc => {
-            if(doc.id){
-                updateDocument(doc.id,`Bookings`,{trackingNumber : doc.id})
-                .then(()=>{
+            console.log(doc)
+            
                     setLoading(false)
-                    router.push(`/user/orders/${doc.id}`)
+                    router.push(`/user/orders/${trackingNumber}`)
 
-                })
-                .catch(error =>
-                    {
-
-                        setLoading(false)
-        
-                        console.log(error.message);
-                        setError(error)
-                    }
-                )
+              
                
 
-            }
+            
 
         })
         .catch(error =>
@@ -305,7 +300,7 @@ unit:
                 setLoading(false)
 
                 console.log(error.message);
-                setError(error)
+                setError(error.message)
             }
         )
 
@@ -352,11 +347,27 @@ unit:
 
         }
     }, [cargo])
+
+    useEffect(()=>{
+       if(bailments?.docs){
+        const list = bailments?.docs.map( i => i.category);
+        const uniqueList = Array.from(new Set(list));
+        const groups= uniqueList.map( c => { 
+                    return  { group:c, names:[]};
+                } ); 
+
+        bailments?.docs.forEach( d => { 
+            groups.find( g => g.category === d.category).names.push(d.items);
+        });
+
+        setGroupedBailment(groups)
+       }
+    },[bailments])
     return (
         <>
 
             <Flex p={4} flexDirection={`column`} justifyContent={`center`}>
-                <Modal size={[`full`]} onClose={onClose} isOpen={isOpen} isCentered>
+                <Modal size={[`full`]} onClose={onClose} isOpen={isOpen} >
                     <ModalOverlay />
                     <ModalContent>
                         <ModalHeader>
@@ -368,16 +379,20 @@ unit:
                                 <Input   {...register('expressNumber')} mt={5} placeholder='Express Number/ Tracking Number' type={`text`} />
                                 
                                 <FormControl>
-                                <Select onChange={(e)=>setBailmentSelectValue(e.target.value)}  id={`bailmentType`} {...register('type')} mt={5} variant='filled' placeholder='Type / Category of consignment' >
+                                <Select onChange={(e)=>alert(e.target.value)}  id={`bailmentType`} {...register('type')} mt={5} variant='filled' placeholder='Type / Category of consignment' >
                                    { bailments?.docs.map((each,i) => (
-                                        <option key={i} dummy={each.data()}  onClick={() => setBailmentObj(each.data())} ref={bailmentRef} value={each.data().name}>{each.data().name}</option>
+                                        each.data().items.map(item =>{return(
+                                            <optgroup label={each.data().category}>
+                                            <option key={i} dummy={each.data()}  onClick={() => setBailmentObj(each.data())} ref={bailmentRef} value={item.itemName}>{item.itemName} ----      {each.data()?.currency} {item.rate}</option>
+                                            </optgroup>
+                                        )})
                                     ))}
                                 </Select>
                                 </FormControl>
-                                <Input  {...register('unit')} mt={5} placeholder='Weight/pcs' type={`number`} />
+                                <Input  {...register('unit')} mt={5} placeholder={transportation == `air` ? 'Weight/pcs' : `cubic metres`} type={`number`} />
                                 {/* <Input mt={5}  placeholder='Value (USD)' type={`number`} /> */}
                                 <Input  {...register('quantity')} mt={5} placeholder='Quantity' type={`number`} />
-
+                                <input disabled value={5}  {...register('rate')} mt={5} placeholder='Costs' type={`number`} ></input>
                                 <Button mb={5} mt={5} w={`100%`} onClick={handleSubmit(addCargo)} color={`#ffffff`} bgColor={`#000000`} >Add</Button>
                             </InputGroup>}
                             {showAddressForm && <CreateAdress  />}
@@ -394,7 +409,7 @@ unit:
                 {!shipperAddressBook && !receiverAddressBook && !originAddressBook && 
                     <>
                         <FirstRowHeader title={`Book your Shipment`} leftIcon={<BackButton />} />
-
+{error && <Text color={`red`}>{error}</Text>}
                         <Flex>
                             <Image alt={`Route`}  src={route} />
 
@@ -444,7 +459,7 @@ unit:
                         {/* <ListItem rightIcon={<AiOutlineArrowRight />} title={`Shipping Warehouse`} label={`Select one of our warehouse locations`}/> */}
                         <form onSubmit={(e) => submitForm(e)}>
                         <Select name='value' mt={5} placeholder='Value-added services' variant={`filled`} />
-                        <Select mt={5}  name='method'   placeholder='Type of delivery' variant={`filled`} >
+                        <Select onChange={(e)=>{setTransportation(e.target.value)}} mt={5}  name='method'   placeholder='Type of delivery' variant={`filled`} >
                             <option value={`sea`}>Sea</option>
                             <option value={`air`}>Air</option>
                         </Select>

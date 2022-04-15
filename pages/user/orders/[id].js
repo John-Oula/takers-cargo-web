@@ -31,10 +31,7 @@ export const getServerSideProps = async (ctx) => {
 const OrderDetails = ({payload}) => {
     const data = JSON.parse(payload)
     const { isOpen, onOpen, onClose } = useDisclosure()
-
-
-
-    // const router = useRouter()
+ 
 
     return (
         <Flex p={5} flexDirection={`column`}>
@@ -58,7 +55,7 @@ const OrderDetails = ({payload}) => {
                         bgColor={`green`}
                     >
 
-                        <TagLabel>{data?.status?.message}</TagLabel>
+                        <TagLabel>{data?.status && data?.status}</TagLabel>
 
                     </Tag></Box>
                 <Box height='fit-content'><Text fontSize={`sm`}>Packages </Text><Text>{data?.bailment.length}</Text></Box>
