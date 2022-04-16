@@ -58,14 +58,14 @@ const Messages = () => {
       <>
       { 
         order && order?.map(each =>{
-          if(each?.status?.message === `pending` || each?.status?.message === `arrived` || each?.status?.message === `in-transit` || each?.status?.message === `received`)
+          if(each?.status === `pending` || each?.status === `arrived` || each?.status === `in-transit` || each?.status === `received`)
             return(<ListItem click={() => {router.push(`/user/orders/${each?.id}`)}} leftIcon={<AiOutlineAlert />}
          title={
-           each?.status?.message === `arrived` ? arrivedTitle :
-           each?.status?.message === `pending` ? pendingTitle :
-           each?.status?.message === `received` ? receivedTitle :
-           each?.status?.message === `in-transit` ? transitTitle : null
-          } key={each?.id} label={`${each?.trackingNumber} ${each?.status?.lastUpdatedTime.toDate()}`}/>)
+           each?.status === `arrived` ? arrivedTitle :
+           each?.status === `pending` ? pendingTitle :
+           each?.status === `received` ? receivedTitle :
+           each?.status === `in-transit` ? transitTitle : null
+          } key={each?.id} label={`${each?.trackingNumber} ${dateTime(each?.status?.latestUpdateTime)}`}/>)
       })
       }
       </>
