@@ -405,7 +405,7 @@ unit:
                                 </Select>
                             <InputGroup alignItems={`center`}>
                                 <Input  {...register('unit')} mt={5} placeholder={transportation == `air` ? 'Weight/pcs' : `cubic metres`} type={`number`} />
-                                <InputRightAddon children={bailmentSelectValue ? bailmentSelectValue.unit : `--`} />
+                                <InputRightAddon  ></InputRightAddon>
                                 </InputGroup>
                                 {/* <Input mt={5}  placeholder='Value (USD)' type={`number`} /> */}
                                 {bailmentSelectValue?.unit != 'pcs'  ? <Input  {...register('quantity')} mt={5} placeholder='Quantity' type={`number`} /> : <></>}
