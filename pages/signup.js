@@ -24,7 +24,7 @@ const Signup = () => {
     const [emailSent,setEmailSent] =  useState(false)
     const toast = useToast()
     const actionCodeSettings = {
-        url: 'http://localhost:3000'
+        url: 'https://cargo.antratechstudios.com'
     }
     useEffect(() => {
         if (user && user.emailVerified) {

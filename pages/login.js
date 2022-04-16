@@ -165,7 +165,7 @@ const Login = () => {
                 }
 
                 <Button loadingText='Logging in ...' isLoading={loading} type={'submit'} id={`sign-in-button`}  mb={5}  mt={5} w={`100%`} onClick={withEmail ? handleSubmit(loginWithEmail) :(e) => loginWithPhone(e)}    color={`#ffffff`} bgColor={`#000000`} >{ withEmail ? `Login` : `Send Code`} </Button>
-                {withEmail ? <Link href={`/forgot-password`} color={`#ed8b00`}> Forgot password?</Link> : <Text cursor={`pointer`}>Resend Code</Text>}
+                {withEmail ? <Link href={`/forgotPassword`} color={`#ed8b00`}> Forgot password?</Link> : <Text cursor={`pointer`}>Resend Code</Text>}
 
             </InputGroup>
             </form>
