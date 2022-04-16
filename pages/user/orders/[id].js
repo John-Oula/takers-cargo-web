@@ -1,22 +1,16 @@
-import React,{useState,useEffect} from 'react';
-import { Text,Modal,Grid,GridItem,
-    ModalOverlay, useDisclosure,
-    ModalContent,
-    ModalHeader,Spacer,
-    ModalFooter,
-    ModalBody,
-    ModalCloseButton,Tag,TagLabel, Center, Stack, SimpleGrid, Heading, Button, FormControl, InputGroup, InputLeftElement, Input, Box, Container, Flex, Link, LinkBox, LinkOverlay } from '@chakra-ui/react'
+import { Box, Button, Center, Flex, Grid, GridItem, Heading, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalOverlay, SimpleGrid, Spacer, Tag, TagLabel, Text, useDisclosure } from '@chakra-ui/react';
+import { doc, getDoc } from 'firebase/firestore';
+import React from 'react';
+import { AiOutlineBarcode } from 'react-icons/ai';
+import QRCode from "react-qr-code";
+import logo from '../../../assets/logo.png';
+import route from '../../../assets/routeMarker.svg';
+import BackButton from '../../../Components/BackButton';
 import FirstRowHeader from '../../../Components/FirstRowHeader';
 import Route from '../../../Components/Route';
-import BackButton from '../../../Components/BackButton';
-import {db} from '../../../firebase/initFirebase'
-import { doc,getDoc} from 'firebase/firestore'
+import { db } from '../../../firebase/initFirebase';
 import { dateTime } from '../../../lib';
-import QRCode from "react-qr-code";
-import { AiOutlineArrowLeft, AiOutlineScan, AiOutlineBarcode } from 'react-icons/ai'
-import route from '../../../assets/routeMarker.svg'
 import Image from 'next/image'
-
 
 
 export const getServerSideProps = async (ctx) => {
@@ -25,7 +19,7 @@ export const getServerSideProps = async (ctx) => {
     const docSnap = await getDoc(docRef);
    
     // if (!data) return { notFound: true };
-    return { props: { payload : JSON.stringify(docSnap.data() )|| [] } };
+    return { props: { payload : JSON.stringify({...docSnap.data() , dateCreated: docSnap.data().creationDate?.toDate().getTime()} )|| [] } };
   };
 
 const OrderDetails = ({payload}) => {
@@ -42,8 +36,10 @@ const OrderDetails = ({payload}) => {
             <SimpleGrid columns={[2, 2, 2]} spacing='10px'>
                 <Box height='fit-content'><Text fontSize={`sm`}>Tracking Number</Text><Text>{data?.trackingNumber}</Text></Box>
                 <Box height='fit-content'><Text fontSize={`sm`}>Transportation</Text><Text>{data?.method}</Text></Box>
-                <Box height='fit-content'><Text fontSize={`sm`}>Product Category</Text><Text>{data?.type}</Text></Box>
-                <Box height='fit-content'><Text fontSize={`sm`}>Booking Time</Text><Text>{dateTime(data?.creationDate)}</Text></Box>
+                <Box height='fit-content'><Text fontSize={`sm`}>Product Category</Text><Text>{data?.bailment.length > 1  ? `Mixed`: data?.bailment[0].category }</Text></Box>
+                <Box height='fit-content'><Text fontSize={`sm`}>Booking Time</Text><Text>{dateTime(data?.dateCreated)}</Text></Box>
+                <Box height='fit-content'>< Text fontSize={`sm`}>Total Quantity</Text><Text>{data?.totalQuantity} {data?.bailment[0]?.unit}</Text></Box>
+                
 
                 <Box height='fit-content'><Text fontSize={`sm`}>Status</Text>
                 <Tag
@@ -60,17 +56,19 @@ const OrderDetails = ({payload}) => {
                     </Tag></Box>
                 <Box height='fit-content'><Text fontSize={`sm`}>Packages </Text><Text>{data?.bailment.length}</Text></Box>
 
-                { data?.bailment?.map(each=>{
+                {/* { data?.bailment?.map(each=>{
                     return(
                         <>
-                                      <Box height='fit-content'><Text fontSize={`sm`}>Weight</Text><Text>{each?.unit}</Text></Box>
+                                      <Box height='fit-content'>
+                                          < Text fontSize={`sm`}>Weight</Text><Text>{data?.totalQuantity}</Text>
+                                          </Box>
                 <Box height='fit-content'><Text fontSize={`sm`}>Express Number</Text><Text>{each?.expressNumber}</Text></Box>
   
                         </>
                     )
 
-                })}
-                <Box height='fit-content'><Text fontSize={`sm`}>Expected Arrival Date</Text><Text>{data?.expectedArrivalDate}</Text></Box>
+                })} */}
+                <Box height='fit-content'><Text fontSize={`sm`}>Expected Arrival Date</Text><Text>{dateTime(data?.expectedArrivalDate)}</Text></Box>
                 <Box height='fit-content'><Text fontSize={`sm`}>Estimated costs</Text><Text>$ {data?.price ? data?.price : `--`}</Text></Box>
                 <Box height='fit-content'><Text fontSize={`sm`}>Payment status</Text><Text>{data?.paymentStatus}</Text></Box>
 
@@ -89,16 +87,19 @@ const OrderDetails = ({payload}) => {
 
         <ModalCloseButton />
         <ModalBody >
-
+        <Image height={110} width={110} src={logo} />
             <Grid borderWidth={1} h='auto ' templateRows='repeat(3, 1fr)' templateColumns='repeat(2, 1fr)' gap={0}>
                 <GridItem borderBottomWidth={1} rowSpan={4} colSpan={4}  >
                     
                         <Flex alignItems={`center`}>
+                            
                         <QRCode size={120} value="/invoice" />   
                          <Center>
                         <Box fontSize={`sm`} ml={5}>
                         <Text>Tracking Number</Text>
-                        <Text>{data?.trackingNumber}</Text>
+                        <Text mb={`2%`}>{data?.trackingNumber}</Text>
+                        <Text>Express Number</Text>
+                        <Text>{data?.bailment[0]?.expressNumber}</Text>
                         </Box>
                         </Center>
                         </Flex>
@@ -136,8 +137,8 @@ const OrderDetails = ({payload}) => {
                 <GridItem colSpan={4} rowSpan={2} borderBottomWidth={1} >
                     <SimpleGrid p={2} columns={[2, 2, 2]} spacing='10px'>
                         <Box fontSize={`sm`} height='fit-content'><Text >Transportation</Text><Text>{data?.method}</Text></Box>
-                        <Box fontSize={`sm`} height='fit-content'><Text >Weight</Text><Text>4 kg</Text></Box>
-                        <Box fontSize={`sm`} height='fit-content'><Text >Invoice Date</Text><Text>12 - 02 - 2022</Text></Box>
+                        <Box fontSize={`sm`} height='fit-content'><Text >Total Quantity</Text><Text>{data?.totalQuantity} {data?.bailment[0]?.unit}</Text></Box>
+                        <Box fontSize={`sm`} height='fit-content'><Text >Invoice Date</Text><Text>{dateTime(data?.dateCreated)}</Text></Box>
                         <Box fontSize={`sm`} height='fit-content'><Text >Payment Method</Text><Text>{data?.paymentMethod}</Text></Box>
                     </SimpleGrid>
                 </GridItem>
@@ -154,7 +155,7 @@ const OrderDetails = ({payload}) => {
                    <Box p={2}>
                    <Flex mb={2} fontSize={`sm`} h='fit-content' ><Text>Remarks: </Text><Text ml={3}> {data?.remarks}</Text></Flex>
                     <Flex mb={2} fontSize={`sm`} h='fit-content' ><Text>Recipient: </Text><Text align={`right`} ml={3}> {data?.userId}</Text></Flex>
-                    <Flex mb={2} fontSize={`sm`} h='fit-content' ><Text>Invoice date: </Text><Text ml={3}> 12-02-2022</Text></Flex>
+
 
                    </Box>
 

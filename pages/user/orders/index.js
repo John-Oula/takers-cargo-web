@@ -20,7 +20,7 @@ useEffect(()=>{
     const q = query(collRef, where("userId", "==", user?.uid), orderBy("creationDate"), limit(10));
 
     const unsubscribe = onSnapshot(q , (querySnaphot) =>{
-      setOrder(querySnaphot.docs.map(doc => ({...doc.data(),id: doc.id, timestamp: doc.data().creationDate?.toDate().getTime()})))
+      setOrder(querySnaphot.docs.map(doc => ({...doc.data(),id: doc.id, timestamp: doc.data().creationDate?.toDate().getTime() ,  latestUpdateTime: doc.data().creationDate?.toDate().getTime()})))
     })
   }
   

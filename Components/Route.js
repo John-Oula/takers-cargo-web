@@ -4,7 +4,7 @@ import { AiOutlineArrowRight, AiOutlineDropbox } from 'react-icons/ai'
 import { useRouter } from 'next/router';
 import { dateTime } from '../lib';
 
-const Route = ({ data,origin,destination }) => {
+const Route = ({ data }) => {
     const router = useRouter()
 
     return (
@@ -13,12 +13,12 @@ const Route = ({ data,origin,destination }) => {
                 <Flex flexDirection={`column`}>
                     <Flex mb={5} textAlign={`left`} justifyContent={`left`} flexGrow={2} flexDirection={`column`}>
                         <Text  color={`#ed8b00`} w={`200px`} textAlign={`left`} >{data?.origin?.city },{ data?.origin?.country}</Text>
-                        <Text fontSize={`sm`} color={`#ffffff`}>{!data?.creationDate  ? `---` : dateTime(data?.creationDate)}</Text>
+                        <Text fontSize={`sm`} color={`#ffffff`}>{data?.creationDate && data?.status == `in-transit` ?dateTime(data?.latestUpdateTime) : `---` }</Text>
  
                     </Flex>
                     <Flex textAlign={`left`} justifyContent={`left`} flexGrow={2} flexDirection={`column`}>
                         <Text color={`#ed8b00`} w={`200px`} textAlign={`left`} >{data?.destination?.city },{ data?.destination?.country}</Text>
-                        <Text fontSize={`sm`} color={`#ffffff`}>{!data?.status?.lastUpdatedTime ? `---` : dateTime(data?.status?.lastUpdatedTime)}</Text>
+                        <Text fontSize={`sm`} color={`#ffffff`}>{data?.lastUpdatedTime && data?.status == `arrived` ? dateTime(data?.latestUpdateTime) : `---`}</Text>
 
                     </Flex>
                 </Flex>

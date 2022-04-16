@@ -185,6 +185,7 @@ const Book = () => {
     const [rates,loadingRates,errorRates]  = useCollection(collection(db, 'Rates'))
     const [bailments]  = useCollection(collection(db, 'Bailment'))
     const [bailmentSelectValue,setBailmentSelectValue] = useState()
+    const [totalQuantity,setTotalQuantity] = useState(0)
     const [transportation,setTransportation] = useState('')
     useEffect(() => {
          if (user == null) {
@@ -227,7 +228,7 @@ const Book = () => {
 
         const data = {
             expressNumber: values.target.express.value,
-            quantity: values.target.quantity.value,
+            quantity: parseInt(values.target.quantity.value),
             item: values.target.item.value,
             category: values.target.category.value,
             price:price,
@@ -271,7 +272,8 @@ const Book = () => {
           paymentStatus: `unpaid`,
           lastUpdatedTime:serverTimestamp(),
           expectedArrivalDate:secondDate,
-          creationDate: serverTimestamp()
+          creationDate: serverTimestamp(),
+          totalQuantity: totalQuantity
 
         }
         
@@ -319,8 +321,10 @@ const Book = () => {
     useEffect(() => {
         if(cargo.length > 1){
                     setEstimatedPrice(state =>{
-                        console.log(state);
                         setEstimatedPrice(state + cargo[cargo.length-1]?.price)
+                    })
+                    setTotalQuantity(state =>{
+                        setTotalQuantity(state + cargo[cargo.length-1]?.quantity)
                     })
         }
         else{
@@ -332,11 +336,17 @@ const Book = () => {
             // })
             // .catch(e => console.log(e.message))
             setEstimatedPrice(cargo[cargo.length-1]?.price)
+            setTotalQuantity(cargo[cargo.length-1]?.quantity)
 
         }
 
         () => {
-            return (setEstimatedPrice(0))
+            setTotalQuantity(0)
+
+            return 
+                setEstimatedPrice(0);
+               
+            
 
         }
     }, [cargo])
