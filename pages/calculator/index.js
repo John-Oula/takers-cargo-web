@@ -6,7 +6,7 @@ import {
     ModalHeader,
     ModalFooter,
     ModalBody,
-    ModalCloseButton, Textarea, Spacer, Select, Center, Text, Heading, FormControl, Input, Button, InputGroup
+    ModalCloseButton, Textarea, Spacer, Select, Center, Text,InputRightAddon, Heading, FormControl, Input, Button, InputGroup
 } from "@chakra-ui/react";
 import FirstRowHeader from '../../Components/FirstRowHeader';
 import { AiOutlineArrowRight, AiOutlineBook, AiOutlineContainer, AiOutlineArrowLeft, AiOutlinePlus } from 'react-icons/ai'
@@ -18,6 +18,16 @@ import SelectAddressContext from '../../contexts/SelectAddressContext.js';
 import { useForm } from "react-hook-form";
 import CreateAdress from '../../Components/CreateAddress';
 import BackButton from '../../Components/BackButton';
+import { addDocument, addDocumentWithId, updateDocument } from '../../lib';
+import { useRouter } from 'next/router'; 
+import { db } from '../../firebase/initFirebase';
+import {serverTimestamp} from 'firebase/firestore'
+import {  collection, getDocs,getDoc } from 'firebase/firestore'
+import { useCollection } from 'react-firebase-hooks/firestore';
+
+import AuthContext from '../../contexts/AuthContext';
+
+var moment = require('moment'); // require
 
 
 const ShipperAddressBook = ({ close }) => {
@@ -37,40 +47,26 @@ const ShipperAddressBook = ({ close }) => {
     )
 }
 const Origin = ({ close }) => {
-    const addresses = [{
-        id: "D2KvZbLnZdqqyMW3RmBF",
-        country:
-            "Tanzania",
-        detailedAddress:
-            "Arusha, TZ ",
-        fullName:
-            "Takers",
-        phone:
-            "325636253465"
-    }, {
-        id: "D2KvZbLnZdqqyMW3RmB",
-        country:
-            "Tanzania",
-        detailedAddress:
-            "Arusha, TZ ",
-        fullName:
-            "CargoX",
-        phone:
-            "325636253465"
-    }, {
-        id: "D2KvZbLnkZdqqyMW3RBF",
-        country:
-            "Tanzania",
-        detailedAddress:
-            "Arusha, TZ ",
-        fullName:
-            "Takerss cargo",
-        phone:
-            "325636253465"
-    }]
+ 
     const { origin, setOrigin } = useContext(SelectAddressContext)
     const ref = useRef()
+    const [address,setAddress] = useState()
+    const { user} = useContext(AuthContext)
+    const getAddress = async () =>{
+        let addresses = []
+        const colRef = collection(db, "Warehouse");
+        const docSnap =  await getDocs(colRef);
+        docSnap.forEach((doc) => {
+                    // doc.data() is never undefined for query doc snapshots
+                    addresses.push(doc.data())
+                  });
+                  setAddress(addresses)
+    }
+    useEffect( async  ()=>{
 
+        getAddress()
+       
+    },[])
 
     function selectItem(data) {
         if (!origin) {
@@ -93,10 +89,10 @@ const Origin = ({ close }) => {
         <Flex p={2} flexDirection={`column`} justifyContent={`center`}>
             <FirstRowHeader title={`Select origin address`} leftIcon={<BackButton />} />
             {
-                addresses.map((each) => {
+                address?.map((each) => {
                     return (
                         <div key={each?.id} onClick={() => selectItem(each)}  ref={ref} payload={each} >
-                            <ListItem key={each?.id} data={each} selectable title={each?.fullName} label={each?.detailedAddress + ' ' + each?.phone} crud path={`address/1`} />
+                            <ListItem key={each?.id}  data={each} selectable title={each?.fullname} label={each?.detailedAddress + ' ' + each?.phone} crud path={`address/1`} />
 
                         </div>
 
@@ -109,38 +105,26 @@ const Origin = ({ close }) => {
     )
 }
 const AddressBook = ({ close }) => {
-    const addresses = [{
-        id: "D2KvZbLnZdqqyMW3RmBF",
-        country:
-            "Tanzania",
-        detailedAddress:
-            "Arusha, TZ ",
-        fullName:
-            "Peter Gumbo",
-        phone:
-            "325636253465"
-    }, {
-        id: "D2KvZbLnZdqqyMW3RmB",
-        country:
-            "Tanzania",
-        detailedAddress:
-            "Arusha, TZ ",
-        fullName:
-            "Peter mbo",
-        phone:
-            "325636253465"
-    }, {
-        id: "D2KvZbLnZdqqyMW3RBF",
-        country:
-            "Tanzania",
-        detailedAddress:
-            "Arusha, TZ ",
-        fullName:
-            "Peter Gumb",
-        phone:
-            "325636253465"
-    }]
+
     const { select, setSelect } = useContext(SelectAddressContext)
+    const [address,setAddress] = useState()
+    const { user} = useContext(AuthContext)
+    const getAddress = async () =>{
+        let addresses = []
+        const subColRef = collection(db, "Users", user?.uid, "address");
+        const docSnap =  await getDocs(subColRef);
+        console.log(docSnap);
+        docSnap.forEach((doc) => {
+                    // doc.data() is never undefined for query doc snapshots
+                    addresses.push(doc.data())
+                  });
+                  setAddress(addresses)
+    }
+    useEffect( async  ()=>{
+
+        getAddress()
+       
+    },[])
     const ref = useRef()
 
     function selectItem(data) {
@@ -161,14 +145,15 @@ const AddressBook = ({ close }) => {
 
     }
 
+
     return (
         <Flex p={2} flexDirection={`column`} justifyContent={`center`}>
             <FirstRowHeader title={`Address Book`} leftIcon={<BackButton />} />
             {
-                addresses.map((each) => {
+                address?.map((each) => {
                     return (
                         <div key={each?.id} onClick={() => selectItem(each)} className={`q`} ref={ref} payload={each} >
-                            <ListItem data={each} selectable title={each?.fullName} label={each?.detailedAddress + ' ' + each?.phone} crud path={`address/1`} />
+                            <ListItem data={each} selectable title={each?.fullname} label={each?.detailedAddress + ' ' + each?.phone} crud path={`address/1`} />
 
                         </div>
 
@@ -190,51 +175,26 @@ const Calculator = () => {
     const [bailmentObj, setBailmentObj] = useState(null)
     const [originAddressBook, setOriginAddressBook] = useState(false)
     const { isOpen, onOpen, onClose } = useDisclosure()
-    const { select, setSelect, cargo, origin, setCargo,setOrigin } = useContext(SelectAddressContext)
+    const { select, setSelect, cargo, origin, setOrigin ,setCargo } = useContext(SelectAddressContext)
     const { handleSubmit, register } = useForm();
-    const bailments = [
-      { id: '131e331', active:
-        true,
-        items:[
-        "phone",
-        
-        "laptops",
-        
-        "camera"],
-        name:
-        "Electronics",
-        unit:
-        "pcs"},
-        { id: '131331', active:
-            true,
-            items:[
-            "shirt",
-            
-            "trousers",
-            
-            "pants"],
-            name:
-            "Clothes",
-            unit:
-            "kg"}]
-     const rate = {
-                bailmentId:
-"131e331",
-basedOn:
-"pcs",
-max:
-40,
-min:
-1,
-name:
-"standard",
-price:
-20,
-status:
-"active",
-unit:
-"pcs"
-            }
+    const [loading,setLoading] = useState(false)
+    const [rate,setRate] = useState()
+    const [groupedBailment,setGroupedBailment] = useState([])
+    const [error,setError] = useState(false)
+    const { user} = useContext(AuthContext)
+    const [rates,loadingRates,errorRates]  = useCollection(collection(db, 'Rates'))
+    const [bailments]  = useCollection(collection(db, 'Bailment'))
+    const [bailmentSelectValue,setBailmentSelectValue] = useState()
+    const [totalQuantity,setTotalQuantity] = useState(0)
+    const [transportation,setTransportation] = useState('')
+    useEffect(() => {
+         if (user == null) {
+          router.push("/login");
+        }
+      }, [user]);
+    const router = useRouter()
+
+
       const bailmentRef = useRef()
     let cargoList = []
 
@@ -252,9 +212,29 @@ unit:
 
     }
 
+    const shippingRate = (rate,unit,quantity) =>{
+        return rate*unit*quantity
+
+    }
+    const getShippingRate = async  (id) =>{
+        const docRef = doc(db, `Rates`, id);
+        return await getDoc(docRef);
+
+    }
+
     const addCargo = (values) => {
-        const price = rate?.price * values.quantity * values.unit
-        const data = {...values, price:price}
+        values.preventDefault()
+        const price = parseFloat(rate) * parseInt(values.target.quantity.value)
+
+        const data = {
+            expressNumber: values.target.express.value,
+            quantity: parseInt(values.target.quantity.value),
+            item: values.target.item.value,
+            category: values.target.category.value,
+            price:price,
+            unit: bailmentSelectValue?.unit
+        }
+
         if (cargo) {
             cargoList.push(data)
             setCargo(state => {
@@ -269,8 +249,14 @@ unit:
 
     }
 
-    const submitForm = (e) => {
+    const submitForm =  (e) => {
+        setError(null)
+        setLoading(true)
          e.preventDefault();
+         const date =  Date.now()
+         const firstDate = moment().add(45, 'days');
+         const secondDate = date +  24 * 60 * 60 * 1000
+         const trackingNumber = `TC`+ date.toString()
         //   setBailmentObj(e.target.delivery.value)
 
         const formData = {destination:{ ...select}, origin:{...origin},
@@ -279,13 +265,42 @@ unit:
           paymentMethod: e.target.payment_method.value,
           value: e.target.value.value,
           bailment:cargo,
-          price: estimatedPrice
+          price: estimatedPrice,
+          userId: user?.uid,
+          trackingNumber: trackingNumber,
+          status: `pending`,
+          paymentStatus: `unpaid`,
+          lastUpdatedTime:serverTimestamp(),
+          expectedArrivalDate:secondDate,
+          creationDate: serverTimestamp(),
+          totalQuantity: totalQuantity
 
         }
-        console.log(formData);
+        
+          addDocumentWithId('Bookings',formData,trackingNumber)
+        .then(doc => {
+            console.log(doc)
+            
+                    setLoading(false)
+                    router.push(`/user/orders/${trackingNumber}`)
+
+              
+               
+
+            
+
+        })
+        .catch(error =>
+            {
+                setLoading(false)
+
+                console.log(error.message);
+                setError(error.message)
+            }
+        )
 
     }
-
+    
     useEffect(() => {
 
      
@@ -306,24 +321,56 @@ unit:
     useEffect(() => {
         if(cargo.length > 1){
                     setEstimatedPrice(state =>{
-                        console.log(state);
                         setEstimatedPrice(state + cargo[cargo.length-1]?.price)
+                    })
+                    setTotalQuantity(state =>{
+                        setTotalQuantity(state + cargo[cargo.length-1]?.quantity)
                     })
         }
         else{
+            // getShippingRate(`4CCu9NrRhzM3aS53CuRd`)
+            // .then(rate =>{
+            //     shippingRate(rate.price,cargo.unit,cargo.quantity)
+            //                 setEstimatedPrice(cargo[cargo.length-1]?.price)
+
+            // })
+            // .catch(e => console.log(e.message))
             setEstimatedPrice(cargo[cargo.length-1]?.price)
+            setTotalQuantity(cargo[cargo.length-1]?.quantity)
+
         }
 
         () => {
-            return (setEstimatedPrice(0))
+            setTotalQuantity(0)
+
+            return 
+                setEstimatedPrice(0);
+               
+            
 
         }
     }, [cargo])
+
+    useEffect(()=>{
+       if(bailments?.docs){
+        const list = bailments?.docs.map( i => i.category);
+        const uniqueList = Array.from(new Set(list));
+        const groups= uniqueList.map( c => { 
+                    return  { group:c, names:[]};
+                } ); 
+
+        bailments?.docs.forEach( d => { 
+            groups.find( g => g.category === d.category).names.push(d.items);
+        });
+
+        setGroupedBailment(groups)
+       }
+    },[bailments])
     return (
         <>
 
             <Flex p={4} flexDirection={`column`} justifyContent={`center`}>
-                <Modal size={[`full`]} onClose={onClose} isOpen={isOpen} isCentered>
+                <Modal trapFocus={false} size={[`full`]} onClose={onClose} isOpen={isOpen} >
                     <ModalOverlay />
                     <ModalContent>
                         <ModalHeader>
@@ -331,19 +378,49 @@ unit:
                         </ModalHeader>
                         <ModalCloseButton />
                         <ModalBody>
-                        {!showAddressForm &&  <InputGroup p={4} flexDirection={`column`} alignItems={`center`}>
-                                <Input   {...register('expressNumber')} mt={5} placeholder='Express Number/ Tracking Number' type={`text`} />
-                                <Select id={`bailmentType`} {...register('type')} mt={5} variant='filled' placeholder='Type / Category of consignment' >
-                                   { bailments?.map((each,i) => (
-                                        <option key={i} dummy={each}  onClick={() => setBailmentObj(each)} ref={bailmentRef}>{each.name}</option>
-                                    ))}
-                                </Select>
-                                <Input  {...register('unit')} mt={5} placeholder='Weight/pcs' type={`number`} />
-                                {/* <Input mt={5}  placeholder='Value (USD)' type={`number`} /> */}
-                                <Input  {...register('quantity')} mt={5} placeholder='Quantity' type={`number`} />
+                        {!showAddressForm &&
+                          <form onSubmit={(e)=> addCargo(e)}>
 
-                                <Button mb={5} mt={5} w={`100%`} onClick={handleSubmit(addCargo)} color={`#ffffff`} bgColor={`#000000`} >Add</Button>
-                            </InputGroup>}
+<InputGroup p={4} flexDirection={`column`} alignItems={`center`}>
+                                <Input name='express'   mt={5} placeholder='Express Number/ Tracking Number' type={`text`} />
+                                
+                               
+                                <Select name={`category`} onChange={(e)=>setBailmentSelectValue(JSON.parse(e.target.options[e.target.selectedIndex].getAttribute('data')))}  id={`bailmentType`} mt={5} variant='filled' placeholder='Type / Category of consignment' >
+                                   { bailments?.docs.map((each,i) => 
+                                        
+                                            
+                                            {
+                                              if(each.data().category != bailments?.docs[i].category)  
+                                                return(
+                                            <option key={`option_${i}`} data={JSON.stringify(each.data())} value={each.data().category}>{each.data().category}
+                                            </option>
+                                        
+                                    )}
+                                   )
+                                                }
+                                </Select>
+                                <Select name={`item`} onChange={(e) => setRate(e.target.options[e.target.selectedIndex].getAttribute('rate'))} mt={5} variant='filled' placeholder='Item' >
+                                   { 
+                                        bailmentSelectValue?.items.map((item,i) =>{return(
+                                           
+                                            <option key={i} rate={item.rate}   value={item.itemName}>{item.itemName} ----      {bailmentSelectValue?.currency} {item.rate}</option>
+                                           
+                                        )})
+                                   }
+                                </Select>
+                            <InputGroup alignItems={`center`}>
+                                <Input name='quantity'  mt={5} placeholder={transportation == `air` ? `Quantity in ${bailmentSelectValue.unit}` : `cubic metres`} type={`number`} />
+                                {/* <InputRightAddon  >{bailmentSelectValue ? bailmentSelectValue.unit : `--`}</InputRightAddon> */}
+                                </InputGroup>
+                                {/* <Input mt={5}  placeholder='Value (USD)' type={`number`} /> */}
+                                {/* {bailmentSelectValue?.unit != 'pcs'  ? <Input name={`quantity`}  mt={5} placeholder='Quantity' type={`number`} /> : <></>} */}
+                                {/* <Input disabled value={bailmentSelectValue && rate}  {...register('rate')} mt={5} placeholder='Costs' type={`number`} /> */}
+                                <Button mb={5} mt={5} w={`100%`} type={`submit`} color={`#ffffff`} bgColor={`#000000`} >Add</Button>
+                            </InputGroup>
+                          </form>
+
+                            
+                            }
                             {showAddressForm && <CreateAdress  />}
 
                         </ModalBody>
@@ -357,16 +434,16 @@ unit:
 
                 {!shipperAddressBook && !receiverAddressBook && !originAddressBook && 
                     <>
-                        <FirstRowHeader title={`Freight Calculation`} leftIcon={<BackButton />} />
-
+                        <FirstRowHeader title={`Calculate your Shipment`} leftIcon={<BackButton />} />
+{error && <Text color={`red`}>{error}</Text>}
                         <Flex>
-                            <Image src={route} alt={`Route`} />
+                            <Image alt={`Route`}  src={route} />
 
                             <InputGroup p={2} flexDirection={`column`}>
                                 <Box backgroundImage={map} backgroundSize={`lg`}>
                                     <Flex>
                                         <Box cursor={`pointer`} onClick={() =>{ setOriginAddressBook(true) }} _hover={{ color: '#ed8b00' }} p={4}>
-                                            <Heading as={`h6`} size={`md`}>{origin ? origin?.fullName : `Shipper Information`}</Heading>
+                                            <Heading as={`h6`} size={`md`}>{origin ? origin?.fullname : `Shipper Information`}</Heading>
                                             <Text fontSize={`sm`}>{origin ? origin?.detailedAddress + ' ' + origin?.phone : `Click to fill in shipper information`}</Text>
                                             {/* <Divider orientation={`vertical`} /> */}
 
@@ -380,7 +457,7 @@ unit:
                                     <Divider />
                                     <Flex>
                                         <Box cursor={`pointer`} onClick={() =>{ setShowAddressForm(true);onOpen()}} _hover={{ color: '#ed8b00' }} p={4}>
-                                            <Heading as={`h6`} size={`md`}>{select ? select?.fullName : `Receiver Information`}</Heading>
+                                            <Heading as={`h6`} size={`md`}>{select ? select?.fullname : `Receiver Information`}</Heading>
                                             <Text fontSize={`sm`}>{select ? select?.detailedAddress + ' ' + select?.phone : `Click to fill in receiver information`}</Text>
                                             {/* <Divider orientation={`vertical`} /> */}
 
@@ -398,7 +475,7 @@ unit:
 
                         {
                             cargo?.map((each, index) => {
-                                return (<ListItem key={'cargo_' + index} leftIcon={<AiOutlineContainer />} title={each?.type + ' ' + '$' + rate?.price * each?.unit * each?.quantity} label={each?.unit + 'kg' + ' ' + each?.expressNumber } click={() => null} />
+                                return (<ListItem key={'cargo_' + index} leftIcon={<AiOutlineContainer />} title={each?.category + ' ' + '$' + each?.price} label={each?.quantity + each?.unit + ' ' + each?.expressNumber } click={() => null} />
                                 )
 
                             })
@@ -408,7 +485,7 @@ unit:
                         {/* <ListItem rightIcon={<AiOutlineArrowRight />} title={`Shipping Warehouse`} label={`Select one of our warehouse locations`}/> */}
                         <form onSubmit={(e) => submitForm(e)}>
                         <Select name='value' mt={5} placeholder='Value-added services' variant={`filled`} />
-                        <Select mt={5}  name='method'   placeholder='Type of delivery' variant={`filled`} >
+                        <Select onChange={(e)=>{setTransportation(e.target.value)}} mt={5}  name='method'   placeholder='Type of delivery' variant={`filled`} >
                             <option value={`sea`}>Sea</option>
                             <option value={`air`}>Air</option>
                         </Select>
@@ -417,14 +494,7 @@ unit:
                             <option value={`Cash`}>Cash</option>
                              <option value={`Bank Transfer`}>Bank Transfer</option>
                         </Select>
-                        <Textarea {...register('remarks')} mb={5} mt={5} placeholder='Remarks' />
-                        {/* <Flex>
-
-                            <Radio mr={3} />
-
-                            <small>I have read and agreed to Takers Cargo
-                                Terms and conditions of Delivery</small>
-                        </Flex> */}
+                    
                         <Flex mt={`10%`}>
                             <Flex >
                                 <Box>
@@ -439,10 +509,12 @@ unit:
 
                             </Flex>
                         </Flex>
-                        {/* <Button type='submit' mt={5} color={`#ffffff`} bgColor={`#000000`} leftIcon={<AiOutlinePlus />}>Calculate</Button> */}
                         </form>
                     </>}
             </Flex>
+            <br/>
+            <br/>
+            <br/>
 
         </>
     );
