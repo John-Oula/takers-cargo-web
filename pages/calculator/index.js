@@ -409,8 +409,8 @@ const Calculator = () => {
                                    }
                                 </Select>
                             <InputGroup alignItems={`center`}>
-                                <Input name='quantity'  mt={5} placeholder={transportation == `air` ? `Quantity in ${bailmentSelectValue.unit}` : `cubic metres`} type={`number`} />
-                                {/* <InputRightAddon  >{bailmentSelectValue ? bailmentSelectValue.unit : `--`}</InputRightAddon> */}
+                                <Input name='quantity'  mt={5} placeholder={transportation == `air` ? `Quantity in ${bailmentSelectValue && bailmentSelectValue?.unit}` : `cubic metres`} type={`number`} />
+                                {/* <InputRightAddon  >{bailmentSelectValue ? bailmentSelectValue?.unit : `--`}</InputRightAddon> */}
                                 </InputGroup>
                                 {/* <Input mt={5}  placeholder='Value (USD)' type={`number`} /> */}
                                 {/* {bailmentSelectValue?.unit != 'pcs'  ? <Input name={`quantity`}  mt={5} placeholder='Quantity' type={`number`} /> : <></>} */}
