@@ -7,7 +7,7 @@ import AuthContext from '../contexts/AuthContext';
 
 
 
-const forgotPassword = () => {
+const ForgotPassword = () => {
     const [emailSent, setEmailSent] = useState(false)
     const [error, setError] = useState()
     const [loading, setLoading] = useState(false)
@@ -79,4 +79,4 @@ const forgotPassword = () => {
     );
 };
 
-export default forgotPassword;
+export default ForgotPassword;
