@@ -178,6 +178,7 @@ const Book = () => {
     const { select, setSelect, cargo, origin, setOrigin ,setCargo } = useContext(SelectAddressContext)
     const { handleSubmit, register } = useForm();
     const [loading,setLoading] = useState(false)
+    const [rate,setRate] = useState()
     const [groupedBailment,setGroupedBailment] = useState([])
     const [error,setError] = useState(false)
     const { user} = useContext(AuthContext)
@@ -193,24 +194,6 @@ const Book = () => {
     const router = useRouter()
 
 
-     const rate = {
-                bailmentId:
-"131e331",
-basedOn:
-"pcs",
-max:
-40,
-min:
-1,
-name:
-"standard",
-price:
-20,
-status:
-"active",
-unit:
-"pcs"
-            }
       const bailmentRef = useRef()
     let cargoList = []
 
@@ -239,8 +222,18 @@ unit:
     }
 
     const addCargo = (values) => {
-        const price = rate?.price * values.quantity * values.unit
-        const data = {...values, price:price}
+        values.preventDefault()
+        const price = parseFloat(rate) * parseInt(values.target.quantity.value)
+
+        const data = {
+            expressNumber: values.target.express.value,
+            quantity: values.target.quantity.value,
+            item: values.target.item.value,
+            category: values.target.category.value,
+            price:price,
+            unit: bailmentSelectValue?.unit
+        }
+
         if (cargo) {
             cargoList.push(data)
             setCargo(state => {
@@ -376,42 +369,48 @@ unit:
                         <ModalCloseButton />
                         <ModalBody>
                         {!showAddressForm &&
-                          <InputGroup p={4} flexDirection={`column`} alignItems={`center`}>
-                                <Input    mt={5} placeholder='Express Number/ Tracking Number' type={`text`} />
+                          <form onSubmit={(e)=> addCargo(e)}>
+
+<InputGroup p={4} flexDirection={`column`} alignItems={`center`}>
+                                <Input name='express'   mt={5} placeholder='Express Number/ Tracking Number' type={`text`} />
                                 
                                
-                                <Select onChange={(e)=>setBailmentSelectValue(JSON.parse(e.target.options[e.target.selectedIndex].getAttribute('data')))}  id={`bailmentType`} mt={5} variant='filled' placeholder='Type / Category of consignment' >
+                                <Select name={`category`} onChange={(e)=>setBailmentSelectValue(JSON.parse(e.target.options[e.target.selectedIndex].getAttribute('data')))}  id={`bailmentType`} mt={5} variant='filled' placeholder='Type / Category of consignment' >
                                    { bailments?.docs.map((each,i) => 
                                         
                                             
                                             {
                                               if(each.data().category != bailments?.docs[i].category)  
                                                 return(
-                                            <option key={`option_${i}`} value={each.data().category}>{each.data().category}
+                                            <option key={`option_${i}`} data={JSON.stringify(each.data())} value={each.data().category}>{each.data().category}
                                             </option>
                                         
                                     )}
                                    )
                                                 }
                                 </Select>
-                                <Select onChange={(e)=>setBailmentSelectValue(JSON.parse(e.target.options[e.target.selectedIndex].getAttribute('data')))}   mt={5} variant='filled' placeholder='Item' >
-                                   { bailments?.docs.map((each,i) => (
-                                        each.data().items.map(item =>{return(
+                                <Select name={`item`} onChange={(e) => setRate(e.target.options[e.target.selectedIndex].getAttribute('rate'))} mt={5} variant='filled' placeholder='Item' >
+                                   { 
+                                        bailmentSelectValue?.items.map((item,i) =>{return(
                                            
-                                            <option key={i} data={JSON.stringify(each.data())}  onClick={() => setBailmentObj(each.data())} ref={bailmentRef} value={item.itemName}>{item.itemName} ----      {each.data()?.currency} {item.rate}</option>
+                                            <option key={i} rate={item.rate}   value={item.itemName}>{item.itemName} ----      {bailmentSelectValue?.currency} {item.rate}</option>
                                            
                                         )})
-                                    ))}
+                                   }
                                 </Select>
                             <InputGroup alignItems={`center`}>
-                                <Input  {...register('unit')} mt={5} placeholder={transportation == `air` ? 'Weight/pcs' : `cubic metres`} type={`number`} />
-                                <InputRightAddon  >{bailmentSelectValue ? bailmentSelectValue.unit : `--`}</InputRightAddon>
+                                <Input name='quantity'  mt={5} placeholder={transportation == `air` ? `Quantity in ${bailmentSelectValue.unit}` : `cubic metres`} type={`number`} />
+                                {/* <InputRightAddon  >{bailmentSelectValue ? bailmentSelectValue.unit : `--`}</InputRightAddon> */}
                                 </InputGroup>
                                 {/* <Input mt={5}  placeholder='Value (USD)' type={`number`} /> */}
-                                {bailmentSelectValue?.unit != 'pcs'  ? <Input  {...register('quantity')} mt={5} placeholder='Quantity' type={`number`} /> : <></>}
-                                <Input disabled value={bailmentSelectValue && bailmentSelectValue.currency + ' ' + bailmentSelectValue.rate}  {...register('rate')} mt={5} placeholder='Costs' type={`number`} />
-                                <Button mb={5} mt={5} w={`100%`} onClick={handleSubmit(addCargo)} color={`#ffffff`} bgColor={`#000000`} >Add</Button>
-                            </InputGroup>}
+                                {/* {bailmentSelectValue?.unit != 'pcs'  ? <Input name={`quantity`}  mt={5} placeholder='Quantity' type={`number`} /> : <></>} */}
+                                {/* <Input disabled value={bailmentSelectValue && rate}  {...register('rate')} mt={5} placeholder='Costs' type={`number`} /> */}
+                                <Button mb={5} mt={5} w={`100%`} type={`submit`} color={`#ffffff`} bgColor={`#000000`} >Add</Button>
+                            </InputGroup>
+                          </form>
+
+                            
+                            }
                             {showAddressForm && <CreateAdress  />}
 
                         </ModalBody>
@@ -466,7 +465,7 @@ unit:
 
                         {
                             cargo?.map((each, index) => {
-                                return (<ListItem key={'cargo_' + index} leftIcon={<AiOutlineContainer />} title={each?.type + ' ' + '$' + rate?.price * each?.unit * each?.quantity} label={each?.unit + 'kg' + ' ' + each?.expressNumber } click={() => null} />
+                                return (<ListItem key={'cargo_' + index} leftIcon={<AiOutlineContainer />} title={each?.category + ' ' + '$' + each?.price} label={each?.quantity + each?.unit + ' ' + each?.expressNumber } click={() => null} />
                                 )
 
                             })

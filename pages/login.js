@@ -1,11 +1,12 @@
 import React,{useState,useContext,useEffect} from 'react';
-import { Text,Center, Heading,Button,  Modal,
+import { Text,Center,HStack,PinInput,
+  PinInputField ,Heading,Button,  Modal,
     ModalOverlay,useDisclosure ,
     ModalContent,
     ModalHeader,
     ModalFooter,
     ModalBody,
-    ModalCloseButton ,FormControl, InputGroup ,InputLeftElement ,Input ,  Box, Container, Flex  } from '@chakra-ui/react'
+    ModalCloseButton,InputRightElement  ,FormControl, InputGroup ,InputLeftElement ,Input ,  Box, Container, Flex  } from '@chakra-ui/react'
 import Image from 'next/image';
 import truck from '../assets/openTruck.svg';
 import Link from 'next/link';
@@ -17,6 +18,7 @@ import { useForm } from "react-hook-form";
 import { GoogleAuthProvider } from "firebase/auth";
 import { addDocumentWithId } from '../lib';
 import AuthContext from '../contexts/AuthContext';
+import { useToast } from '@chakra-ui/react'
 
 
 
@@ -29,7 +31,11 @@ const Login = () => {
     const { handleSubmit, register } = useForm();
     const { setUser,login,user ,googleSignin} = useContext(AuthContext)
     const [error,setError] = useState()
-    const [loading,setLoading] = useState()
+    const [sentSms,setSentSms] = useState(false)
+    const [code,setCode] = useState(null)
+    const [loading,setLoading] = useState(false)
+    const [confirmation,setConfirmation] = useState(null)
+    const toast = useToast()
 
     useEffect(() => {
       if (user) {
@@ -39,6 +45,16 @@ const Login = () => {
       }
     }, [user]);
     
+    const showToast = (title,description,status) =>{
+        
+      toast({
+        title: title,
+        description: description,
+        status: status,
+        duration: 10000,
+        isClosable: true,
+      })
+}
 
     const generateRecaptcha = () => {
         window.recaptchaVerifier = new RecaptchaVerifier('sign-in-button', {
@@ -116,8 +132,13 @@ const Login = () => {
     // ...
   });
     }
-    const loginWithPhone = (values) =>{
-        values.preventDefault()
+
+    const confirmCode = (code) =>{
+
+    }
+    const loginWithPhone = (e) =>{
+      e.preventDefault()
+    
         generateRecaptcha()
           const appVerifier = window.recaptchaVerifier;
           signInWithPhoneNumber(auth, phone, appVerifier)
@@ -125,12 +146,26 @@ const Login = () => {
       // SMS sent. Prompt user to type the code from the message, then sign the
       // user in with confirmationResult.confirm(code).
       window.confirmationResult = confirmationResult;
-      console.log(`verification sent`);
-      alert(`sms sent`)
+      setSentSms(true);
+      showToast('A verification SMS has been sent to your number.',"Enter the code sent in the SMS",'success')
+      if(code == null) return;
+
+      confirmationResult.confirm(code)
+      .then((result) => {
+        // User signed in successfully.
+        const user = result.user;
+        alert(`user`)
+        // ...
+      }).catch((error) => {
+        // User couldn't sign in (bad verification code?)
+        // ...
+        setError(error.message)
+      });
       // ...
     }).catch((error) => {
       // Error; SMS not sent
       // ...
+      setError(error.message)
       console.log(error);
       alert(error.message)
     });
@@ -154,16 +189,32 @@ const Login = () => {
             <InputGroup p={4} flexDirection={`column`} alignItems={`center`}>
             {error && <Text color={`red`}>{error}</Text>}
 
-                {withEmail  ? 
+                {withEmail  && 
                 <>
                 <Input mt={5}  {...register('email')} placeholder='Email' type={`text`} />
                 <Input mt={5} {...register('password')}  placeholder='Password' type={`text`} />
                 </>
-                :
-                <Input mt={5}  {...register('phone')} onChange={(e) => setPhone(e.target.value)} placeholder='Phone Number' type={`text`} />
-
+              
                 }
+{         !withEmail &&    <Input mt={5}  {...register('phone')} onChange={(e) => setPhone(e.target.value)} placeholder='Phone Number' type={`text`} />
+}                  {
+                    sentSms && 
+                    <>
+                    <Flex flexDirection={`row`} justifyContent={`center`}  mt={`5%`}>
+<HStack >
+<PinInput onComplete={(e) => setCode(e)} otp>
+<PinInputField />
+<PinInputField />
+<PinInputField />
+<PinInputField />
+<PinInputField />
+<PinInputField />
+</PinInput>
+</HStack>
 
+</Flex>
+                    </>
+                  }
                 <Button loadingText='Logging in ...' isLoading={loading} type={'submit'} id={`sign-in-button`}  mb={5}  mt={5} w={`100%`} onClick={withEmail ? handleSubmit(loginWithEmail) :(e) => loginWithPhone(e)}    color={`#ffffff`} bgColor={`#000000`} >{ withEmail ? `Login` : `Send Code`} </Button>
                 {withEmail ? <Link href={`/forgotPassword`} color={`#ed8b00`}> Forgot password?</Link> : <Text cursor={`pointer`}>Resend Code</Text>}
 
@@ -187,7 +238,7 @@ to Tanzania</Text>
 <Button  mb={5} w={`auto`} onClick={loginWithGoogle}   leftIcon={<LogoGoogleIcon color={`#ffffff`} />} color={`#ffffff`} bgColor={`#000000`} disabled >Google | Coming soon</Button>
 
 <Button  mb={5} w={`auto`} onClick={() => {setWithEmail(true);onOpen()}}   leftIcon={<MailIcon color={`#ffffff`} />} color={`#ffffff`} bgColor={`#000000`} >Login with email</Button>
-<Button  mb={5} w={`auto`} onClick={() => {setWithEmail(false);onOpen()}}   leftIcon={<PhoneIcon color={`#ffffff`} />} color={`#ffffff`} bgColor={`#000000`} disabled >Login with Phone  | Coming soon</Button>
+<Button  mb={5} w={`auto`} onClick={(e) => {setWithEmail(false);onOpen()}}   leftIcon={<PhoneIcon color={`#ffffff`} />} color={`#ffffff`} bgColor={`#000000`}  >Login with Phone</Button>
 
 <Text textAlign={`center`}>Don’t have an account?<Link href={`/signup`} color={`#ed8b00`}> Sign up</Link></Text>
         </Flex>
