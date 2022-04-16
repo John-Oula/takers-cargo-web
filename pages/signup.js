@@ -21,13 +21,38 @@ const Signup = () => {
     const [error, setError] = useState()
     const [emailVerified, setEmailVerified] = useState(false)
     const { setUser,signup ,updateUserProfile, emailVerification,user} = useContext(AuthContext)
+    const [emailSent,setEmailSent] =  useState(false)
     const toast = useToast()
+    const actionCodeSettings = {
+        url: 'http://localhost:3000'
+    }
     useEffect(() => {
-        if (user) {
+        if (user && user.emailVerified) {
+            
           router.push("/");
+          
         }
         
       }, [user]);
+
+      const resendVerification = () =>{
+        emailVerification(user,actionCodeSettings)
+        .then(() => {
+            showToast('A verification link has been sent to your email.',"Click on the link in the email to verify",'success')
+
+
+            setLoading(false)
+
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            // ..
+            console.log(errorMessage);
+            setLoading(false)
+        })
+
+      }
     const showToast = (title,description,status) =>{
         
           toast({
@@ -71,11 +96,11 @@ const Signup = () => {
                 .then(() =>{
                     addDocumentWithId(`Users`, data, user.uid)
                     .then(() => {
-                        showToast('A verification link has been sent to your email.',"Click on the link in the email to verify",'success')
 
-                        emailVerification(user)
+                        emailVerification(user,actionCodeSettings)
                         .then(() => {
-                            showToast('Email has been verified.',"Redirecting...",'success')
+                            showToast('A verification link has been sent to your email.',"Click on the link in the email to verify",'success')
+                            setEmailSent(true)
 
                             setLoading(false)
 
@@ -86,6 +111,8 @@ const Signup = () => {
                             // ..
                             console.log(errorMessage);
                             setLoading(false)
+                            setEmailSent(false)
+
                         })
 
                         
@@ -140,11 +167,11 @@ const Signup = () => {
             <Flex p={5} flexDirection={[`column`, `column`, `row`, `row`, `row`]} flex={1}>
                 <FirstRowHeader title={`New account`} leftIcon={<BackButton />} />
                 <Heading as={`h4`} size={`md`} >
-                    To start please fill with your personal info
+                    {!emailSent  ? `To start please fill with your personal info` : `Please verify your email`}
                 </Heading>
 
                 <Flex flexDirection={`column`} mt={`5%`}>
-                    <InputGroup p={4} flexDirection={`column`} alignItems={`center`}>
+                    { !emailSent && <InputGroup p={4} flexDirection={`column`} alignItems={`center`}>
                         {error && <Text color={`red`}>{error}</Text>}
                         <Input {...register('fullname')} mt={5} placeholder='Fullname' type={`text`} />
                         <Input {...register('phoneNumber')} mt={5} placeholder='Mobile Number' type={`text`} />
@@ -160,7 +187,13 @@ const Signup = () => {
                         </Flex>
 
                         <Button isLoading={loading} loadingText={`Signing up ...`} mb={5} mt={5} w={`100%`} onClick={handleSubmit(onSubmit)} color={`#ffffff`} bgColor={`#000000`} >Continue</Button>
-                    </InputGroup>
+                    </InputGroup>}
+                    {emailSent &&
+                    <>
+                    <Button onClick={resendVerification}>Resend Verification</Button>
+                    </>
+                    
+                    }
                 </Flex>
 
 

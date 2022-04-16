@@ -43,7 +43,7 @@ function Layout({ children }) {
             {children}
 
           
-            {user && user?.uid && <BottomNav user={user} />}
+            {user && user?.emailVerified && <BottomNav user={user} />}
          
             </Box>
 

@@ -6,7 +6,7 @@ import {
     ModalHeader,
     ModalFooter,
     ModalBody,
-    ModalCloseButton, Textarea, Spacer, Select, Center, Text, Heading, FormControl, Input, Button, InputGroup
+    ModalCloseButton, Textarea, Spacer, Select, Center, Text,InputRightAddon, Heading, FormControl, Input, Button, InputGroup
 } from "@chakra-ui/react";
 import FirstRowHeader from '../../Components/FirstRowHeader';
 import { AiOutlineArrowRight, AiOutlineBook, AiOutlineContainer, AiOutlineArrowLeft, AiOutlinePlus } from 'react-icons/ai'
@@ -367,7 +367,7 @@ unit:
         <>
 
             <Flex p={4} flexDirection={`column`} justifyContent={`center`}>
-                <Modal size={[`full`]} onClose={onClose} isOpen={isOpen} >
+                <Modal trapFocus={false} size={[`full`]} onClose={onClose} isOpen={isOpen} >
                     <ModalOverlay />
                     <ModalContent>
                         <ModalHeader>
@@ -375,24 +375,41 @@ unit:
                         </ModalHeader>
                         <ModalCloseButton />
                         <ModalBody>
-                        {!showAddressForm &&  <InputGroup p={4} flexDirection={`column`} alignItems={`center`}>
-                                <Input   {...register('expressNumber')} mt={5} placeholder='Express Number/ Tracking Number' type={`text`} />
+                        {!showAddressForm &&
+                          <InputGroup p={4} flexDirection={`column`} alignItems={`center`}>
+                                <Input    mt={5} placeholder='Express Number/ Tracking Number' type={`text`} />
                                 
-                                <FormControl>
-                                <Select onChange={(e)=>alert(e.target.value)}  id={`bailmentType`} {...register('type')} mt={5} variant='filled' placeholder='Type / Category of consignment' >
+                               
+                                <Select onChange={(e)=>setBailmentSelectValue(JSON.parse(e.target.options[e.target.selectedIndex].getAttribute('data')))}  id={`bailmentType`} mt={5} variant='filled' placeholder='Type / Category of consignment' >
+                                   { bailments?.docs.map((each,i) => 
+                                        
+                                            
+                                            {
+                                              if(each.data().category != bailments?.docs[i].category)  
+                                                return(
+                                            <option key={`option_${i}`} value={each.data().category}>{each.data().category}
+                                            </option>
+                                        
+                                    )}
+                                   )
+                                                }
+                                </Select>
+                                <Select onChange={(e)=>setBailmentSelectValue(JSON.parse(e.target.options[e.target.selectedIndex].getAttribute('data')))}   mt={5} variant='filled' placeholder='Item' >
                                    { bailments?.docs.map((each,i) => (
                                         each.data().items.map(item =>{return(
-                                            <optgroup label={each.data().category}>
-                                            <option key={i} dummy={each.data()}  onClick={() => setBailmentObj(each.data())} ref={bailmentRef} value={item.itemName}>{item.itemName} ----      {each.data()?.currency} {item.rate}</option>
-                                            </optgroup>
+                                           
+                                            <option key={i} data={JSON.stringify(each.data())}  onClick={() => setBailmentObj(each.data())} ref={bailmentRef} value={item.itemName}>{item.itemName} ----      {each.data()?.currency} {item.rate}</option>
+                                           
                                         )})
                                     ))}
                                 </Select>
-                                </FormControl>
+                            <InputGroup alignItems={`center`}>
                                 <Input  {...register('unit')} mt={5} placeholder={transportation == `air` ? 'Weight/pcs' : `cubic metres`} type={`number`} />
+                                <InputRightAddon children={bailmentSelectValue ? bailmentSelectValue.unit : `--`} />
+                                </InputGroup>
                                 {/* <Input mt={5}  placeholder='Value (USD)' type={`number`} /> */}
-                                <Input  {...register('quantity')} mt={5} placeholder='Quantity' type={`number`} />
-                                <input disabled value={5}  {...register('rate')} mt={5} placeholder='Costs' type={`number`} ></input>
+                                {bailmentSelectValue?.unit != 'pcs'  ? <Input  {...register('quantity')} mt={5} placeholder='Quantity' type={`number`} /> : <></>}
+                                <Input disabled value={bailmentSelectValue && bailmentSelectValue.currency + ' ' + bailmentSelectValue.rate}  {...register('rate')} mt={5} placeholder='Costs' type={`number`} />
                                 <Button mb={5} mt={5} w={`100%`} onClick={handleSubmit(addCargo)} color={`#ffffff`} bgColor={`#000000`} >Add</Button>
                             </InputGroup>}
                             {showAddressForm && <CreateAdress  />}

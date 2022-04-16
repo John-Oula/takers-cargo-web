@@ -43,8 +43,8 @@ function AuthContextWrapper({children}) {
           
     }
 
-    const emailVerification = async (auth) =>{
-        return await sendEmailVerification(auth)
+    const emailVerification = async (auth,actionCodeSettings ) =>{
+        return await sendEmailVerification(auth,actionCodeSettings )
         
     }
     const logout = () =>{
