@@ -1,5 +1,11 @@
-import React, {useState,useRef,useContext} from 'react';
-import { Text,Center,Circle ,Radio,PinInput,PinInputField, Heading,Button ,FormControl, InputGroup ,InputLeftElement ,Input ,  Box, Container, Flex  } from '@chakra-ui/react'
+import React, {useState,useRef,useEffect,useContext} from 'react';
+import { Text,Center,Circle, Modal,
+    ModalOverlay,useDisclosure ,
+    ModalContent,
+    ModalHeader,
+    ModalFooter,
+    ModalBody,
+    ModalCloseButton ,Radio,PinInput,PinInputField, Heading,Button ,FormControl, InputGroup ,InputLeftElement ,Input ,  Box, Container, Flex  } from '@chakra-ui/react'
 import picture from '../../../assets/PictureUpload.svg'
 import Image from 'next/image'
 import FirstRowHeader from '../../../Components/FirstRowHeader';
@@ -8,6 +14,7 @@ import { useForm } from "react-hook-form";
 import AuthContext from '../../../contexts/AuthContext';
 import {  doc,getDoc,updateDoc } from 'firebase/firestore'
 import {db} from '../../../firebase/initFirebase'
+import { updateDocument } from '../../../lib';
 
 
 
@@ -24,12 +31,14 @@ export const getServerSideProps = async (ctx) => {
 const EditProfile = ({data}) => {
     const hiddenFileInput = useRef(null);
     const userData = JSON.parse(data)
-    const { user,updateUserProfile} = useContext(AuthContext)
+    const { user,updateUserProfile,emailUpdate,reAuthUser} = useContext(AuthContext)
+    const { isOpen, onOpen, onClose } = useDisclosure()
 
     const [file, setFile] = useState('');
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const [loading, setLoading] = useState(false);
+    const [modalLoading, setModalLoading] = useState(false);
     const { handleSubmit, register } = useForm();
 
 
@@ -46,192 +55,58 @@ const EditProfile = ({data}) => {
         setFile(event.target.files[0])
     };
 
+// Prompt user to reathenticate
+// Opens a modal
+    useEffect(()=>{
+        switch (error) {
+            case 'auth/requires-recent-login':
+                onOpen()
+                
+                break;
+        
+            default:
+                break;
+        }
+    },[error])
 
+
+    const reauthenticate = async (e) =>{
+        setModalLoading(true)
+        setError(``)
+        e.preventDefault()
+        const data = {
+            email: e.target.email.value,
+            password: e.target.password.value
+        }
+      
+       await reAuthUser(user,data)
+       .then(()=>{
+           setSuccess(`You can now update your information`)
+                   setModalLoading(false)
+
+           onClose()
+
+       })
+       .catch((error)=>{
+        setModalLoading(false)
+
+           setError(error.message)
+       })
+
+    }
     const onSubmit = async (values) => {
         setError('')
+        setSuccess(``)
  
 
         setLoading(true)
-        // Check if username and email already exists
-        // const usernameRef = await db.collection('Users').where('userName', '==', values.userName).get()
-        // const emailRef = await query(collection(db, "Users"), where("email", "==", values?.email));
-        // switch (true) {
-        //     case usernameRef.empty &&  values.userName !== userData?.userName :
-        //         try {
-        //             //Check if there is an existing file
-        //             {file && file.size
-        //                 ?
-        //                 storage.ref(`users/${user.uid}/profilePhoto`).put(file)
-        //                     .then(snapshot => {
-        //                         snapshot.ref.getDownloadURL().then((url) => {
-        //                             if (values) {
-
-        //                                 user.updateProfile({
-        //                                     displayName: e.target.userName.value,
-        //                                     photoURL: url
-        //                                 })
-        //                                     .then(() => {
-        //                                         console.log('Updated user!')
-
-        //                                         var updatedInfo = {userProfileImageUrl: url}
-
-        //                                         Object.assign(values, updatedInfo)
-        //                                         //Update user Info
-        //                                         updateDocument('Users', user.uid, values)
-        //                                         // Update email in Firebase Auth
-        //                                         auth.currentUser.updateEmail(values.email)
-        //                                             .then(() =>{
-        //                                                 setLoading(false)
-        //                                             })
-        //                                             .catch(err =>{
-        //                                                 console.log(err.message)
-        //                                             })
-
-        //                                     });
-
-        //                             }
-        //                         })
-        //                         setFile('')
-        //                         setLoading(false)
-
-        //                     })
-        //                     .catch(error => {
-        //                         setLoading(false)
-        //                         console.log(error.message)
-        //                     })
-        //                 :
-
-        //                 values
-        //                     ?
-        //                     user.updateProfile({displayName: e.target.userName.value})
-        //                         .then(() => {
-
-        //                             //Update user Info
-        //                             updateDocument('Users', user.uid, values)
-
-        //                             // Update email in Firebase Auth
-        //                             auth.currentUser.updateEmail(values.email)
-        //                                 .then(() =>{
-        //                                     setLoading(false)
-        //                                 })
-        //                                 .catch(err =>{
-        //                                     console.log(err.message)
-        //                                 })
-        //                         })
-        //                         .catch(e => console.log(e))
-        //                     :
-        //                     console.log('Error updating')
-
-
-        //             }
-
-        //         } catch (e) {
-        //             setLoader(false)
-        //             console.log(e.message)
-        //             console.log('error')
-        //             setLoading(false)
-
-        //         }
-        //         break;
-        //     case emailRef.empty &&  values.email !== userData?.email :
-        //         try {
-        //             //Check if there is an existing file
-        //             {file && file.size
-        //                 ?
-        //                 storage.ref(`users/${user.uid}/profilePhoto`).put(file)
-        //                     .then(snapshot => {
-        //                         snapshot.ref.getDownloadURL().then((url) => {
-        //                             if (values) {
-
-        //                                 user.updateProfile({
-        //                                     displayName: e.target.userName.value,
-        //                                     photoURL: url
-        //                                 })
-        //                                     .then(() => {
-        //                                         console.log('Updated user!')
-
-        //                                         var updatedInfo = {userProfileImageUrl: url}
-
-        //                                         Object.assign(values, updatedInfo)
-        //                                         //Update user Info
-        //                                         updateDocument('Users', user.uid, values)
-        //                                         // Update email in Firebase Auth
-        //                                         auth.currentUser.updateEmail(values.email)
-        //                                             .then(() =>{
-        //                                                 setLoading(false)
-        //                                             })
-        //                                             .catch(err =>{
-        //                                                 console.log(err.message)
-        //                                             })
-
-        //                                     });
-
-        //                             }
-        //                         })
-        //                         setFile('')
-        //                         setLoading(false)
-
-        //                     })
-        //                     .catch(error => {
-        //                         setLoading(false)
-        //                         console.log(error.message)
-        //                     })
-        //                 :
-
-        //                 values
-        //                     ?
-        //                     user.updateProfile({displayName: e.target.userName.value})
-        //                         .then(() => {
-
-        //                             //Update user Info
-        //                             updateDocument('Users', user.uid, values)
-
-        //                             // Update email in Firebase Auth
-        //                             auth.currentUser.updateEmail(values.email)
-        //                                 .then(() =>{
-        //                                     setLoading(false)
-        //                                 })
-        //                                 .catch(err =>{
-        //                                     console.log(err.message)
-        //                                 })
-        //                         })
-        //                         .catch(e => console.log(e))
-        //                     :
-        //                     console.log('Error updating')
-
-
-        //             }
-
-        //         } catch (e) {
-        //             setLoader(false)
-        //             console.log(e.message)
-        //             console.log('error')
-        //             setLoading(false)
-
-        //         }
-        //         break;
-        //     case !usernameRef.empty &&  values.userName !== userData?.userName :
-        //         setError('Username not available')
-        //         setLoading(false)
-        //         break;
-        //     case !emailRef.empty &&  values.email !== userData?.email :
-        //         setError('Email already in use')
-        //         setLoading(false)
-        //         break;
-        //     default:
-        //         setLoading(false)
-
-        //         break;
-
-
-
-        // }
+       
         const {email,phoneNumber,displayName} = values
-        const data = {displayName:displayName}
+       
 
-        updateUserProfile(data)
+        await emailUpdate(user,email)
         .then(()=>{
-            updateDoc({email:email,phone:phoneNumber,fullName:displayName})
+            updateDocument(user?.uid,`Users`,values)
             .then(()=>{
                 setSuccess(`Profile updated`)
                 setLoading(false)
@@ -246,10 +121,11 @@ const EditProfile = ({data}) => {
         })
         .catch(error =>{
             console.log(error.message);
-            setError(error.message)
+            setError(error.code)
                                 setLoading(false)
 
         })
+        
         // if(emailRef){
            
         // }
@@ -262,18 +138,45 @@ const EditProfile = ({data}) => {
 
     return (
         <Flex flexDirection={`column`} justifyContent={`center`}>
+               <Modal size={[`full`]} onClose={onClose} isOpen={isOpen} isCentered>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader><Heading as={`h3`} size={`2xl`}  >
+                
+            </Heading>
+            <Text mb={`auto`} >Fill the form to change your information</Text>
+            </ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+            <form onSubmit={(e) => reauthenticate(e)}>
+            <InputGroup p={4} flexDirection={`column`} alignItems={`center`}>
+            {error && <Text color={`red`}>{error}</Text>}
+
+    
+                <Input mt={5} name={`email`}  placeholder='Email' type={`text`} />
+                <Input mt={5} name={`password`}  placeholder='Password' type={`text`} />
+               
+                <Button loadingText='Validating ...' isLoading={modalLoading} type={'submit'}   mb={5}  mt={5} w={`100%`}    color={`#ffffff`} bgColor={`#000000`} >Confirm </Button>
+
+            </InputGroup>
+            </form>
+
+          </ModalBody>
+     
+          </ModalContent>
+        </Modal>
                         <FirstRowHeader title={`New account`} leftIcon={<BackButton />} />
                        <Center>
                        <Circle onClick={handleClick} overflow={`hidden`} w={100} h={100}>
             <Image src={picture} alt={`Profile Picture`} />
             </Circle>
                        </Center>
-                       {error || success && <Text color={error ? `red` : `green`}>{error}{success}</Text>}
+                       {error || success && <Text textAlign={`center`} color={error ? `red` : `green`}>{error}{success}</Text>}
 
             <InputGroup p={4} flexDirection={`column`} alignItems={`center`}>
-                    <Input  defaultValue={userData?.fullname} {...register('displayName')}  mt={5}  type={`text`} />
+                    <Input  defaultValue={userData?.fullname} {...register('fullname')}  mt={5}  type={`text`} />
                     <Input defaultValue={userData?.username || ``} placeholder={`Username`} {...register('username')}  mt={5}  type={`text`} />
-                    <Input defaultValue={userData?.phoneNumber || userData?.phone } {...register('phoneNumber')}  mt={5}  type={`text`} />
+                    <Input defaultValue={userData?.phoneNumber || userData?.phone } {...register('phone')}  mt={5}  type={`text`} />
                     <Input  defaultValue={userData?.email} placeholder={`Email`} {...register('email')}  mt={5}  type={`text`} />
                     
                     <input 

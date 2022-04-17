@@ -1,7 +1,7 @@
 import AuthContext from "../contexts/AuthContext"
 import {useState,useEffect} from "react";
 import { auth } from '../firebase/initFirebase';
-import { GoogleAuthProvider,signOut, sendPasswordResetEmail ,updateProfile,onAuthStateChanged ,sendEmailVerification, signInWithEmailAndPassword ,signInWithRedirect,createUserWithEmailAndPassword} from "firebase/auth";
+import { GoogleAuthProvider,signOut,reauthenticateWithCredential ,updateEmail,EmailAuthProvider, sendPasswordResetEmail ,updateProfile,onAuthStateChanged ,sendEmailVerification, signInWithEmailAndPassword ,signInWithRedirect,createUserWithEmailAndPassword} from "firebase/auth";
 
 function AuthContextWrapper({children}) {
 
@@ -38,14 +38,23 @@ function AuthContextWrapper({children}) {
 
     }
 
-    const updateUserProfile = async (data) =>{
-        return await updateProfile(auth.currentUser, {data})
+    const updateUserProfile = async (auth,data) =>{
+        return await updateProfile(auth, data)
           
     }
 
     const emailVerification = async (auth,actionCodeSettings ) =>{
         return await sendEmailVerification(auth,actionCodeSettings )
         
+    }
+
+    const emailUpdate = async (user,email) =>{
+        return await updateEmail(user,email)
+    }
+    const reAuthUser = async  (user,{email,password}) =>{
+        const credential =  EmailAuthProvider.credential(email,password)
+
+        return await reauthenticateWithCredential(user,credential)
     }
 
     const resetPassword = async (email,actionCodeSettings) =>{
@@ -55,7 +64,7 @@ function AuthContextWrapper({children}) {
         return signOut(auth)
     }
     const values = {
-        user, setUser,login,signup,googleSignin,logout,updateUserProfile,emailVerification,resetPassword
+        user, setUser,login,signup,googleSignin,logout,updateUserProfile,emailVerification,resetPassword,emailUpdate,reAuthUser
     }
     
     return (
