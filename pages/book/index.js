@@ -6,7 +6,7 @@ import {
     ModalHeader,
     ModalFooter,
     ModalBody,
-    ModalCloseButton, Textarea, Spacer, Select, Center, Text, InputRightAddon, Heading, FormControl, Input, Button, InputGroup
+    ModalCloseButton, Textarea, Spacer, Select, Center, Text, Heading, FormControl, Input, Button, InputGroup
 } from "@chakra-ui/react";
 import FirstRowHeader from '../../Components/FirstRowHeader';
 import { AiOutlineArrowRight, AiOutlineBook, AiOutlineContainer, AiOutlineArrowLeft, AiOutlinePlus } from 'react-icons/ai'
@@ -415,7 +415,7 @@ const Book = () => {
                         <ModalBody>
                             {!showAddressForm &&
                                 <form onSubmit={(e) => addCargo(e)}>
-
+<FormControl isRequired>
                                     <InputGroup p={4} flexDirection={`column`} alignItems={`center`}>
                                         <Input name='express' defaultValue={edit && edit?.expressNumber} mt={5} placeholder='Express Number/ Tracking Number' type={`text`} />
 
@@ -452,6 +452,7 @@ const Book = () => {
                                         {/* <Input disabled value={bailmentSelectValue && rate}  {...register('rate')} mt={5} placeholder='Costs' type={`number`} /> */}
                                         <Button mb={5} mt={5} w={`100%`} type={`submit`} color={`#ffffff`} bgColor={`#000000`} >Add</Button>
                                     </InputGroup>
+                                    </FormControl>
                                 </form>
 
 
