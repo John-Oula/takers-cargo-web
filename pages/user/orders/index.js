@@ -30,11 +30,11 @@ const Index = () => {
     return (
         <Tabs isFitted >
   <TabList>
-    <Tab>All</Tab>
+    <Tab><small>All</small></Tab>
     
-    <Tab>Unpaid</Tab>
-    <Tab>In transit</Tab>
-    <Tab>Done</Tab>
+    <Tab><small>Unpaid</small></Tab>
+    <Tab><small>In transit</small></Tab>
+    <Tab><small>Done</small></Tab>
 
   </TabList>
 
