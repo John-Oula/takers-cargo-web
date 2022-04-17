@@ -363,7 +363,7 @@ const Book = () => {
 // Track cargo prices and quantity
     useEffect(() => {
 
-        if (cargo.length > 1) {
+
             // setEstimatedPrice(state => {
             //     setEstimatedPrice(state + cargo[cargo.length - 1]?.price)
             // })
@@ -371,33 +371,22 @@ const Book = () => {
             setEstimatedPrice( priceArr.reduce((cargoTotal,cargoItem) => 
                   cargoTotal + cargoItem
             ,0))
+
+            const quantityArr = cargo.map(each => each.quantity)
+            setTotalQuantity( quantityArr.reduce((cargoTotal,cargoItem) => 
+                  cargoTotal + cargoItem
+            ,0))
             
-            setTotalQuantity(state => {
-                setTotalQuantity(state + cargo[cargo.length - 1]?.quantity)
-            })
-        }
-        else {
-            // getShippingRate(`4CCu9NrRhzM3aS53CuRd`)
-            // .then(rate =>{
-            //     shippingRate(rate.price,cargo.unit,cargo.quantity)
-            //                 setEstimatedPrice(cargo[cargo.length-1]?.price)
-
+            // setTotalQuantity(state => {
+            //     setTotalQuantity(state + cargo[cargo.length - 1]?.quantity)
             // })
-            // .catch(e => console.log(e.message))
-            setEstimatedPrice(cargo[cargo.length - 1]?.price)
-            setTotalQuantity(cargo[cargo.length - 1]?.quantity)
 
-        }
 
-        () => {
-            setTotalQuantity(0)
-
-            return
-            setEstimatedPrice(0);
+        
 
 
 
-        }
+        
     }, [cargo])
 
 
