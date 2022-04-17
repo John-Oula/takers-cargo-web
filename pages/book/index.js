@@ -187,6 +187,7 @@ const Book = () => {
     const [bailmentSelectValue,setBailmentSelectValue] = useState()
     const [totalQuantity,setTotalQuantity] = useState(0)
     const [transportation,setTransportation] = useState('')
+    const [edit,setEdit] = useState()
     useEffect(() => {
          if (user == null) {
           router.push("/login");
@@ -238,14 +239,42 @@ const Book = () => {
         if (cargo) {
             cargoList.push(data)
             setCargo(state => {
-                setCargo([...state, ...cargoList])
+                if(edit){
+                    const index = [...state].findIndex(one => one.expressNumber === edit.expressNumber);
+                    const newCargo = [...state]
+                    newCargo[index] = data;
+                    setCargo(newCargo)
+                }
+                else setCargo([...state, ...cargoList])
             })
+            setEdit(null)
             onClose()
         }
         else {
             cargoList.push(data)
+
             setCargo(data)
+            setEdit(null)
         }
+
+    }
+
+    const removeCargo = (id) =>{
+        
+        const removeArr = [...cargo].filter(each => each.expressNumber !== id.expressNumber)
+        setCargo(removeArr)
+    }
+
+    const editCargo = (cargoObj,value) =>{
+        onOpen()
+        setEdit(cargoObj)
+
+
+    }
+
+    const updateEditedCargo = (value) =>{
+
+        editCargo(id.expressNumber,value)
 
     }
 
@@ -308,9 +337,12 @@ const Book = () => {
              setSelect(null)
              setCargo([])
              setOrigin(null)
+             setEdit(null)
 
         }
     }, [])
+
+
 
     useEffect(() => {
 
@@ -319,6 +351,7 @@ const Book = () => {
 
 
     useEffect(() => {
+        
         if(cargo.length > 1){
                     setEstimatedPrice(state =>{
                         setEstimatedPrice(state + cargo[cargo.length-1]?.price)
@@ -351,21 +384,7 @@ const Book = () => {
         }
     }, [cargo])
 
-    useEffect(()=>{
-       if(bailments?.docs){
-        const list = bailments?.docs.map( i => i.category);
-        const uniqueList = Array.from(new Set(list));
-        const groups= uniqueList.map( c => { 
-                    return  { group:c, names:[]};
-                } ); 
-
-        bailments?.docs.forEach( d => { 
-            groups.find( g => g.category === d.category).names.push(d.items);
-        });
-
-        setGroupedBailment(groups)
-       }
-    },[bailments])
+  
     return (
         <>
 
@@ -382,10 +401,10 @@ const Book = () => {
                           <form onSubmit={(e)=> addCargo(e)}>
 
 <InputGroup p={4} flexDirection={`column`} alignItems={`center`}>
-                                <Input name='express'   mt={5} placeholder='Express Number/ Tracking Number' type={`text`} />
+                                <Input name='express' defaultValue={edit && edit?.expressNumber}  mt={5} placeholder='Express Number/ Tracking Number' type={`text`} />
                                 
                                
-                                <Select name={`category`} onChange={(e)=>setBailmentSelectValue(JSON.parse(e.target.options[e.target.selectedIndex].getAttribute('data')))}  id={`bailmentType`} mt={5} variant='filled' placeholder='Type / Category of consignment' >
+                                <Select defaultValue={edit && edit?.category}  name={`category`} onChange={(e)=>setBailmentSelectValue(JSON.parse(e.target.options[e.target.selectedIndex].getAttribute('data')))}  id={`bailmentType`} mt={5} variant='filled' placeholder='Type / Category of consignment' >
                                    { bailments?.docs.map((each,i) => 
                                         
                                             
@@ -399,7 +418,7 @@ const Book = () => {
                                    )
                                                 }
                                 </Select>
-                                <Select name={`item`} onChange={(e) => setRate(e.target.options[e.target.selectedIndex].getAttribute('rate'))} mt={5} variant='filled' placeholder='Item' >
+                                <Select name={`item`} defaultValue={edit && edit?.item}  onChange={(e) => setRate(e.target.options[e.target.selectedIndex].getAttribute('rate'))} mt={5} variant='filled' placeholder='Item' >
                                    { 
                                         bailmentSelectValue?.items.map((item,i) =>{return(
                                            
@@ -409,7 +428,7 @@ const Book = () => {
                                    }
                                 </Select>
                             <InputGroup alignItems={`center`}>
-                                <Input name='quantity'  mt={5} placeholder={transportation == `air` ? `Quantity in ${bailmentSelectValue?.unit}` : `cubic metres`} type={`number`} />
+                                <Input name='quantity' defaultValue={edit && edit?.quantity} mt={5} placeholder={transportation == `air` ? `Quantity in ${bailmentSelectValue?.unit}` : `cubic metres`} type={`number`} />
                                 {/* <InputRightAddon  >{bailmentSelectValue ? bailmentSelectValue.unit : `--`}</InputRightAddon> */}
                                 </InputGroup>
                                 {/* <Input mt={5}  placeholder='Value (USD)' type={`number`} /> */}
@@ -475,7 +494,7 @@ const Book = () => {
 
                         {
                             cargo?.map((each, index) => {
-                                return (<ListItem key={'cargo_' + index} leftIcon={<AiOutlineContainer />} title={each?.category + ' ' + '$' + each?.price} label={each?.quantity + each?.unit + ' ' + each?.expressNumber } click={() => null} />
+                                return (<ListItem key={'cargo_' + index} leftIcon={<AiOutlineContainer />} title={each?.category + ' ' + '$' + each?.price} label={each?.quantity + each?.unit + ' ' + each?.expressNumber } click={() => null} crud onDelete={()=>removeCargo(each)} onEdit={()=>editCargo(each)}/>
                                 )
 
                             })

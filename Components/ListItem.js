@@ -5,7 +5,7 @@ import { AiOutlineEdit ,AiOutlineDelete } from 'react-icons/ai'
 import SelectAddressContext from '../contexts/SelectAddressContext.js';
 
 
-function ListItem({label,title,leftIcon,rightIcon,path,crud ,selectable,data,click }) {
+function ListItem({label,title,leftIcon,rightIcon,path,crud ,selectable,data,click,onDelete,onEdit }) {
     const router = useRouter();
     const {select,origin} =useContext(SelectAddressContext)
 
@@ -30,8 +30,8 @@ function ListItem({label,title,leftIcon,rightIcon,path,crud ,selectable,data,cli
             {rightIcon && rightIcon}
             {crud &&
              <>
-             <AiOutlineEdit onClick={() =>{ router.push(`/${path}`) }} />
-             <AiOutlineDelete />
+             <AiOutlineEdit onClick={onEdit} />
+             <AiOutlineDelete onClick={onDelete} />
             
             </>}
             </Flex>
