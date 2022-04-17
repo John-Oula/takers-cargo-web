@@ -30,7 +30,7 @@ function ListItem({label,title,leftIcon,rightIcon,path,crud ,selectable,data,cli
             {rightIcon && rightIcon}
             {crud &&
              <>
-             <AiOutlineEdit onClick={onEdit} />
+             <Box mr={5}><AiOutlineEdit  onClick={onEdit} /></Box>
              <AiOutlineDelete onClick={onDelete} />
             
             </>}
