@@ -31,3 +31,7 @@ a {
 #nprogress .peg {
   box-shadow: 0 0 10px #ed8b00, 0 0 5px #ed8b00;
 }
+
+.label{
+  color: grey;
+}
