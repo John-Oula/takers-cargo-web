@@ -241,12 +241,21 @@ const Book = () => {
             setCargo(state => {
                 if (edit) {
                     const index = [...state].findIndex(one => one.expressNumber === edit.expressNumber);
+                    var priceDifference = parseInt(cargo[index].price) - parseInt(edit.price) 
+                    
                     const newCargo = [...state]
                     newCargo[index] = data;
+                    
                     setCargo(newCargo)
+                    
+                   
                 }
                 else setCargo([...state, ...cargoList])
             })
+            // setEstimatedPrice(state =>{
+            //     setEstimatedPrice(state - Math.abs(priceDifference))
+            // })
+           
             setEdit(null)
             onClose()
         }
@@ -351,13 +360,18 @@ const Book = () => {
         onClose()
     }, [select])
 
-
+// Track cargo prices and quantity
     useEffect(() => {
 
         if (cargo.length > 1) {
-            setEstimatedPrice(state => {
-                setEstimatedPrice(state + cargo[cargo.length - 1]?.price)
-            })
+            // setEstimatedPrice(state => {
+            //     setEstimatedPrice(state + cargo[cargo.length - 1]?.price)
+            // })
+            const priceArr = cargo.map(each => each.price)
+            setEstimatedPrice( priceArr.reduce((cargoTotal,cargoItem) => 
+                  cargoTotal + cargoItem
+            ,0))
+            
             setTotalQuantity(state => {
                 setTotalQuantity(state + cargo[cargo.length - 1]?.quantity)
             })
