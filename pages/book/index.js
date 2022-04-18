@@ -225,11 +225,11 @@ const Book = () => {
 
     const addCargo = (values) => {
         values.preventDefault()
-        const price = parseFloat(rate) * parseInt(values.target.quantity.value)
+        const price = parseFloat(rate) * parseFloat(values.target.quantity.value)
 
         const data = {
             expressNumber: values.target.express.value,
-            quantity: parseInt(values.target.quantity.value),
+            quantity: parseFloat(values.target.quantity.value),
             item: values.target.item.value,
             category: values.target.category.value,
             price: price,
@@ -241,7 +241,6 @@ const Book = () => {
             setCargo(state => {
                 if (edit) {
                     const index = [...state].findIndex(one => one.expressNumber === edit.expressNumber);
-                    var priceDifference = parseInt(cargo[index].price) - parseInt(edit.price) 
                     
                     const newCargo = [...state]
                     newCargo[index] = data;
@@ -433,7 +432,7 @@ const Book = () => {
                                             }
                                         </Select>
                                         <InputGroup alignItems={`center`}>
-                                            <Input name='quantity' defaultValue={edit && edit?.quantity} mt={5} placeholder={transportation == `air` ? `Quantity in ${bailmentSelectValue?.unit}` : `cubic metres`} type={`number`} />
+                                            <Input name='quantity' defaultValue={edit && edit?.quantity} mt={5} placeholder={transportation == `air` ? `Quantity in ${bailmentSelectValue?.unit}` : `cubic metres`} type={`text`} />
                                             {/* <InputRightAddon  >{bailmentSelectValue ? bailmentSelectValue.unit : `--`}</InputRightAddon> */}
                                         </InputGroup>
                                         {/* <Input mt={5}  placeholder='Value (USD)' type={`number`} /> */}
