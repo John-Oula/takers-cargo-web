@@ -27,7 +27,7 @@ function BottomNav({user}) {
     },[order,notice])
 
     return (
-        <Flex bgColor={`#ffffff`} w={`100%`} position={`fixed`} bottom={0}  left={0} right={0} zIndex={100} boxShadow={`lg`} p={2} h={`fit-content`}>
+        <Flex flexDirection={[`row`,`row`,`row`,`column`,`colum`]} bgColor={`#ffffff`} w={[`100%`,`100%`,`100%`,`10%`,`10%`]} position={[`fixed`,`fixed`,`fixed`,`relative`,`relative`]}  bottom={0}  left={0} right={0} zIndex={100} boxShadow={`lg`} p={2} h={[`fit-content`,`fit-content`,`fit-content`,`100%`,`100%`]}>
         <Flex cursor={`pointer`} _hover={{ color: '#ed8b00' }}  onClick={() =>{ router.push('/')}} flexGrow={1} alignItems={`center`} justifyContent={`center`} flexDirection={`column`}>
             <Box>
             <GridIcon  size={16} color={`#000000`} />

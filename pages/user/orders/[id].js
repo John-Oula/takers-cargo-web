@@ -30,54 +30,62 @@ const OrderDetails = ({payload}) => {
     return (
         <Flex p={5} flexDirection={`column`}>
             <FirstRowHeader title={`Order Details`} leftIcon={<BackButton />} />
-            <Route data={data} origin={data?.origin} destination={data?.destination}/>
+            <Flex  flexDirection={[`column`,`colum`,`colum`,`row`,`row`,]}>
+                <Flex flexGrow={1}>
+                <Route data={data} origin={data?.origin} destination={data?.destination}/>
+
+                </Flex>
+            <Flex  flexGrow={2} flexDirection={`column`} w={`100%`}>
             <Heading mt={9} mb={4} as={`h4`} size={`md`} >Details</Heading>
 
-            <SimpleGrid columns={[2, 2, 2]} spacing='10px'>
-                <Box height='fit-content'><Text fontSize={`sm`}>Tracking Number</Text><Text>{data?.trackingNumber}</Text></Box>
-                <Box height='fit-content'><Text fontSize={`sm`}>Transportation</Text><Text>{data?.method}</Text></Box>
-                <Box height='fit-content'><Text fontSize={`sm`}>Product Category</Text><Text>{data?.bailment.length > 1  ? `Mixed`: data?.bailment[0].category }</Text></Box>
-                <Box height='fit-content'><Text fontSize={`sm`}>Booking Time</Text><Text>{dateTime(data?.dateCreated)}</Text></Box>
-                <Box height='fit-content'>< Text fontSize={`sm`}>Total Quantity</Text><Text>{data?.totalQuantity} {data?.bailment[0]?.unit}</Text></Box>
-                
+<SimpleGrid columns={[2, 2, 2,3,3]} spacing={['10px','10px','10px','5%','7%']}>
+    <Box h='fit-content'><Text fontSize={`sm`}>Tracking Number</Text><Text>{data?.trackingNumber}</Text></Box>
+    <Box h='fit-content'><Text fontSize={`sm`}>Transportation</Text><Text>{data?.method}</Text></Box>
+    <Box h='fit-content'><Text fontSize={`sm`}>Product Category</Text><Text>{data?.bailment.length > 1  ? `Mixed`: data?.bailment[0].category }</Text></Box>
+    <Box h='fit-content'><Text fontSize={`sm`}>Booking Time</Text><Text>{dateTime(data?.dateCreated)}</Text></Box>
+    <Box h='fit-content'>< Text fontSize={`sm`}>Total Quantity</Text><Text>{data?.totalQuantity} {data?.bailment[0]?.unit}</Text></Box>
+    
 
-                <Box height='fit-content'><Text fontSize={`sm`}>Status</Text>
-                <Tag
-                        size={`sm`}
-                        key={`sm`}
-                        borderRadius='full'
-                        variant='solid'
+    <Box h='fit-content'><Text fontSize={`sm`}>Status</Text>
+    <Tag
+            size={`sm`}
+            key={`sm`}
+            borderRadius='full'
+            variant='solid'
 
-                        bgColor={`green`}
-                    >
+            bgColor={`green`}
+        >
 
-                        <TagLabel>{data?.status && data?.status}</TagLabel>
+            <TagLabel>{data?.status && data?.status}</TagLabel>
 
-                    </Tag></Box>
-                <Box height='fit-content'><Text fontSize={`sm`}>Packages </Text><Text>{data?.bailment.length}</Text></Box>
+        </Tag></Box>
+    <Box height='fit-content'><Text fontSize={`sm`}>Packages </Text><Text>{data?.bailment.length}</Text></Box>
 
-                {/* { data?.bailment?.map(each=>{
-                    return(
-                        <>
-                                      <Box height='fit-content'>
-                                          < Text fontSize={`sm`}>Weight</Text><Text>{data?.totalQuantity}</Text>
-                                          </Box>
-                <Box height='fit-content'><Text fontSize={`sm`}>Express Number</Text><Text>{each?.expressNumber}</Text></Box>
-  
-                        </>
-                    )
+    {/* { data?.bailment?.map(each=>{
+        return(
+            <>
+                          <Box height='fit-content'>
+                              < Text fontSize={`sm`}>Weight</Text><Text>{data?.totalQuantity}</Text>
+                              </Box>
+    <Box height='fit-content'><Text fontSize={`sm`}>Express Number</Text><Text>{each?.expressNumber}</Text></Box>
 
-                })} */}
-                <Box height='fit-content'><Text fontSize={`sm`}>Expected Arrival Date</Text><Text>{dateTime(data?.expectedArrivalDate)}</Text></Box>
-                <Box height='fit-content'><Text fontSize={`sm`}>Estimated costs</Text><Text>$ {data?.price ? data?.price : `--`}</Text></Box>
-                <Box height='fit-content'><Text fontSize={`sm`}>Payment status</Text><Text>{data?.paymentStatus}</Text></Box>
+            </>
+        )
 
-
+    })} */}
+    <Box height='fit-content'><Text fontSize={`sm`}>Expected Arrival Date</Text><Text>{dateTime(data?.expectedArrivalDate)}</Text></Box>
+    <Box height='fit-content'><Text fontSize={`sm`}>Estimated costs</Text><Text>$ {data?.price ? data?.price : `--`}</Text></Box>
+    <Box height='fit-content'><Text fontSize={`sm`}>Payment status</Text><Text>{data?.paymentStatus}</Text></Box>
 
 
 
 
-            </SimpleGrid>
+
+
+</SimpleGrid>
+            </Flex>
+            </Flex>
+            
             <Button onClick={onOpen} leftIcon={<AiOutlineBarcode />} mt={`5%`}>QR code</Button>
 
 <Modal size={[`full`]} onClose={onClose} isOpen={isOpen} isCentered>

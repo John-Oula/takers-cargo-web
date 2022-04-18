@@ -39,13 +39,14 @@ function Layout({ children }) {
                     integrity='sha512-42kB9yDlYiCEfx2xVwq0q7hT4uf26FUgSIZBK8uiaEnTdShXjwr8Ip1V4xGJMg3mHkUt9nNuTDxunHF0/EgxLQ=='
                     crossOrigin='anonymous' referrerPolicy='no-referrer' />
             </Head>
-            <Box h={`100vh`} position={`relative`}>
+            <Flex flexDirection={[`column`,`colum`,`colum`,`row`,`row`,]} h={`100vh`} position={`relative`}>
+            {user && user?.uid && <BottomNav user={user} />}
             {children}
 
           
-            {user && user?.uid && <BottomNav user={user} />}
+          
          
-            </Box>
+            </Flex>
 
         </>
     )

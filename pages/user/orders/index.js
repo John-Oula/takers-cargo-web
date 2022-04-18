@@ -28,7 +28,7 @@ const Index = () => {
 // },[user])
   // const [orders,loadingMessage,error] = useCollection(query(collection(db, "Bookings"), where("userId", "==", userId), orderBy("creationDate"), limit(10)))
     return (
-        <Tabs isFitted >
+        <Tabs  >
   <TabList>
     <Tab><small>All</small></Tab>
     
