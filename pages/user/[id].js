@@ -1,11 +1,11 @@
-import React,{useContext,useEffect} from 'react';
-import {Box, Spacer,Circle, Flex, Heading} from "@chakra-ui/react";
+import { Box, Circle, Flex, Heading, Spacer } from "@chakra-ui/react";
+import { doc, getDoc } from 'firebase/firestore';
+import { useRouter } from 'next/router';
+import React, { useContext, useEffect } from 'react';
 import ListItem from "../../Components/ListItem";
-import {useRouter} from 'next/router'
-import {QrIcon,CameraIcon, SettingsIcon ,ChevronRightIcon,TruckIcon,CreditCardIcon,UserIcon,LogOutIcon,Trash2Icon,MapIcon,MapPinIcon,CircleQuestionMarkIcon} from '../../icons/dist/cjs'
 import AuthContext from '../../contexts/AuthContext';
-import {  doc,getDoc} from 'firebase/firestore'
-import {db} from '../../firebase/initFirebase'
+import { db } from '../../firebase/initFirebase';
+import { CameraIcon, ChevronRightIcon, CircleQuestionMarkIcon, CreditCardIcon, LogOutIcon, MapIcon, MapPinIcon, SettingsIcon, Trash2Icon, UserIcon } from '../../icons/dist/cjs';
 
 export const getServerSideProps = async (ctx) => {
     // const data = getOneDocument(ctx.query.id,`Bookings`)
@@ -34,7 +34,7 @@ function UserMenu({data}) {
 
     return (
         <>
-        {user && <Box p={5} h={`100%`}>
+        {user && <Box p={5} h={`100%`} w={`100%`}>
 
 
 <Flex mb={10} mt={3} >
@@ -51,6 +51,7 @@ function UserMenu({data}) {
     <Heading as={`h6`} size={`sm`}>{userData?.fullname}</Heading>
 
 </Flex>
+<Box display={[`box`,`box`,`box`,`none`,`none`]}>
 <ListItem click={() => onClickListItem(`/user/address?uid=${user?.uid}`)} leftIcon={<MapIcon color={`#000`} />} rightIcon={<ChevronRightIcon size={24} color={`#000000`} />}  title={`Address Book`}  />
 <ListItem click={() => onClickListItem(`/user/editProfile/${user?.uid}`)} leftIcon={<UserIcon color={`#000`} />} rightIcon={<ChevronRightIcon size={24} color={`#000000`} />}  title={`Personal Data`} label={`Update your account details`} />
 <ListItem click={() => onClickListItem(`/user/invoices`)} leftIcon={<CreditCardIcon color={`#000`} />} rightIcon={<ChevronRightIcon size={24} color={`#000000`} />}  title={`Invoices`} label={`Manage your Invoices`} />
@@ -60,6 +61,7 @@ function UserMenu({data}) {
 <ListItem click={() => {logout(user);onClickListItem(`/login`)}} leftIcon={<LogOutIcon color={`#000`} />} rightIcon={<ChevronRightIcon size={24} color={`#000000`} />}  title={`Sign Out`}  />
 
 
+</Box>
 
 <br/>
 <br/>

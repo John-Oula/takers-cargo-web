@@ -392,7 +392,7 @@ const Book = () => {
     return (
         <>
 
-            <Flex p={4} flexDirection={`column`} justifyContent={`center`}>
+            <Flex w={`100%`} p={4} flexDirection={[`column`,`colum`,`colum`,`row`,`row`,]} justifyContent={`center`}>
                 <Modal trapFocus={false} size={[`full`]} onClose={onClose} isOpen={isOpen} >
                     <ModalOverlay />
                     <ModalContent>
@@ -458,8 +458,12 @@ const Book = () => {
 
                 {!shipperAddressBook && !receiverAddressBook && !originAddressBook &&
                     <>
-                        <FirstRowHeader title={`Book your Shipment`} leftIcon={<BackButton />} />
-                        {error && <Text color={`red`}>{error}</Text>}
+                        <Flex justifyContent={`center`} flexGrow={2} flexDirection={[`column`,`colum`,`colum`,`row`,`row`,]}>
+                            
+                       <Box>
+                                                   <FirstRowHeader title={`Book your Shipment`} leftIcon={<BackButton />} />
+
+                       {error && <Text color={`red`}>{error}</Text>}
                         <Flex>
                             <Image alt={`Route`} src={route} />
 
@@ -505,8 +509,11 @@ const Book = () => {
                             })
                         }
 
-                        <Button mb={5} onClick={() => { setShowAddressForm(false); onOpen() }} color={`#ffffff`} bgColor={`#000000`} leftIcon={<AiOutlinePlus />}>Add a consignment</Button>
-                        {/* <ListItem rightIcon={<AiOutlineArrowRight />} title={`Shipping Warehouse`} label={`Select one of our warehouse locations`}/> */}
+                        <Button w={`100%`} mb={5} onClick={() => { setShowAddressForm(false); onOpen() }} color={`#ffffff`} bgColor={`#000000`} leftIcon={<AiOutlinePlus />}>Add a consignment</Button>
+                        
+                       </Box>
+                        </Flex>
+                        <Flex justifyContent={`center`} flexGrow={2} flexDirection={[`column`,`colum`,`colum`,`row`,`row`,]}>
                         <form onSubmit={(e) => submitForm(e)}>
                             <Select name='value' mt={5} placeholder='Value-added services' variant={`filled`} />
                             <Select onChange={(e) => { setTransportation(e.target.value) }} mt={5} name='method' placeholder='Type of delivery' variant={`filled`} >
@@ -542,6 +549,7 @@ const Book = () => {
                             </Flex>
                             <Button isLoading={loading} loadingText='Booking' type='submit' w={`100%`} mt={5} color={`#ffffff`} bgColor={!error ? `#000000` : `red`} leftIcon={<AiOutlinePlus />}>Book</Button>
                         </form>
+                        </Flex>
                     </>}
             </Flex>
             <br />
