@@ -297,6 +297,7 @@ const Book = () => {
         const secondDate = date + 24 * 60 * 60 * 1000
         const trackingNumber = `TC` + date.toString()
         //   setBailmentObj(e.target.delivery.value)
+        const expressNumbersArr = cargo.map(each => each.expressNumber)
 
         const formData = {
             destination: { ...select }, origin: { ...origin },
@@ -313,7 +314,8 @@ const Book = () => {
             lastUpdatedTime: serverTimestamp(),
             expectedArrivalDate: secondDate,
             creationDate: serverTimestamp(),
-            totalQuantity: totalQuantity
+            totalQuantity: totalQuantity,
+            expressNumbers: expressNumbersArr
 
         }
 
