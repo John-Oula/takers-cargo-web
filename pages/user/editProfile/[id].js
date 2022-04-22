@@ -29,12 +29,10 @@ export const getServerSideProps = async (ctx) => {
 
 
 const EditProfile = ({data}) => {
-    const hiddenFileInput = useRef(null);
     const userData = JSON.parse(data)
     const { user,updateUserProfile,emailUpdate,reAuthUser} = useContext(AuthContext)
     const { isOpen, onOpen, onClose } = useDisclosure()
 
-    const [file, setFile] = useState('');
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
     const [loading, setLoading] = useState(false);
@@ -42,18 +40,6 @@ const EditProfile = ({data}) => {
     const { handleSubmit, register } = useForm();
 
 
-        // Programatically click the hidden file input element
-    // when the Button component is clicked
-    const handleClick = () => {
-        setFile('')
-        hiddenFileInput.current.click();
-        console.log(file);
-    };
-    // Call a function (passed as a prop from the parent component)
-    // to handle the user-selected file
-    const handleChange = (event) => {
-        setFile(event.target.files[0])
-    };
 
 // Prompt user to reathenticate
 // Opens a modal
@@ -167,7 +153,7 @@ const EditProfile = ({data}) => {
         </Modal>
                         <FirstRowHeader title={`New account`} leftIcon={<BackButton />} />
                        <Center>
-                       <Circle onClick={handleClick} overflow={`hidden`} w={100} h={100}>
+                       <Circle  overflow={`hidden`} w={100} h={100}>
             <Image src={picture} alt={`Profile Picture`} />
             </Circle>
                        </Center>
@@ -179,14 +165,7 @@ const EditProfile = ({data}) => {
                     <Input defaultValue={userData?.phoneNumber || userData?.phone } {...register('phone')}  mt={5}  type={`text`} />
                     <Input  defaultValue={userData?.email} placeholder={`Email`} {...register('email')}  mt={5}  type={`text`} />
                     
-                    <input 
-                                            name={`photo`}
-                                            type="file"
-                                            ref={hiddenFileInput}
-                                            onChange={handleChange}
-                                            style={{display: 'none'}}
-
-                                        />
+                  
 
                     <Button isLoading={loading} loadingText={`Updating...`} onClick={handleSubmit(onSubmit)} mb={5} mt={5} w={`100%`} color={`#ffffff`} bgColor={`#000000`} >Apply Changes</Button>
                 </InputGroup>

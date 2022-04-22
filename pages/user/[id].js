@@ -1,11 +1,13 @@
-import { Box, Circle, Flex, Heading, Spacer } from "@chakra-ui/react";
+import { Box, Circle, Flex, Heading,Button ,Text,  Spacer ,Image} from "@chakra-ui/react";
 import { doc, getDoc } from 'firebase/firestore';
+import { getDownloadURL } from "firebase/storage";
 import { useRouter } from 'next/router';
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect , useState ,useRef } from 'react';
 import ListItem from "../../Components/ListItem";
 import AuthContext from '../../contexts/AuthContext';
 import { db } from '../../firebase/initFirebase';
-import { CameraIcon, ChevronRightIcon, CircleQuestionMarkIcon, CreditCardIcon, LogOutIcon, MapIcon, MapPinIcon, SettingsIcon, Trash2Icon, UserIcon } from '../../icons/dist/cjs';
+import { CameraIcon,CheckIcon, ChevronRightIcon, CircleQuestionMarkIcon, CreditCardIcon, LogOutIcon, MapIcon, MapPinIcon, SettingsIcon, Trash2Icon, UserIcon } from '../../icons/dist/cjs';
+import { updateDocument, uploadFile } from "../../lib";
 
 export const getServerSideProps = async (ctx) => {
     // const data = getOneDocument(ctx.query.id,`Bookings`)
@@ -20,11 +22,62 @@ function UserMenu({data}) {
     const router = useRouter();
     const userData = JSON.parse(data)
    const { user,logout } = useContext(AuthContext)
+   const [file, setFile] = useState('');
+   const [loading, setLoading] = useState(false);
+   const [success, setSuccess] = useState('');
+   const [error, setError] = useState('');
+   const [preview, setPreview] = useState('');
+   const hiddenFileInput = useRef(null);
+
    
+        // Programatically click the hidden file input element
+    // when the Button component is clicked
+    const handleClick = () => {
+        setFile('')
+        hiddenFileInput.current.click();
+        console.log(file);
+    };
+    // Call a function (passed as a prop from the parent component)
+    // to handle the user-selected file
+    const handleChange = (event) => {
+        setFile(event.target.files[0])
+   
+        setPreview(URL.createObjectURL(event.target.files[0]))
+    };
 
 
     const onClickListItem = (path) =>{
         router.push(path)
+    }
+
+    const uploadImage = () =>{
+        setLoading(true)
+        setError(``)
+        setSuccess(``)
+        uploadFile(`users/${user?.uid}/profile_pics/${file.name}`,file)
+        .then((snapshot)=>{
+            getDownloadURL(snapshot.ref)
+            .then((url)=>{
+                updateDocument(user?.uid,`Users`,{photoURL: url})
+            .then(()=>{
+                alert(url)
+                setLoading(false)
+                setSuccess(`Uploaded succefully`)
+            })
+            .catch(error =>{
+                setLoading(false)
+                setError(error.message)
+            })
+            })
+            .catch(error=>{
+                setError(error.message)
+            })
+           
+        })
+        .catch(error =>{
+            setLoading(false)
+            setError(error.message)
+        })
     }
     useEffect(() => {
         if (user == null) {
@@ -43,13 +96,43 @@ function UserMenu({data}) {
 <SettingsIcon size={24} color={`#000000`} />
 
 </Flex>
+{error || success && <Text color={success ? `green` : `red`}>{error}{success}</Text>}
 <Flex mb={10} alignItems={`center`}>
-    <Circle mr={10} p={4}  borderWidth={`1px`} borderColor={`black`}>
-       <CameraIcon size={24} color={`#000000`} /> 
-    </Circle>
-   
-    <Heading as={`h6`} size={`sm`}>{userData?.fullname}</Heading>
+    <Circle overflow={`hidden`} w={70} h={70} mr={10}   borderWidth={`1px`} borderColor={`black`}>
+      {  !userData?.photoURL ? <CameraIcon m={4} size={24} color={`#000000`} /> 
+      :<Image w={`auto`} h={`100%`} src={preview && preview ? preview : userData?.photoURL} />
+      }
 
+    </Circle>
+
+   
+    <Box >
+    <Heading as={`h6`} size={`sm`}>{userData?.fullname}</Heading>
+   <Flex alignItems={`center`}>
+   <Button isLoading={loading} loadingText={`Uploading...`} onClick={handleClick} mt={`1em`}>
+        Change Profile picture
+    </Button>
+    {file && 
+    <Flex>
+        <Box ml={`1em`}>
+        <CheckIcon onClick={uploadImage}  color={`#000`} size={`24`} />
+
+        </Box>
+        <Box ml={`1em`}>
+        <Trash2Icon onClick={()=> {setFile(null);setPreview(null)}} color={`#000`} size={`24`} />
+
+        </Box>
+    </Flex>}
+   </Flex>
+    </Box>
+    <input 
+                                            name={`photo`}
+                                            type="file"
+                                            ref={hiddenFileInput}
+                                            onChange={handleChange}
+                                            style={{display: 'none'}}
+
+                                        />
 </Flex>
 <Box display={[`box`,`box`,`box`,`none`,`none`]}>
 <ListItem click={() => onClickListItem(`/user/address?uid=${user?.uid}`)} leftIcon={<MapIcon color={`#000`} />} rightIcon={<ChevronRightIcon size={24} color={`#000000`} />}  title={`Address Book`}  />

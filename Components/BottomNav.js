@@ -7,12 +7,17 @@ import { ClipboardIcon, GridIcon, MessageSquareIcon,CameraIcon, ChevronRightIcon
 
 
 
-function BottomNav({user}) {
+function BottomNav({user,logout}) {
     const router = useRouter()
     const [notification,setNotification] = useState(0)
     const { order} = useContext(OrderContext)
     const {notice} = useContext(NoticeContext)
 
+
+    
+    const onClickListItem = (path) =>{
+        router.push(path)
+    }
     useEffect(() =>{
         
 
@@ -52,43 +57,43 @@ function BottomNav({user}) {
             </Box>
             <small size={`sm`}>User</small>
         </Flex>
-        <Flex display={[`none`,`none`,`none`,`flex`,`flex`]} cursor={`pointer`} onClick={() =>{ router.push(`/user/${user?.uid}`)}} flexGrow={1} alignItems={`center`} justifyContent={`center`} flexDirection={`column`}>
+        <Flex display={[`none`,`none`,`none`,`flex`,`flex`]} cursor={`pointer`} onClick={() =>{ router.push(`/user/address?uid=${user?.uid}`)}} flexGrow={1} alignItems={`center`} justifyContent={`center`} flexDirection={`column`}>
             <Box>
             <MapIcon color={`#000`} />
             </Box>
             <small size={`sm`}>Address Book</small>
         </Flex>
-        <Flex display={[`none`,`none`,`none`,`flex`,`flex`]} cursor={`pointer`} onClick={() =>{ router.push(`/user/${user?.uid}`)}} flexGrow={1} alignItems={`center`} justifyContent={`center`} flexDirection={`column`}>
+        <Flex display={[`none`,`none`,`none`,`flex`,`flex`]} cursor={`pointer`} onClick={() =>{ router.push(`/user/editProfile/${user?.uid}`)}} flexGrow={1} alignItems={`center`} justifyContent={`center`} flexDirection={`column`}>
             <Box>
             <UserIcon  size={16} color={`#000000`} />
             </Box>
             <small size={`sm`}>Personal Data</small>
         </Flex>
-        <Flex display={[`none`,`none`,`none`,`flex`,`flex`]} cursor={`pointer`} onClick={() =>{ router.push(`/user/${user?.uid}`)}} flexGrow={1} alignItems={`center`} justifyContent={`center`} flexDirection={`column`}>
+        <Flex display={[`none`,`none`,`none`,`flex`,`flex`]} cursor={`pointer`} onClick={() =>{ router.push(`/user/invoices`)}} flexGrow={1} alignItems={`center`} justifyContent={`center`} flexDirection={`column`}>
             <Box>
             <CreditCardIcon size={16} color={`#000`} />
             </Box>
             <small size={`sm`}>Invoices</small>
         </Flex>
-         <Flex display={[`none`,`none`,`none`,`flex`,`flex`]} cursor={`pointer`} onClick={() =>{ router.push(`/user/${user?.uid}`)}} flexGrow={1} alignItems={`center`} justifyContent={`center`} flexDirection={`column`}>
+         <Flex display={[`none`,`none`,`none`,`flex`,`flex`]} cursor={`pointer`} onClick={() =>{ router.push(`/user/returns`)}} flexGrow={1} alignItems={`center`} justifyContent={`center`} flexDirection={`column`}>
             <Box>
             <Trash2Icon size={16} color={`#000`} />
             </Box>
             <small size={`sm`}>Returns</small>
         </Flex>
-         <Flex display={[`none`,`none`,`none`,`flex`,`flex`]} cursor={`pointer`} onClick={() =>{ router.push(`/user/${user?.uid}`)}} flexGrow={1} alignItems={`center`} justifyContent={`center`} flexDirection={`column`}>
+         <Flex display={[`none`,`none`,`none`,`flex`,`flex`]} cursor={`pointer`} onClick={() =>{ router.push(`/warehouse`)}} flexGrow={1} alignItems={`center`} justifyContent={`center`} flexDirection={`column`}>
             <Box>
             <MapPinIcon size={16} color={`#000`} />
             </Box>
             <small size={`sm`}>Warehouse Address</small>
         </Flex>
-         <Flex display={[`none`,`none`,`none`,`flex`,`flex`]} cursor={`pointer`} onClick={() =>{ router.push(`/user/${user?.uid}`)}} flexGrow={1} alignItems={`center`} justifyContent={`center`} flexDirection={`column`}>
+         <Flex display={[`none`,`none`,`none`,`flex`,`flex`]} cursor={`pointer`} onClick={() =>{ router.push(`/faq`)}} flexGrow={1} alignItems={`center`} justifyContent={`center`} flexDirection={`column`}>
             <Box>
             <CircleQuestionMarkIcon size={16} color={`#000`} />
             </Box>
             <small size={`sm`}>FAQ's</small>
         </Flex>
-        <Flex display={[`none`,`none`,`none`,`flex`,`flex`]} cursor={`pointer`} onClick={() =>{ router.push(`/user/${user?.uid}`)}} flexGrow={1} alignItems={`center`} justifyContent={`center`} flexDirection={`column`}>
+        <Flex display={[`none`,`none`,`none`,`flex`,`flex`]} cursor={`pointer`} onClick={() => {logout(user);onClickListItem(`/login`)}} flexGrow={1} alignItems={`center`} justifyContent={`center`} flexDirection={`column`}>
             <Box>
             <LogOutIcon color={`#000`} />
             </Box>
