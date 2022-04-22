@@ -60,7 +60,7 @@ function UserMenu({data}) {
             .then((url)=>{
                 updateDocument(user?.uid,`Users`,{photoURL: url})
             .then(()=>{
-                alert(url)
+               
                 setLoading(false)
                 setSuccess(`Uploaded succefully`)
             })
@@ -96,7 +96,6 @@ function UserMenu({data}) {
 <SettingsIcon size={24} color={`#000000`} />
 
 </Flex>
-{error || success && <Text color={success ? `green` : `red`}>{error}{success}</Text>}
 <Flex mb={10} alignItems={`center`}>
     <Circle overflow={`hidden`} w={70} h={70} mr={10}   borderWidth={`1px`} borderColor={`black`}>
       {  !userData?.photoURL ? <CameraIcon m={4} size={24} color={`#000000`} /> 
@@ -113,7 +112,7 @@ function UserMenu({data}) {
         Change Profile picture
     </Button>
     {file && 
-    <Flex>
+    <Flex display={loading ? `none`: `flex`}>
         <Box ml={`1em`}>
         <CheckIcon onClick={uploadImage}  color={`#000`} size={`24`} />
 
@@ -134,6 +133,8 @@ function UserMenu({data}) {
 
                                         />
 </Flex>
+{error || success && <Text textAlign={`center`} color={success ? `green` : `red`}>{error}{success}</Text>}
+
 <Box display={[`box`,`box`,`box`,`none`,`none`]}>
 <ListItem click={() => onClickListItem(`/user/address?uid=${user?.uid}`)} leftIcon={<MapIcon color={`#000`} />} rightIcon={<ChevronRightIcon size={24} color={`#000000`} />}  title={`Address Book`}  />
 <ListItem click={() => onClickListItem(`/user/editProfile/${user?.uid}`)} leftIcon={<UserIcon color={`#000`} />} rightIcon={<ChevronRightIcon size={24} color={`#000000`} />}  title={`Personal Data`} label={`Update your account details`} />
