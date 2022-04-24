@@ -188,6 +188,7 @@ const Book = () => {
     const [totalQuantity, setTotalQuantity] = useState(0)
     const [transportation, setTransportation] = useState('')
     const [edit, setEdit] = useState()
+    const [value,setValue] = useState(0)
     useEffect(() => {
         if (user == null) {
             router.push("/login");
@@ -225,7 +226,7 @@ const Book = () => {
 
     const addCargo = (values) => {
         values.preventDefault()
-        const price = parseFloat(rate) * parseFloat(values.target.quantity.value)
+        const price = parseFloat(rate) * parseFloat(values.target.quantity.value) 
 
         const data = {
             expressNumber: values.target.express.value,
@@ -370,8 +371,8 @@ const Book = () => {
             // })
             const priceArr = cargo.map(each => each.price)
             setEstimatedPrice( priceArr.reduce((cargoTotal,cargoItem) => 
-                  cargoTotal + cargoItem
-            ,0))
+                  cargoTotal + cargoItem 
+            ,0) +  parseFloat(value))
 
             const quantityArr = cargo.map(each => each.quantity)
             setTotalQuantity( quantityArr.reduce((cargoTotal,cargoItem) => 
@@ -388,7 +389,7 @@ const Book = () => {
 
 
         
-    }, [cargo])
+    }, [cargo,value])
 
 
     return (
@@ -517,7 +518,12 @@ const Book = () => {
                         </Flex>
                         <Flex justifyContent={`center`} flexGrow={2} flexDirection={[`column`,`colum`,`colum`,`row`,`row`,]}>
                         <form onSubmit={(e) => submitForm(e)}>
-                            <Select name='value' mt={5} placeholder='Value-added services' variant={`filled`} />
+                            <Select onChange={(e) => { setValue(e.target.value) }} name='value' mt={5} placeholder='Value-added services' variant={`filled`} >
+                            <optgroup label={`Add ons`}>  
+                            <option value={0.5}>Phone cover + protector -- $ 0.5</option>
+                            <option value={16}>Packaging -- $ 16</option>
+                            </optgroup>
+                            </Select>
                             <Select onChange={(e) => { setTransportation(e.target.value) }} mt={5} name='method' placeholder='Type of delivery' variant={`filled`} >
                                 <option value={`sea`}>Sea</option>
                                 <option value={`air`}>Air</option>
