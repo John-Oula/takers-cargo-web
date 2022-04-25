@@ -3,7 +3,7 @@ import { doc, getDoc } from 'firebase/firestore';
 import React from 'react';
 import { AiOutlineBarcode } from 'react-icons/ai';
 import QRCode from "react-qr-code";
-import logo from '../../../assets/logo.png';
+import logo from '../../../assets/takers_white_bg.jpg';
 import route from '../../../assets/routeMarker.svg';
 import BackButton from '../../../Components/BackButton';
 import FirstRowHeader from '../../../Components/FirstRowHeader';
