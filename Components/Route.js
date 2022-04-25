@@ -1,6 +1,5 @@
 import React from 'react';
 import { Box, Flex, Divider , Text, TagLabel, Tag } from "@chakra-ui/react";
-import { AiOutlineArrowRight, AiOutlineDropbox } from 'react-icons/ai'
 import { useRouter } from 'next/router';
 import { dateTime } from '../lib';
 

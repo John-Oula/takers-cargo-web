@@ -19,7 +19,7 @@ export const getServerSideProps = async (ctx) => {
     const docSnap = await getDoc(docRef);
    
     // if (!data) return { notFound: true };
-    return { props: { payload : JSON.stringify({...docSnap.data() , dateCreated: docSnap.data().creationDate?.toDate().getTime()} )|| [] } };
+    return { props: { payload : JSON.stringify({...docSnap.data() , dateCreated: docSnap.data()?.creationDate?.toDate().getTime()} )|| [] } };
   };
 
 const OrderDetails = ({payload}) => {

@@ -2,13 +2,16 @@ import React from 'react';
 import { Box, Flex, Divider , Text, TagLabel, Tag } from "@chakra-ui/react";
 import { BoxIcon ,ChevronRightIcon} from '../icons/dist/cjs'
 import { useRouter } from 'next/router';
+import route from "../assets/routeMarker.svg"
+import Image from 'next/image'
+
 var moment = require('moment'); // require
 
 const OrderCard = ({ data}) => {
     const router = useRouter()
 
     return (
-        <Box  p={5} boxShadow={`md`} onClick={() => { router.push(`/user/orders/${data?.id}`) }} alignItems={`center`} _hover={{ color: '#ed8b00' }} minH={`50px`} h={`fit-content`} w={`100%`} borderRadius={10}>
+        <Box  p={2} mb={5} boxShadow={`md`} onClick={() => { router.push(`/user/orders/${data?.id}`) }} alignItems={`center`} _hover={{ color: '#ed8b00' }} minH={`50px`} h={`fit-content`} w={`100%`} borderRadius={10}>
             <Flex alignItems={`center`} >
                 <Flex flexGrow={1}>
                     <Tag
@@ -29,6 +32,7 @@ const OrderCard = ({ data}) => {
             </Flex>
             <Divider orientation='horizontal' />
                         <Flex>
+                            <Image alt={`Route`} src={route} h />
                 <Flex flexDirection={`column`}>
 
                 </Flex>
@@ -40,8 +44,7 @@ const OrderCard = ({ data}) => {
                     </Flex>
                     <Flex textAlign={`left`} justifyContent={`left`} flexGrow={2} flexDirection={`column`}>
                         <Text w={`200px`} textAlign={`left`} >{data?.destination?.city}, {data?.destination?.country}</Text>
-                        <small>{moment(data?.lastUpdatedTime.toDate().getTime()).format(`DD-MM-YY hh:mm a`)}</small>
-
+                        <small>{ data?.status === "arrived" ? moment(data?.lastUpdatedTime.toDate().getTime()).format(`DD-MM-YY hh:mm a`) : `---`}</small>
                     </Flex>
                 </Flex>
             </Flex>
