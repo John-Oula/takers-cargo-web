@@ -19,6 +19,7 @@ const Messages = () => {
   const { user} = useContext(AuthContext)
   const {order} = useContext(OrderContext)
   const {notice} = useContext(NoticeContext)
+  const inWarehouseTitle = `Your Package(s) has arrived in the Warehouse`
   const arrivedTitle = `Your Package has arrived`
   const pendingTitle = `Your Package is being processed`
   const receivedTitle = `Your Package has been received`
@@ -61,6 +62,7 @@ const Messages = () => {
           if(each?.status === `pending` || each?.status === `arrived` || each?.status === `in-transit` || each?.status === `received`)
             return(<ListItem click={() => {router.push(`/user/orders/${each?.id}`)}} leftIcon={<AiOutlineAlert />}
          title={
+          each?.inWarehouse && each?.status === `pending` ? inWarehouseTitle :
            each?.status === `arrived` ? arrivedTitle :
            each?.status === `pending` ? pendingTitle :
            each?.status === `received` ? receivedTitle :
