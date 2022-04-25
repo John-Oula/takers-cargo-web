@@ -60,7 +60,7 @@ const OrderDetails = ({payload}) => {
 
         </Tag></Box>
     <Box height='fit-content'><Text fontSize={`sm`}>Packages </Text><Text>{data?.bailment.length}</Text></Box>
-    <Box height='fit-content'><Text fontSize={`sm`}>Arrived in Warehouse (All) </Text><Text>{data?.inWarehouse ? `Yes` : `No`}</Text></Box>
+    <Box height='fit-content'><Text fontSize={`sm`}>Arrived in Warehouse  </Text><Text>{data?.inWarehouse ? `Yes` : `No`}</Text></Box>
 
 
     {/* { data?.bailment?.map(each=>{
@@ -89,6 +89,9 @@ const OrderDetails = ({payload}) => {
             </Flex>
             
             <Button onClick={onOpen} leftIcon={<AiOutlineBarcode />} mt={`5%`}>QR code</Button>
+            <br />
+            <br />
+            <br />
 
 <Modal size={[`full`]} onClose={onClose} isOpen={isOpen} isCentered>
     <ModalOverlay />
