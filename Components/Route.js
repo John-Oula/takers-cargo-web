@@ -24,7 +24,13 @@ const Route = ({ data }) => {
 
         }
         else{
-
+            getOneDocument(data?.flightId,`Flights`)
+            .then( doc =>
+                setRoute(doc.data())
+            )
+            .catch(error =>{
+                setError(error.message)
+            })
         }
     },[])
 
