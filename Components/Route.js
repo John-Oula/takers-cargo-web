@@ -5,11 +5,13 @@ import { dateTime, getOneDocument } from '../lib';
 import { useDocument } from 'react-firebase-hooks/firestore';
 import {  doc } from 'firebase/firestore';
 import {db} from '../firebase/initFirebase'
+import {AiOutlineArrowDown,AiOutlineArrowUp} from 'react-icons/ai'
 
 const Route = ({ data }) => {
     const router = useRouter()
     const [route,setRoute]  = useState([])
     const [error,setError]  = useState()
+    const [show,setShow] = useState(2)
 
     useEffect(()=>{
         if(data.method === `sea`){
@@ -43,7 +45,7 @@ const Route = ({ data }) => {
                         {/* <Text  color={`#ed8b00`} w={`200px`} textAlign={`left`} >{data?.origin?.city },{ data?.origin?.country}</Text>
                         <Text fontSize={`sm`} color={`#ffffff`}>{data?.creationDate && data?.status == `in-transit` ?dateTime(data?.latestUpdateTime) : `---` }</Text> */}
  { route &&
-     route?.waypoints?.map(each => (
+     route?.waypoints?.slice(0,show).map(each => (
          <>
                               <Text  color={`#ed8b00`} w={`200px`} textAlign={`left`} >{each?.location}</Text>
                         <Text fontSize={`sm`} color={`#ffffff`}>{each?.description}</Text>
@@ -58,6 +60,16 @@ const Route = ({ data }) => {
 
                     </Flex> */}
                 </Flex>
+            </Flex>
+            <Flex w={`100%`} justifyContent={`center`} onClick={() => setShow(state=>{
+                if(state === 2){
+                    setShow(route.length)
+                }
+                else setShow(2)
+
+            })}>
+                {show === 2 ? <AiOutlineArrowDown color='#fff'/> : <AiOutlineArrowUp color='#fff'/>}
+
             </Flex>
 
         </Box>
