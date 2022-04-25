@@ -60,6 +60,8 @@ const OrderDetails = ({payload}) => {
 
         </Tag></Box>
     <Box height='fit-content'><Text fontSize={`sm`}>Packages </Text><Text>{data?.bailment.length}</Text></Box>
+    <Box height='fit-content'><Text fontSize={`sm`}>Arrived in Warehouse (All) </Text><Text>{data?.inWarehouse ? `Yes` : `No`}</Text></Box>
+
 
     {/* { data?.bailment?.map(each=>{
         return(
