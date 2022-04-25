@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect,useState} from 'react';
 import { Box, Flex, Divider , Text, TagLabel, Tag } from "@chakra-ui/react";
 import { BoxIcon ,ChevronRightIcon} from '../icons/dist/cjs'
 import { useRouter } from 'next/router';
@@ -9,6 +9,17 @@ var moment = require('moment'); // require
 
 const OrderCard = ({ data}) => {
     const router = useRouter()
+    const [color,setColor] = useState(`#ed8b00`)
+
+    useEffect(() =>{
+  
+            data?.status === `arrived` ? setColor(`green`) :
+            data?.status === `in-transit` ? setColor(`#000`):
+            data?.status === `pending` ? setColor(`#ed8b00`) :
+            `#ed8b00`
+
+    
+    },[])
 
     return (
         <Box  p={2} mb={5} boxShadow={`md`} onClick={() => { router.push(`/user/orders/${data?.id}`) }} alignItems={`center`} _hover={{ color: '#ed8b00' }} minH={`50px`} h={`fit-content`} w={`100%`} borderRadius={10}>
@@ -20,7 +31,7 @@ const OrderCard = ({ data}) => {
                         borderRadius='full'
                         variant='solid'
 
-                        bgColor={`green`}
+                        bgColor={color}
                     >
 
                         <TagLabel>{data?.status ? data?.status : 'unknown'}</TagLabel>
