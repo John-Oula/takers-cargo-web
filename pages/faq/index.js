@@ -15,7 +15,7 @@ import {
 const Faq = () => {
     return (
 <Box>
-<FirstRowHeader title={`Warehouse Address`} leftIcon={<BackButton />} />
+<FirstRowHeader title={`Frequently Asked Questions`} leftIcon={<BackButton />} />
 
 <Accordion allowMultiple>
 <AccordionItem>
