@@ -93,7 +93,7 @@ function UserMenu({data}) {
 <Flex mb={10} mt={3} >
 <Heading as={`h3`} size={`lg`}>Account</Heading>
 <Spacer />
-<SettingsIcon size={24} color={`#000000`} />
+<SettingsIcon onClick={()=> router.push(`/user/settings?uid=${user?.uid}`)} size={24} color={`#000000`} />
 
 </Flex>
 <Flex mb={10} alignItems={`center`}>

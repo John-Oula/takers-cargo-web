@@ -97,9 +97,9 @@ function App() {
         </Flex>
       </Flex>
     </Center>
-<Box w={`1000px`} mt={10} overflowX={`hidden`}>
+<Box  mt={10} overflowX={`hidden`}>
 <Center>
-  <Slider />
+  <Slider images={[1,2,3,4]} />
 </Center>
 </Box>
   </Box>
