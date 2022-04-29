@@ -58,8 +58,8 @@ function App() {
         <ModalCloseButton />
         <ModalBody >
 
-            {search.trackingNumber && !loading && <OrderCard data={search} /> }
-            {!search.trackingNumber && !loading && <Text>Tracking Number doesn't exist</Text>}
+            {search?.trackingNumber && !loading && <OrderCard data={search} /> }
+            {!search?.trackingNumber && !loading && <Text>Tracking Number doesn't exist</Text>}
 
         </ModalBody>
         <ModalFooter alignItems={`center`}>
