@@ -47,7 +47,7 @@ function BottomNav({user,logout}) {
         <Flex  cursor={`pointer`} onClick={() =>{ router.push('/messages');setNotification(0)}} flexGrow={1} alignItems={`center`} justifyContent={`center`} flexDirection={`column`}>
             <Box position={`relative`}>
             <MessageSquareIcon  size={16} color={`#000000`} />
-            {notification  > 0 ? <Box top={-2} right={-2} position={`absolute`}><Circle w={2} h={2} fontSize={`sm`}  p={2} bgColor={`#ed8b00`}><Text fontSize={11}>{notification}</Text></Circle></Box> : <></>}
+            {/* {notification  > 0 ? <Box top={-2} right={-2} position={`absolute`}><Circle w={2} h={2} fontSize={`sm`}  p={2} bgColor={`#ed8b00`}><Text fontSize={11}>{notification}</Text></Circle></Box> : <></>} */}
             </Box>
             <small size={`sm`}>Message</small>
         </Flex>

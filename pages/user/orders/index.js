@@ -65,7 +65,7 @@ const Index = () => {
     </TabPanel>
     {
         order && order?.map(each =>{
-          if(each.status == 'completed')
+          if(each.received)
           return(<OrderCard key={each?.id} data={each} origin={each?.origin} destination={each?.destination} id={each?.id} />
         )})
       }
