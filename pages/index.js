@@ -23,14 +23,18 @@ function App() {
   const router = useRouter()
   const { isOpen, onOpen, onClose } = useDisclosure()
   const { handleSubmit, register } = useForm();
-  const [search,setSearch] = useState()
+  const [search,setSearch] = useState(null)
+  const [loading,setLoading] = useState(true)
   const { user } = useContext(AuthContext)
 
   const onSubmit = async (values) =>{
     onOpen();
+  
     const docRef = doc(db, `Bookings`, values?.search);
     const docSnap = await getDoc(docRef)
     setSearch({...docSnap.data(),id:docSnap.id})
+    
+    setLoading(false)
 
   }
 
@@ -54,7 +58,8 @@ function App() {
         <ModalCloseButton />
         <ModalBody >
 
-            <OrderCard data={search} />
+            {search.trackingNumber && !loading && <OrderCard data={search} /> }
+            {!search.trackingNumber && !loading && <Text>Tracking Number doesn't exist</Text>}
 
         </ModalBody>
         <ModalFooter alignItems={`center`}>
