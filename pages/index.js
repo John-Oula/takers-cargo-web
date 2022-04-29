@@ -15,6 +15,7 @@ import { useForm } from "react-hook-form";
 import { db } from '../firebase/initFirebase';
 import {  getDoc,doc } from 'firebase/firestore'
 import AuthContext from '../contexts/AuthContext';
+import LandingPage from "../Components/LandingPage.js";
 
 
 
@@ -33,14 +34,18 @@ function App() {
 
   }
 
-  useEffect(() => {
-     if (user == null) {
-      router.push("/login");
-    }
-  }, [user]);
+  // useEffect(() => {
+  //    if (user == null) {
+  //     router.push("/login");
+  //   }
+  // }, [user]);
 
   return (
-<Box overflow={`hidden`} h={`100%`} w={`100%`} bgColor={`#000000`}>
+<>
+{
+  !user ? <LandingPage />
+  :
+  <Box overflow={`hidden`} h={`100%`} w={`100%`} bgColor={`#000000`}>
 <Modal size={[`sm`]} onClose={onClose} isOpen={isOpen} isCentered>
     <ModalOverlay />
     <ModalContent>
@@ -104,6 +109,8 @@ function App() {
 </Box>
   </Box>
 </Box>
+}
+</>
   );
 }
 

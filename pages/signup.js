@@ -85,7 +85,8 @@ const Signup = () => {
                     online: true,
                     phone: values?.phoneNumber,
                     shipments: 0,
-                    creationDate: serverTimestamp()
+                    creationDate: serverTimestamp(),
+                    role:"user"
 
                 }
                 updateUserProfile(user,{
