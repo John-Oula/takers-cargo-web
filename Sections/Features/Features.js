@@ -32,21 +32,21 @@ export default function FeatureList() {
       <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10}>
         <Feature
           icon={<Icon as={TruckIcon} w={10} h={10} />}
-          title={'Lifetime Support'}
+          title={'Lorem ipsum dolor sit'}
           text={
             'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore...'
           }
         />
         <Feature
           icon={<Icon as={TruckIcon} w={10} h={10} />}
-          title={'Unlimited Donations'}
+          title={'Lorem ipsum dolor sit'}
           text={
             'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore...'
           }
         />
         <Feature
           icon={<Icon as={TruckIcon} w={10} h={10} />}
-          title={'Instant Delivery'}
+          title={'Lorem ipsum dolor sit'}
           text={
             'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore...'
           }
