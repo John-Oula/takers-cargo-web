@@ -313,7 +313,7 @@ const Book = () => {
             status: `pending`,
             paymentStatus: `unpaid`,
             lastUpdatedTime: serverTimestamp(),
-            expectedArrivalDate: secondDate,
+            // expectedArrivalDate: secondDate,
             creationDate: serverTimestamp(),
             totalQuantity: totalQuantity,
             expressNumbers: expressNumbersArr
