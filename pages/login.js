@@ -193,7 +193,7 @@ to Tanzania</Text>
 
 <Text textAlign={`center`}>Don’t have an account?<Link href={`/signup`} color={`#ed8b00`}> Sign up</Link></Text>
         </Flex>  
-        <Modal size={[`full`]} onClose={onClose} isOpen={isOpen} isCentered>
+        <Modal size={[`full`,`full`,`full`,`md`,`md`]}  onClose={onClose} isOpen={isOpen} isCentered>
           <ModalOverlay />
           <ModalContent>
             <ModalHeader><Heading as={`h3`} size={`2xl`}  >
