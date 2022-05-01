@@ -174,8 +174,26 @@ const Login = () => {
 
     
     return (
-        <Flex  p={5} flexDirection={[`column`,`column`,`row`,`row`,`row`]} flex={1}>
-            <Modal size={[`full`]} onClose={onClose} isOpen={isOpen} isCentered>
+        <Flex h={`100%`} w={`100%`} alignItems={[null,null,`center`,`center`,`center`]} p={5} flexDirection={[`column`,`column`,`column`,`column`,`column`]} >
+          
+            <Image w={`auto`} h={`100%`} src={truck} alt={`shipping truck`}  />
+           <Box mb={15}>
+           <Heading as={`h3`} size={`2xl`} mb={5} >
+                Welcome to <br/> Takers Cargo
+            </Heading>
+            <Text mb={`auto`} >Convinient sourcing from Turkey/China
+to Tanzania</Text>
+           </Box>
+
+<Flex flexDirection={`column`} w={[`100%`,`100%`,`100%`,`30%`,`30%`]} mt={`0%`}>
+<Button  mb={5} w={`auto`} onClick={loginWithGoogle}   leftIcon={<LogoGoogleIcon color={`#ffffff`} />} color={`#ffffff`} bgColor={`#000000`} disabled >Google | Coming soon</Button>
+
+<Button  mb={5} w={`auto`} onClick={() => {setWithEmail(true);onOpen()}}   leftIcon={<MailIcon color={`#ffffff`} />} color={`#ffffff`} bgColor={`#000000`} >Login with email</Button>
+<Button  mb={5} w={`auto`} onClick={(e) => {setWithEmail(false);onOpen()}}   leftIcon={<PhoneIcon color={`#ffffff`} />} color={`#ffffff`} bgColor={`#000000`} disabled >Login with Phone | Coming soon</Button>
+
+<Text textAlign={`center`}>Don’t have an account?<Link href={`/signup`} color={`#ed8b00`}> Sign up</Link></Text>
+        </Flex>  
+        <Modal size={[`full`]} onClose={onClose} isOpen={isOpen} isCentered>
           <ModalOverlay />
           <ModalContent>
             <ModalHeader><Heading as={`h3`} size={`2xl`}  >
@@ -228,20 +246,6 @@ const Login = () => {
             </ModalFooter>
           </ModalContent>
         </Modal>
-            <Image  src={truck} alt={`shipping truck`}  />
-            <Heading as={`h3`} size={`2xl`} mt={105} >
-                Welcome to <br/> Takers Cargo
-            </Heading>
-            <Text mb={`auto`} >Convinient sourcing from Turkey/China
-to Tanzania</Text>
-<Flex flexDirection={`column`}  mt={`30%`}>
-<Button  mb={5} w={`auto`} onClick={loginWithGoogle}   leftIcon={<LogoGoogleIcon color={`#ffffff`} />} color={`#ffffff`} bgColor={`#000000`} disabled >Google | Coming soon</Button>
-
-<Button  mb={5} w={`auto`} onClick={() => {setWithEmail(true);onOpen()}}   leftIcon={<MailIcon color={`#ffffff`} />} color={`#ffffff`} bgColor={`#000000`} >Login with email</Button>
-<Button  mb={5} w={`auto`} onClick={(e) => {setWithEmail(false);onOpen()}}   leftIcon={<PhoneIcon color={`#ffffff`} />} color={`#ffffff`} bgColor={`#000000`} disabled >Login with Phone | Coming soon</Button>
-
-<Text textAlign={`center`}>Don’t have an account?<Link href={`/signup`} color={`#ed8b00`}> Sign up</Link></Text>
-        </Flex>
 </Flex>
     );
 };
