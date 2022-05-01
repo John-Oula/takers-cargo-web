@@ -24,7 +24,6 @@ import { db } from '../../firebase/initFirebase';
 import { serverTimestamp } from 'firebase/firestore'
 import { collection, getDocs, getDoc } from 'firebase/firestore'
 import { useCollection } from 'react-firebase-hooks/firestore';
-
 import AuthContext from '../../contexts/AuthContext';
 
 var moment = require('moment'); // require

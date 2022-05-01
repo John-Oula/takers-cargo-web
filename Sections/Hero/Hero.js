@@ -92,8 +92,8 @@ import {
                 alt={'Hero Image'}
                 fit={'cover'}
                 align={'center'}
-                w={'100%'}
-                h={'100%'}
+                w={'100px'}
+                h={'100px'}
                 src={ Map}
               />
             </Box>
