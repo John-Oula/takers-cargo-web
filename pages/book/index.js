@@ -523,7 +523,8 @@ const Book = () => {
                             <option value={16}>Packaging -- $ 16</option>
                             </optgroup>
                             </Select>
-                            <Select onChange={(e) => { setTransportation(e.target.value) }} mt={5} name='method' placeholder='Type of delivery' variant={`filled`} >
+                           <FormControl isRequired>
+                           <Select onChange={(e) => { setTransportation(e.target.value) }} mt={5} name='method' placeholder='Type of delivery' variant={`filled`} >
                                 <option value={`sea`}>Sea</option>
                                 <option value={`air`}>Air</option>
                             </Select>
@@ -532,6 +533,7 @@ const Book = () => {
                                 <option value={`Cash`}>Cash</option>
                                 <option value={`Bank Transfer`}>Bank Transfer</option>
                             </Select>
+                           </FormControl>
                             <Textarea {...register('remarks')} mb={5} mt={5} placeholder='Remarks' />
                             <Flex>
 
