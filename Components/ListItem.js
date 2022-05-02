@@ -16,7 +16,7 @@ function ListItem({label,title,leftIcon,rightIcon,path,crud ,selectable,data,cli
 
 
     return (
-        <Flex className={`${select?.data?.id === data?.id || origin?.data?.id === data?.id && `selected`}`} id={data?.id} cursor={selectable && `pointer`} onClick={click } alignItems={`center`} _hover={{ color: '#ed8b00' }} p={2} minH={`50px`} h={`fit-content`} w={`100%`}>
+        <Flex className={`${select?.id === data?.id || origin?.id === data?.id && `selected`}`} id={data?.id} cursor={selectable && `pointer`} onClick={click } alignItems={`center`} _hover={{ color: '#ed8b00' }} p={2} minH={`50px`} h={`fit-content`} w={`100%`}>
             <Flex mr={leftIcon && 5 }>
             {leftIcon && leftIcon}
             {/* {selectable && <Radio />} */}

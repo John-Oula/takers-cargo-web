@@ -20,7 +20,9 @@ a {
   color: #ffffff;
   border-radius: 10px;
 }
-
+.selected small{
+  color:#000;
+}
 .selected:hover{
   color: #ffffff !important;
 }

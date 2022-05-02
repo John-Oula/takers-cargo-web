@@ -25,6 +25,8 @@ import { serverTimestamp } from 'firebase/firestore'
 import { collection, getDocs, getDoc } from 'firebase/firestore'
 import { useCollection } from 'react-firebase-hooks/firestore';
 import AuthContext from '../../contexts/AuthContext';
+import {ChevronLeftIcon} from '../../icons/dist/cjs'
+
 
 var moment = require('moment'); // require
 
@@ -86,7 +88,7 @@ const Origin = ({ close }) => {
     }
     return (
         <Flex p={2} flexDirection={`column`} justifyContent={`center`}>
-            <FirstRowHeader title={`Select origin address`} leftIcon={<BackButton />} />
+            <FirstRowHeader title={`Select origin address`} leftIcon={<ChevronLeftIcon color='#000' onClick={close} />} />
             {
                 address?.map((each) => {
                     return (
@@ -115,7 +117,7 @@ const AddressBook = ({ close }) => {
         console.log(docSnap);
         docSnap.forEach((doc) => {
             // doc.data() is never undefined for query doc snapshots
-            addresses.push(doc.data())
+            addresses.push({...doc.data(), id:doc.id})
         });
         setAddress(addresses)
     }
@@ -147,7 +149,7 @@ const AddressBook = ({ close }) => {
 
     return (
         <Flex p={2} flexDirection={`column`} justifyContent={`center`}>
-            <FirstRowHeader title={`Address Book`} leftIcon={<BackButton />} />
+            <FirstRowHeader title={`Address Book`} leftIcon={<ChevronLeftIcon color='#000' onClick={close} />} />
             {
                 address?.map((each) => {
                     return (
