@@ -288,7 +288,21 @@ const Book = () => {
         
     }, [isOpen])
 
+    const validateBooking = (cargo) =>{
+        switch (true) {
+            case !cargo:
+                alert(`Please add cargo to your booking`)
+                return true
+                
+                break;
+        
+            default:
+                break;
+        }
+    }
+
     const submitForm = (e) => {
+       
         setError(null)
         setLoading(true)
         e.preventDefault();
