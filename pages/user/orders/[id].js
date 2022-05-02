@@ -41,7 +41,7 @@ const OrderDetails = ({payload}) => {
 <SimpleGrid columns={[2, 2, 2,3,3]} spacing={['10px','10px','10px','5%','7%']}>
     <Box h='fit-content'><Text fontSize={`sm`}>Tracking Number</Text><Text>{data?.trackingNumber}</Text></Box>
     <Box h='fit-content'><Text fontSize={`sm`}>Transportation</Text><Text>{data?.method}</Text></Box>
-    <Box h='fit-content'><Text fontSize={`sm`}>Product Category</Text><Text>{data?.bailment.length > 1  ? `Mixed`: data?.bailment[0].category }</Text></Box>
+    <Box h='fit-content'><Text fontSize={`sm`}>Product type</Text><Text>{data?.bailment.length > 1  ? `Mixed`: data?.bailment[0]?.type }</Text></Box>
     <Box h='fit-content'><Text fontSize={`sm`}>Booking Time</Text><Text>{dateTime(data?.dateCreated)}</Text></Box>
     <Box h='fit-content'>< Text fontSize={`sm`}>Total Quantity</Text><Text>{data?.totalQuantity} {data?.bailment[0]?.unit}</Text></Box>
     
@@ -142,7 +142,7 @@ const OrderDetails = ({payload}) => {
                 <GridItem borderBottomWidth={1} colSpan={4} rowSpan={2} >
            <Box p={2}>
 
-<Flex fontSize={`sm`} h='fit-content' ><Text>Product Category: </Text><Spacer/><Text ml={3}> {data?.bailment.length > 1 ? `mixed` : data?.bailment[0].type}</Text></Flex>
+<Flex fontSize={`sm`} h='fit-content' ><Text>Product type: </Text><Spacer/><Text ml={3}> {data?.bailment.length > 1 ? `mixed` : data?.bailment[0]?.type}</Text></Flex>
 
            </Box>
                 </GridItem>
