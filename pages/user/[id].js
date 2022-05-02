@@ -14,8 +14,8 @@ export const getServerSideProps = async (ctx) => {
     const docRef = doc(db, `Users`, ctx.query.id);
     const docSnap = await getDoc(docRef);
    
-    // if (!data) return { notFound: true };
-    return { props: { data : JSON.stringify(docSnap.data()) || [] } };
+    if (!docSnap.data()) return { notFound: true };
+    return { props: { data : JSON.stringify(docSnap.data()) || {} } };
   };
 
 function UserMenu({data}) {
