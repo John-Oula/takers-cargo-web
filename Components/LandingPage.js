@@ -1,4 +1,4 @@
-import { Container } from '@chakra-ui/react';
+import { Container, Flex } from '@chakra-ui/react';
 import React from 'react';
 import FeatureList from '../Sections/Features/Features';
 import Footer from '../Sections/Footer/Footer';
@@ -8,7 +8,7 @@ import Testimonials from '../Sections/Testimonials/Testimonials';
 import Navbar from './Navbar';
 const LandingPage = () => {
     return (
-        <>
+        <Flex flexDirection={`column`} w={`100%`}>
         <Container maxW={`7xl`}>
             
             <Navbar />
@@ -16,9 +16,10 @@ const LandingPage = () => {
             <FeatureList />
             <AppFeatures />
             {/* <Testimonials /> */}
-            <Footer />
+            
         </Container>
-        </>
+        <Footer />
+        </Flex>
     );
 };
 
