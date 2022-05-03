@@ -1,6 +1,5 @@
-import { ReactElement } from 'react';
-import { Box, SimpleGrid, Icon, Text, Stack, Flex } from '@chakra-ui/react';
-import { CameraIcon,CheckIcon,TruckIcon,Truck2Icon, ChevronRightIcon, CircleQuestionMarkIcon, CreditCardIcon, LogOutIcon, MapIcon, MapPinIcon, SettingsIcon, Trash2Icon, UserIcon } from '../../icons/dist/cjs';
+import { Box, Flex, SimpleGrid, Stack, Text } from '@chakra-ui/react';
+import { TruckIcon ,MapIcon , BoxIcon} from '../../icons/dist/cjs';
 
 
 
@@ -31,24 +30,24 @@ export default function FeatureList() {
     <Box mb={20} p={4}>
       <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10}>
         <Feature
-          icon={<Icon as={TruckIcon} w={10} h={10} />}
-          title={'Lorem ipsum dolor sit'}
+          icon={<TruckIcon color={`#000`} />}
+          title={'Ship now, pay later'}
           text={
-            'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore...'
+            'We offer the benefit of paying on delivery of the shipment and book & ship at no costs.'
           }
         />
         <Feature
-          icon={<Icon as={TruckIcon} w={10} h={10} />}
-          title={'Lorem ipsum dolor sit'}
+          icon={<MapIcon color={`#000`} />}
+          title={'Real-time tracking of shipments'}
           text={
-            'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore...'
+            'Gain  Real time insights for every shipment  with 100% transparency from initial booking to final delivery.'
           }
         />
         <Feature
-          icon={<Icon as={TruckIcon} w={10} h={10} />}
-          title={'Lorem ipsum dolor sit'}
+          icon={<BoxIcon color={`#000`} />}
+          title={'Book shipments on the go!'}
           text={
-            'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore...'
+            'Get to book as much shipments as you want on the fly with a single click!'
           }
         />
       </SimpleGrid>
