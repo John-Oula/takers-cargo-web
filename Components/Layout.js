@@ -12,7 +12,7 @@ import OrderContextWrapper from './OrderContextWrapper';
 
 function Layout({ children }) {
     const router = useRouter()
-    const { user,setUser } = useContext(AuthContext)
+    const { user,setUser ,logout} = useContext(AuthContext)
 
  NProgress.configure({ showSpinner: false });
 
@@ -40,7 +40,7 @@ function Layout({ children }) {
                     crossOrigin='anonymous' referrerPolicy='no-referrer' />
             </Head>
             <Flex flexDirection={[`column`,`colum`,`colum`,`row`,`row`,]} h={`100vh`} position={`relative`}>
-            {user && user?.uid && <BottomNav user={user} />}
+            {user && user?.uid && <BottomNav user={user} logout={logout} />}
             {children}
 
           
