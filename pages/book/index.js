@@ -526,7 +526,12 @@ const Book = () => {
 
                             })
                         }
-
+<FormControl isRequired >
+<Select onChange={(e) => { setTransportation(e.target.value) }} mt={5} name='method' placeholder='Type of delivery' variant={`filled`} >
+                                <option value={`sea`}>Sea</option>
+                                <option value={`air`}>Air</option>
+                            </Select>
+</FormControl>
                         <Button w={`100%`} mb={5} onClick={() => { setShowAddressForm(false); onOpen() }} color={`#ffffff`} bgColor={`#000000`} leftIcon={<AiOutlinePlus />}>Add a consignment</Button>
                         
                        </Box>
@@ -540,10 +545,7 @@ const Book = () => {
                             </optgroup>
                             </Select>
                            <FormControl isRequired>
-                           <Select onChange={(e) => { setTransportation(e.target.value) }} mt={5} name='method' placeholder='Type of delivery' variant={`filled`} >
-                                <option value={`sea`}>Sea</option>
-                                <option value={`air`}>Air</option>
-                            </Select>
+                           
                             <Select name='payment_method' mt={5} placeholder='Payment method' variant={`filled`} >
                                 <option value={`MPESA`}>MPESA</option>
                                 <option value={`Cash`}>Cash</option>
