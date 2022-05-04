@@ -527,7 +527,7 @@ const Book = () => {
                             })
                         }
 <FormControl isRequired >
-<Select onChange={(e) => { setTransportation(e.target.value) }} mt={5} name='method' placeholder='Type of delivery' variant={`filled`} >
+<Select onChange={(e) => { setTransportation(e.target.value) }} mt={5} name='method' placeholder='Shipping Method' variant={`filled`} >
                                 <option value={`sea`}>Sea</option>
                                 <option value={`air`}>Air</option>
                             </Select>
