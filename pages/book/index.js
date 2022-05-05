@@ -450,7 +450,7 @@ const Book = () => {
                                             }
                                         </Select>
                                         <InputGroup alignItems={`center`}>
-                                            <Input name='quantity' defaultValue={edit && edit?.quantity} mt={5} placeholder={transportation == `air` ? `Quantity in ${bailmentSelectValue?.unit}` : `cubic metres`} type={`text`} />
+                                            <Input name='quantity' defaultValue={edit && edit?.quantity} mt={5} placeholder={transportation == `sea` ? `Quantity in ${bailmentSelectValue?.unit}` : `Quantity in kg`} type={`text`} />
                                             {/* <InputRightAddon  >{bailmentSelectValue ? bailmentSelectValue.unit : `--`}</InputRightAddon> */}
                                         </InputGroup>
                                         {/* <Input mt={5}  placeholder='Value (USD)' type={`number`} /> */}
