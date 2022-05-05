@@ -526,25 +526,27 @@ const Book = () => {
 
                             })
                         }
-<FormControl isRequired >
-<Select mb={5} onChange={(e) => { setTransportation(e.target.value) }} mt={5} name='method' placeholder='Shipping Method' variant={`filled`} >
-                                <option value={`sea`}>Sea</option>
-                                <option value={`air`}>Air</option>
-                            </Select>
-</FormControl>
-                        <Button w={`100%`} mb={5} onClick={() => { setShowAddressForm(false); onOpen() }} color={`#ffffff`} bgColor={`#000000`} leftIcon={<AiOutlinePlus />}>Add a consignment</Button>
-                        
+
+
                        </Box>
                         </Flex>
                         <Flex justifyContent={`center`} flexGrow={2} flexDirection={[`column`,`colum`,`colum`,`row`,`row`,]}>
                         <form onSubmit={(e) => submitForm(e)}>
+                        <FormControl isRequired>
+                        <Select mb={5} onChange={(e) => { setTransportation(e.target.value) }} mt={5} name='method' placeholder='Shipping Method' variant={`filled`} >
+                                <option value={`sea`}>Sea</option>
+                                <option value={`air`}>Air</option>
+                            </Select>
+
+                        <Button w={`100%`} mb={5} onClick={() => { setShowAddressForm(false); onOpen() }} color={`#ffffff`} bgColor={`#000000`} leftIcon={<AiOutlinePlus />}>Add a consignment</Button>
+                        
                             <Select onChange={(e) => { setValue(e.target.value) }} name='value' mt={5} placeholder='Value-added services' variant={`filled`} >
                             <optgroup label={`Add ons`}>  
                             <option value={0.5}>Phone cover + protector -- $ 0.5</option>
                             <option value={16}>Packaging -- $ 16</option>
                             </optgroup>
                             </Select>
-                           <FormControl isRequired>
+                          
                            
                             <Select name='payment_method' mt={5} placeholder='Payment method' variant={`filled`} >
                                 <option value={`MPESA`}>MPESA</option>
