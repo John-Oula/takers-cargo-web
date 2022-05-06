@@ -415,9 +415,10 @@ const Book = () => {
                         <ModalBody>
                             {!showAddressForm &&
                                 <form onSubmit={(e) => addCargo(e)}>
+                                                                            <Input name='express' defaultValue={edit && edit?.expressNumber} mt={5} placeholder='Express Number/ Tracking Number (Optional)' type={`text`} />
+
 <FormControl isRequired>
-                                    <InputGroup p={4} flexDirection={`column`} alignItems={`center`}>
-                                        <Input name='express' defaultValue={edit && edit?.expressNumber} mt={5} placeholder='Express Number/ Tracking Number' type={`text`} />
+                                    <InputGroup  flexDirection={`column`} alignItems={`center`}>
 
 
                                         <Select defaultValue={edit && edit?.category} name={`category`} onChange={(e) => setBailmentSelectValue(JSON.parse(e.target.options[e.target.selectedIndex].getAttribute('data')))} id={`bailmentType`} mt={5} variant='filled' placeholder='Type / Category of consignment' >
