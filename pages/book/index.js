@@ -539,6 +539,11 @@ const Book = () => {
                             <option value={0.5}>Phone cover + protector -- $ 0.5</option>
                             <option value={16}>Packaging -- $ 16</option>
                             </optgroup>
+                            <optgroup label={`Insurance Policy`}>  
+                            <option value={1}>$1 = ¥500</option>
+                            <option value={2}>$2 = ¥1000</option>
+                            <option value={5}>$5 = ¥5000</option>
+                            </optgroup>
                             </Select>
                           
                            
