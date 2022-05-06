@@ -7,7 +7,7 @@ import BackButton from '../../../Components/BackButton';
 import FirstRowHeader from '../../../Components/FirstRowHeader';
 
 
-function index(props) {
+function Transportation(props) {
     const { setTransportation } = useContext(SelectAddressContext)
 
     const router = useRouter()
@@ -26,4 +26,4 @@ function index(props) {
     );
 }
 
-export default index;
+export default Transportation;
