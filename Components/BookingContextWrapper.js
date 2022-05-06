@@ -1,16 +1,17 @@
 import SelectAddressContext from "../contexts/SelectAddressContext.js"
-import {useState} from "react";
+import { useState } from "react";
 
-function BookingContextWrapper({children}) {
+function BookingContextWrapper({ children }) {
 
     const [select, setSelect] = useState(null)
     const [origin, setOrigin] = useState(null)
+    const [transportation, setTransportation] = useState(null)
     const [cargo, setCargo] = useState([])
 
 
     const values = {
         select, setSelect
-        ,cargo, setCargo,origin, setOrigin
+        , cargo, setCargo, origin, setOrigin, transportation, setTransportation
     }
     return (
         <SelectAddressContext.Provider value={values}>

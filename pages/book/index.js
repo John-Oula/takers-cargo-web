@@ -21,7 +21,7 @@ import BackButton from '../../Components/BackButton';
 import { addDocument, addDocumentWithId, updateDocument } from '../../lib';
 import { useRouter } from 'next/router';
 import { db } from '../../firebase/initFirebase';
-import { serverTimestamp } from 'firebase/firestore'
+import { serverTimestamp , query , where} from 'firebase/firestore'
 import { collection, getDocs, getDoc } from 'firebase/firestore'
 import { useCollection } from 'react-firebase-hooks/firestore';
 import AuthContext from '../../contexts/AuthContext';
@@ -176,18 +176,19 @@ const Book = () => {
     const [bailmentObj, setBailmentObj] = useState(null)
     const [originAddressBook, setOriginAddressBook] = useState(false)
     const { isOpen, onOpen, onClose } = useDisclosure()
-    const { select, setSelect, cargo, origin, setOrigin, setCargo } = useContext(SelectAddressContext)
+    const { select, setSelect, cargo, origin, setOrigin, setCargo ,transportation } = useContext(SelectAddressContext)
     const { handleSubmit, register } = useForm();
     const [loading, setLoading] = useState(false)
     const [rate, setRate] = useState()
     const [groupedBailment, setGroupedBailment] = useState([])
     const [error, setError] = useState(false)
     const { user } = useContext(AuthContext)
-    const [rates, loadingRates, errorRates] = useCollection(collection(db, 'Rates'))
-    const [bailments] = useCollection(collection(db, 'Bailment'))
+    const collectionRef = collection(db, 'Bailment')
+    const [bailments] = useCollection(query(collectionRef, where("transport", "==", transportation)))
     const [bailmentSelectValue, setBailmentSelectValue] = useState()
     const [totalQuantity, setTotalQuantity] = useState(0)
-    const [transportation, setTransportation] = useState('')
+    // const [transportation, setTransportation] = useState('')
+
     const [edit, setEdit] = useState()
     const [value,setValue] = useState(0)
     useEffect(() => {
@@ -198,7 +199,7 @@ const Book = () => {
     const router = useRouter()
 
 
-    const bailmentRef = useRef()
+    
     let cargoList = []
 
 
@@ -215,15 +216,8 @@ const Book = () => {
 
     }
 
-    const shippingRate = (rate, unit, quantity) => {
-        return rate * unit * quantity
 
-    }
-    const getShippingRate = async (id) => {
-        const docRef = doc(db, `Rates`, id);
-        return await getDoc(docRef);
 
-    }
 
     const addCargo = (values) => {
         values.preventDefault()
@@ -317,7 +311,7 @@ const Book = () => {
 
         const formData = {
             destination: { ...select }, origin: { ...origin },
-            method: e.target.method.value,
+            method: transportation,
             remarks: e.target.remarks.value,
             paymentMethod: e.target.payment_method.value,
             value: e.target.value.value,
@@ -450,7 +444,7 @@ const Book = () => {
                                             }
                                         </Select>
                                         <InputGroup alignItems={`center`}>
-                                            <Input name='quantity' defaultValue={edit && edit?.quantity} mt={5} placeholder={transportation == `sea` ? `Quantity in ${bailmentSelectValue?.unit}` : `Quantity in kg`} type={`text`} />
+                                            <Input name='quantity' defaultValue={edit && edit?.quantity} mt={5} placeholder={transportation == `sea` ? `Quantity in cbm` : `Quantity in kg`} type={`text`} />
                                             {/* <InputRightAddon  >{bailmentSelectValue ? bailmentSelectValue.unit : `--`}</InputRightAddon> */}
                                         </InputGroup>
                                         {/* <Input mt={5}  placeholder='Value (USD)' type={`number`} /> */}
@@ -533,10 +527,10 @@ const Book = () => {
                         <Flex justifyContent={`center`} flexGrow={2} flexDirection={[`column`,`colum`,`colum`,`row`,`row`,]}>
                         <form onSubmit={(e) => submitForm(e)}>
                         <FormControl isRequired>
-                        <Select mb={5} onChange={(e) => { setTransportation(e.target.value) }} mt={5} name='method' placeholder='Shipping Method' variant={`filled`} >
+                        {/* <Select mb={5} onChange={(e) => { setTransportation(e.target.value) }} mt={5} name='method' placeholder='Shipping Method' variant={`filled`} >
                                 <option value={`sea`}>Sea</option>
                                 <option value={`air`}>Air</option>
-                            </Select>
+                            </Select> */}
 
                         <Button w={`100%`} mb={5} onClick={() => { setShowAddressForm(false); onOpen() }} color={`#ffffff`} bgColor={`#000000`} leftIcon={<AiOutlinePlus />}>Add a consignment</Button>
                         

@@ -118,7 +118,7 @@ function App() {
     <Center >
       <Flex mt={10}>
         <Flex flexGrow={2}>
-        <Button w={`auto`} onClick={() =>{ router.push('/book')}}  p={[5]} h={`auto`} color={`#ffffff`} bgColor={`#000000`}><br/>BOOK</Button>
+        <Button w={`auto`} onClick={() =>{ router.push('/book/transportation')}}  p={[5]} h={`auto`} color={`#ffffff`} bgColor={`#000000`}><br/>BOOK</Button>
 
         </Flex>
         <Flex flexGrow={1} pl={[3]} flexDirection={`column`}>
