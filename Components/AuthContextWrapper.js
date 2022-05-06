@@ -2,7 +2,7 @@ import AuthContext from "../contexts/AuthContext"
 import {useState,useEffect} from "react";
 import { auth } from '../firebase/initFirebase';
 import { updatePassword,GoogleAuthProvider,signOut,reauthenticateWithCredential ,updateEmail,EmailAuthProvider, sendPasswordResetEmail ,updateProfile,onAuthStateChanged ,sendEmailVerification, signInWithEmailAndPassword ,signInWithRedirect,createUserWithEmailAndPassword} from "firebase/auth";
-
+import { getOneDocument} from '../lib'
 function AuthContextWrapper({children}) {
 
     const [user, setUser] = useState({})
@@ -15,11 +15,28 @@ function AuthContextWrapper({children}) {
             }
             else{
                  setUser(null)
+                 localStorage.removeItem(`userData`)
                 setLoading(false)
                 }
         })
         return () =>{ unsubscribe()}
     },[])
+
+    useEffect(()=>{
+        const userData = localStorage.getItem(`userData`)
+        
+        if(user && !userData){
+            getOneDocument(user?.uid,`Users`)
+            .then( doc =>{
+                localStorage.setItem(`userData`,JSON.stringify(doc.data()))
+            })
+            .catch(
+                error =>{
+                    console.log(error.message)
+                }
+            )
+        }
+    },[user])
 
 
 

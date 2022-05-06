@@ -25,16 +25,36 @@ function App() {
   const { handleSubmit, register } = useForm();
   const [search,setSearch] = useState(null)
   const [loading,setLoading] = useState(true)
-  const { user } = useContext(AuthContext)
+  const { user  } = useContext(AuthContext)
 
   const onSubmit = async (values) =>{
+    setSearch(null)
+    const userData =  localStorage.getItem(`userData`)
     onOpen();
   
     const docRef = doc(db, `Bookings`, values?.search);
     const docSnap = await getDoc(docRef)
-    setSearch({...docSnap.data(),id:docSnap.id})
+    .then(doc =>{
+      
+      
+      const userDataObj = JSON.parse(userData)
+      const receiverPhone = doc.data().destination.phone
+     
+      
+      
+      if( receiverPhone === userDataObj.phone){
+        setSearch({...doc.data(),id:doc.id})
+      }
+        
     
-    setLoading(false)
+
+    })
+    .catch(error =>{
+      console.log(error.message)
+    })
+
+    .finally(()=>setLoading(false))
+    
 
   }
 
