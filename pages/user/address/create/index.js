@@ -23,7 +23,7 @@ const CreateAdress = () => {
         addDocumentToSubCollection(`Users`,user?.uid,'address',values)
         .then(doc =>{
           setLoading(false)
-          router.push(`/user/address?uid=${user?.uid}`)
+          router.push(`/user/address/${user?.uid}`)
   
         })
         .catch(error=>{

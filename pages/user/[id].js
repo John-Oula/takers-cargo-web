@@ -136,7 +136,7 @@ function UserMenu({data}) {
 {error || success && <Text textAlign={`center`} color={success ? `green` : `red`}>{error}{success}</Text>}
 
 <Box display={[`box`,`box`,`box`,`none`,`none`]}>
-<ListItem click={() => onClickListItem(`/user/address?uid=${user?.uid}`)} leftIcon={<MapIcon color={`#000`} />} rightIcon={<ChevronRightIcon size={24} color={`#000000`} />}  title={`Address Book`}  />
+<ListItem click={() => onClickListItem(`/user/address/${user?.uid}`)} leftIcon={<MapIcon color={`#000`} />} rightIcon={<ChevronRightIcon size={24} color={`#000000`} />}  title={`Address Book`}  />
 <ListItem click={() => onClickListItem(`/user/editProfile/${user?.uid}`)} leftIcon={<UserIcon color={`#000`} />} rightIcon={<ChevronRightIcon size={24} color={`#000000`} />}  title={`Personal Data`} label={`Update your account details`} />
 <ListItem click={() => null} leftIcon={<CreditCardIcon color={`#000`} />} rightIcon={<ChevronRightIcon size={24} color={`#000000`} />}  title={`Invoices`} label={`Manage your Invoices`} />
 <ListItem click={() => null} leftIcon={<Trash2Icon color={`#000`} />} rightIcon={<ChevronRightIcon size={24} color={`#000000`} />}  title={`Returns`} label={`Check your returns`} />
