@@ -18,7 +18,7 @@ import SelectAddressContext from '../../contexts/SelectAddressContext.js';
 import { useForm } from "react-hook-form";
 import CreateAdress from '../../Components/CreateAddress';
 import BackButton from '../../Components/BackButton';
-import { addDocument, addDocumentWithId, updateDocument } from '../../lib';
+import { addDocument, addDocumentWithId, queryOneDocument, updateDocument } from '../../lib';
 import { useRouter } from 'next/router';
 import { db } from '../../firebase/initFirebase';
 import { serverTimestamp , query , where} from 'firebase/firestore'
@@ -26,9 +26,12 @@ import { collection, getDocs, getDoc } from 'firebase/firestore'
 import { useCollection } from 'react-firebase-hooks/firestore';
 import AuthContext from '../../contexts/AuthContext';
 import {ChevronLeftIcon} from '../../icons/dist/cjs'
+import { useToast } from '@chakra-ui/react'
 
 
 var moment = require('moment'); // require
+
+
 
 
 const ShipperAddressBook = ({ close }) => {
@@ -93,7 +96,7 @@ const Origin = ({ close }) => {
                 address?.map((each) => {
                     return (
                         <div key={each?.id} onClick={() => selectItem(each)} ref={ref} payload={each} >
-                            <ListItem key={each?.id} data={each} selectable title={each?.fullname} label={each?.detailedAddress + ' ' + each?.phone} crud path={`address/1`} />
+                            <ListItem key={each?.id} data={each} selectable title={each?.fullname} label={each?.detailedAddress + ' ' + each?.phone} crud  />
 
                         </div>
 
@@ -154,7 +157,7 @@ const AddressBook = ({ close }) => {
                 address?.map((each) => {
                     return (
                         <div key={each?.id} onClick={() => selectItem(each)} className={`q`} ref={ref} payload={each} >
-                            <ListItem data={each} selectable title={each?.fullname} label={each?.detailedAddress + ' ' + each?.phone} crud path={`address/1`} />
+                            <ListItem data={each} selectable title={each?.fullname} label={each?.detailedAddress + ' ' + each?.phone} crud  />
 
                         </div>
 
@@ -173,16 +176,18 @@ const Book = () => {
     const [receiverAddressBook, setReceiverAddressBook] = useState(false)
     const [showAddressForm, setShowAddressForm] = useState(false)
     const [estimatedPrice, setEstimatedPrice] = useState(0)
-    const [bailmentObj, setBailmentObj] = useState(null)
+
     const [originAddressBook, setOriginAddressBook] = useState(false)
     const { isOpen, onOpen, onClose } = useDisclosure()
     const { select, setSelect, cargo, origin, setOrigin, setCargo ,transportation } = useContext(SelectAddressContext)
     const { handleSubmit, register } = useForm();
     const [loading, setLoading] = useState(false)
     const [rate, setRate] = useState()
-    const [groupedBailment, setGroupedBailment] = useState([])
+    const [bookedFor, setBookedFor] = useState(null)
+    const userData =  localStorage.getItem(`userData`)
+    const userDataObj = JSON.parse(userData)
     const [error, setError] = useState(false)
-    const { user } = useContext(AuthContext)
+    const { user  } = useContext(AuthContext)
     const collectionRef = collection(db, 'Bailment')
     const [bailments] = useCollection(query(collectionRef, where("transport", "==", transportation)))
     const [bailmentSelectValue, setBailmentSelectValue] = useState()
@@ -191,6 +196,20 @@ const Book = () => {
 
     const [edit, setEdit] = useState()
     const [value,setValue] = useState(0)
+    const toast = useToast()
+
+    const showToast = (title,description,status) =>{
+        
+        toast({
+          title: title,
+          description: description,
+          status: status,
+          duration: 10000,
+          isClosable: true,
+        })
+    }
+
+
     useEffect(() => {
         if (user == null) {
             router.push("/login");
@@ -297,58 +316,95 @@ const Book = () => {
         }
     }
 
-    const submitForm = (e) => {
-       
+    // Pre-fetch receiver's userId
+    // when the receiver's address changes
+   useEffect(() =>{
+    if(select){
+        if(select?.phone != userDataObj.phone){
+            // Get userId of the receiver 
+            // using the receiver's phone number
+            queryOneDocument(`Users`,`phone`,`==`,select?.phone)
+            .then((querySnapshot) =>{
+                    
+                 if(!querySnapshot.empty){
+                    setBookedFor( querySnapshot.docs[0].data().userId)
+                 }
+                 else{
+                     // Number does not exist
+                     showToast(`Receiver's phone number doesn't exist`,`Recheck the receiver's phone number`,`warning`)
+                 setBookedFor(null)
+                    }
+                   
+    
+            })
+            .catch(error =>{
+                alert(error.message);
+                setError(error.message)
+                setLoading(false)
+            })
+        }
+        else{
+            setBookedFor(user?.uid)
+        }
+    }
+   },[select])
+
+    const submitForm = async (e) => {
+        
         setError(null)
         setLoading(true)
         e.preventDefault();
+        
         const date = Date.now()
         const firstDate = moment().add(45, 'days');
         const secondDate = date + 24 * 60 * 60 * 1000
         const trackingNumber = `TC` + date.toString()
+        
         //   setBailmentObj(e.target.delivery.value)
         const expressNumbersArr = cargo.map(each => each.expressNumber)
 
-        const formData = {
-            destination: { ...select }, origin: { ...origin },
-            method: transportation,
-            remarks: e.target.remarks.value,
-            paymentMethod: e.target.payment_method.value,
-            value: e.target.value.value,
-            bailment: cargo,
-            price: estimatedPrice,
-            userId: user?.uid,
-            trackingNumber: trackingNumber,
-            status: `pending`,
-            paymentStatus: `unpaid`,
-            lastUpdatedTime: serverTimestamp(),
-            // expectedArrivalDate: secondDate,
-            creationDate: serverTimestamp(),
-            totalQuantity: totalQuantity,
-            expressNumbers: expressNumbersArr
 
+        
+   
+
+       
+if(!error){
+    const formData = {
+        destination: { ...select }, origin: { ...origin },
+        method: transportation,
+        remarks: e.target.remarks.value,
+        paymentMethod: e.target.payment_method.value,
+        value: e.target.value.value,
+        bailment: cargo,
+        bookedFor: bookedFor,            
+        price: estimatedPrice,
+        userId: user?.uid,
+        trackingNumber: trackingNumber,
+        status: `pending`,
+        paymentStatus: `unpaid`,
+        lastUpdatedTime: serverTimestamp(),
+        // expectedArrivalDate: secondDate,
+        creationDate: serverTimestamp(),
+        totalQuantity: totalQuantity,
+        expressNumbers: expressNumbersArr
+
+    }
+
+  await  addDocumentWithId('Bookings', formData, trackingNumber)
+        .then(doc => {
+            console.log(doc)
+
+            setLoading(false)
+            router.push(`/user/orders/${trackingNumber}`) })
+        .catch(error => {
+            setLoading(false)
+
+            console.log(error.message);
+            setError(error.message)
         }
-
-        addDocumentWithId('Bookings', formData, trackingNumber)
-            .then(doc => {
-                console.log(doc)
-
-                setLoading(false)
-                router.push(`/user/orders/${trackingNumber}`)
-
-
-
-
-
-
-            })
-            .catch(error => {
-                setLoading(false)
-
-                console.log(error.message);
-                setError(error.message)
-            }
-            )
+        )
+    
+}
 
     }
 
@@ -576,7 +632,7 @@ const Book = () => {
 
                                 </Flex>
                             </Flex>
-                            <Button isLoading={loading} loadingText='Booking' type='submit' w={`100%`} mt={5} color={`#ffffff`} bgColor={!error ? `#000000` : `red`} leftIcon={<AiOutlinePlus />}>Book</Button>
+                            <Button isLoading={loading}  loadingText='Booking' type='submit' w={`100%`} mt={5} color={`#ffffff`} bgColor={!error ? `#000000` : `red`} leftIcon={<AiOutlinePlus />}>Book</Button>
                         </form>
                         </Flex>
                     </>}
