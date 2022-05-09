@@ -9,8 +9,8 @@ const FirstRowHeader = ({title,rightIcon,leftIcon,label}) => {
             <Flex _hover={{ color: '#ed8b00' }}  mr={5}>
             {leftIcon && leftIcon}
             </Flex>
-            <Flex  textAlign={`center`} justifyContent={`center`} flexDirection={`column`}>
-                <Heading as={`h6`} size={`sm`} textAlign={`center`} >{title}</Heading>
+            <Flex flexGrow={1} textAlign={`center`} justifyContent={`center`} flexDirection={`column`}>
+                <Heading as={`h6`} size={`sm`} align={`center`} textAlign={`center`} >{title}</Heading>
                 <small>{label && label}</small>
 
             </Flex>
