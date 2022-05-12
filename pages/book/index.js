@@ -34,7 +34,32 @@ var moment = require('moment'); // require
 
 
 
-const ShipperAddressBook = ({ close }) => {
+const ShipperAddressBook = ({ close  }) => {
+
+    // const validateForm = async () =>{
+
+    //     // Check if phone number exists
+    //    await queryOneDocument(`Users`,`phone`,`==`,select?.phone)
+    //         .then((querySnapshot) =>{
+                    
+    //              if(!querySnapshot.empty){
+    //                 close();
+                    
+    //             }
+    //              else{
+    //                  // Number does not exist
+    //                  showToast(`Receiver's phone number doesn't exist`,`Recheck the receiver's phone number`,`warning`)
+    //                  setSelect(null)
+    //              setBookedFor(null)
+    //                 }
+                   
+    
+    //         })
+    //         .catch(error =>{
+    //             setError(error.message)
+    //             setLoading(false)
+    //         })
+    // }
 
     return (
         <Box>
@@ -304,6 +329,10 @@ const Book = () => {
     }, [isOpen])
 
 
+    // Check user phone number
+    // const checkPhone = async () =>{
+        
+    // }
 
     // Pre-fetch receiver's userId
     // when the receiver's address changes
@@ -321,13 +350,13 @@ const Book = () => {
                  else{
                      // Number does not exist
                      showToast(`Receiver's phone number doesn't exist`,`Recheck the receiver's phone number`,`warning`)
+                     setSelect(null)
                  setBookedFor(null)
                     }
                    
     
             })
             .catch(error =>{
-                alert(error.message);
                 setError(error.message)
                 setLoading(false)
             })
