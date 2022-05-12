@@ -11,23 +11,7 @@ import OrderContext from '../../../contexts/OrderContext';
 const Index = () => {
   const { user} = useContext(AuthContext)
   const { order} = useContext(OrderContext)
- 
-  // const db = getFirestore(app)
-// useEffect(()=>{
-  
-//   const collRef =collection(db, "Bookings")
-//   if(user){
-//     const q = query(collRef, where("userId", "==", user?.uid), orderBy("creationDate",'desc'), limit(10));
-
-//     const unsubscribe = onSnapshot(q , (querySnaphot) =>{
-//       setOrder(querySnaphot.docs.map(doc => ({...doc.data(),id: doc.id, timestamp: doc.data().creationDate?.toDate().getTime() ,  latestUpdateTime: doc.data().creationDate?.toDate().getTime()})))
-//     })
-//   }
-  
-//   return unsubscribe
-// },[user])
-  // const [orders,loadingMessage,error] = useCollection(query(collection(db, "Bookings"), where("userId", "==", userId), orderBy("creationDate"), limit(10)))
-    return (
+   return (
         <Tabs  isFitted>
   <TabList>
     <Tab><small>All</small></Tab>

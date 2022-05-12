@@ -303,18 +303,7 @@ const Book = () => {
         
     }, [isOpen])
 
-    const validateBooking = (cargo) =>{
-        switch (true) {
-            case !cargo:
-                alert(`Please add cargo to your booking`)
-                return true
-                
-                break;
-        
-            default:
-                break;
-        }
-    }
+
 
     // Pre-fetch receiver's userId
     // when the receiver's address changes
@@ -354,13 +343,13 @@ const Book = () => {
         setError(null)
         setLoading(true)
         e.preventDefault();
+        if(!bookedFor){
+            showToast(`Receiver details missing`,`Please add receiver's details`,`warning`)
+            setError(`Receiver details missing`)
+        }
         
         const date = Date.now()
-        const firstDate = moment().add(45, 'days');
-        const secondDate = date + 24 * 60 * 60 * 1000
         const trackingNumber = `TC` + date.toString()
-        
-        //   setBailmentObj(e.target.delivery.value)
         const expressNumbersArr = cargo.map(each => each.expressNumber)
 
 
@@ -584,10 +573,7 @@ if(!error){
                         <Flex justifyContent={`center`} flexGrow={2} flexDirection={[`column`,`colum`,`colum`,`row`,`row`,]}>
                         <form onSubmit={(e) => submitForm(e)}>
                         <FormControl isRequired>
-                        {/* <Select mb={5} onChange={(e) => { setTransportation(e.target.value) }} mt={5} name='method' placeholder='Shipping Method' variant={`filled`} >
-                                <option value={`sea`}>Sea</option>
-                                <option value={`air`}>Air</option>
-                            </Select> */}
+                      
 
                         <Button w={`100%`} mb={5} onClick={() => { setShowAddressForm(false); onOpen() }} color={`#ffffff`} bgColor={`#000000`} leftIcon={<AiOutlinePlus />}>Add a consignment</Button>
                         
@@ -604,12 +590,13 @@ if(!error){
                             </Select>
                           
                            
-                            <Select name='payment_method' mt={5} placeholder='Payment method' variant={`filled`} >
+                            
+                           </FormControl>
+                           <Select name='payment_method' mt={5} placeholder='Payment method' variant={`filled`} >
                                 <option value={`MPESA`}>MPESA</option>
                                 <option value={`Cash`}>Cash</option>
                                 <option value={`Bank Transfer`}>Bank Transfer</option>
                             </Select>
-                           </FormControl>
                             <Textarea {...register('remarks')} mb={5} mt={5} placeholder='Remarks' />
                             <Flex>
 
@@ -632,7 +619,7 @@ if(!error){
 
                                 </Flex>
                             </Flex>
-                            <Button isLoading={loading}  loadingText='Booking' type='submit' w={`100%`} mt={5} color={`#ffffff`} bgColor={!error ? `#000000` : `red`} leftIcon={<AiOutlinePlus />}>Book</Button>
+                            <Button disabled={!bookedFor} isLoading={loading}  loadingText='Booking' type='submit' w={`100%`} mt={5} color={`#ffffff`} bgColor={!error ? `#000000` : `red`} leftIcon={<AiOutlinePlus />}>Book</Button>
                         </form>
                         </Flex>
                     </>}
