@@ -648,7 +648,7 @@ if(!error){
 
                                 </Flex>
                             </Flex>
-                            <Button disabled={!bookedFor} isLoading={loading}  loadingText='Booking' type='submit' w={`100%`} mt={5} color={`#ffffff`} bgColor={!error ? `#000000` : `red`} leftIcon={<AiOutlinePlus />}>Book</Button>
+                            <Button disabled={bookedFor.length < 1 } isLoading={loading}  loadingText='Booking' type='submit' w={`100%`} mt={5} color={`#ffffff`} bgColor={!error ? `#000000` : `red`} leftIcon={<AiOutlinePlus />}>Book</Button>
                         </form>
                         </Flex>
                     </>}
