@@ -3,7 +3,7 @@ import {useState,useEffect,useContext} from "react";
 import AuthContext from "../contexts/AuthContext.js";
 import { onSnapshot,collection, orderBy, limit,query, where, getFirestore ,getDocs, updateDoc} from "firebase/firestore";  
 import {db} from '../firebase/initFirebase';
-import { updateDocument } from "../lib/index.js";
+import { updateDocument ,getOneDocument } from "../lib/index.js";
 
 function OrderContextWrapper({children}) {
 
@@ -12,31 +12,39 @@ function OrderContextWrapper({children}) {
 
     const { user} = useContext(AuthContext)
    
-    // const db = getFirestore(app)
+    const update = async () =>{
+         await  getDocs(collection(db, "Bookings")).then(querySnapshot =>{
+         querySnapshot.forEach((doc) => {
+  // doc.data() is never undefined for query doc snapshots
+
+  getOneDocument(doc.data().userId,`Users`)
+  .then((snap) =>{
+    if(snap.data().phone === doc.data().destination.phone ){
+      updateDocument(doc.id,`Bookings`,{bookedFor:[snap.data().userId]})
+    }
+    else  updateDocument(doc.id,`Bookings`,{bookedFor:[snap.data().userId]})
+
+  })
+  .catch(error => alert(error.message))
+
+ 
+});  
+     })
+       .catch(error => alert(error.message))
+
+    }
   useEffect( ()=>{
+    // update()
     
     const collRef =collection(db, "Bookings")
-//      getDocs(collection(db, "Bookings")).then(querySnapshot =>{
-//          querySnapshot.forEach((doc) => {
-//   // doc.data() is never undefined for query doc snapshots
-//   console.log(doc.id, " => ", doc.data());
-//   if(doc.data().destination.phone === doc.data().phone){
-//     setUserId(doc.data().userId)
-//   }
-//   else{
-//     setUserId(doc.data().userId)
-//   }
 
-//   updateDocument(doc.id,`Bookings`,{bookedFor:doc.data().userId})
-// });  
-//      })
 
     
     if(user && user.uid){
-      const q = query(collRef, where("bookedFor", "==", user?.uid), orderBy("creationDate",'desc'));
+      const q = query(collRef, where("bookedFor", "array-contains", user.uid));
   
       const unsubscribe = onSnapshot(q , (querySnaphot) =>{
-        setOrder(querySnaphot.docs.map(doc => ({...doc.data(),id: doc.id, timestamp: doc.data().creationDate?.toDate().getTime() ,latestUpdateTime: doc.data().creationDate?.toDate().getTime()})))
+        setOrder(querySnaphot.docs.map(doc => ({...doc.data(),id: doc.id, timestamp: doc.data().creationDate?.toDate().getTime() ,latestUpdateTime: doc.data().creationDate?.toDate().getTime()})).reverse())
       })
     }
     

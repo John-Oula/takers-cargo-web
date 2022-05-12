@@ -208,7 +208,7 @@ const Book = () => {
     const { handleSubmit, register } = useForm();
     const [loading, setLoading] = useState(false)
     const [rate, setRate] = useState()
-    const [bookedFor, setBookedFor] = useState(null)
+    const [bookedFor, setBookedFor] = useState([])
     const userData =  localStorage.getItem(`userData`)
     const userDataObj = JSON.parse(userData)
     const [error, setError] = useState(false)
@@ -345,13 +345,13 @@ const Book = () => {
             .then((querySnapshot) =>{
                     
                  if(!querySnapshot.empty){
-                    setBookedFor( querySnapshot.docs[0].data().userId)
+                    setBookedFor( [querySnapshot.docs[0].data().userId,user?.uid])
                  }
                  else{
                      // Number does not exist
                      showToast(`Receiver's phone number doesn't exist`,`Recheck the receiver's phone number`,`warning`)
                      setSelect(null)
-                 setBookedFor(null)
+                 setBookedFor([])
                     }
                    
     
@@ -362,7 +362,7 @@ const Book = () => {
             })
         }
         else{
-            setBookedFor(user?.uid)
+            setBookedFor([user?.uid])
         }
     }
    },[select])
