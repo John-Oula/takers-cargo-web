@@ -6,7 +6,7 @@ import {
     ModalHeader,
     ModalFooter,
     ModalBody,
-    ModalCloseButton, Textarea, Spacer, Select, Center, Text, Heading, FormControl, Input, Button, InputGroup
+    ModalCloseButton, Textarea, Spacer, Select, Center, Text, Heading, FormControl, Input, Button, InputGroup, FormHelperText
 } from "@chakra-ui/react";
 import FirstRowHeader from '../../Components/FirstRowHeader';
 import { AiOutlineArrowRight, AiOutlineBook, AiOutlineContainer, AiOutlineArrowLeft, AiOutlinePlus } from 'react-icons/ai'
@@ -489,7 +489,10 @@ if(!error){
                         <ModalBody>
                             {!showAddressForm &&
                                 <form onSubmit={(e) => addCargo(e)}>
-                                                                            <Input name='express' defaultValue={edit && edit?.expressNumber} mt={5} placeholder='Express Number/ Tracking Number (Optional)' type={`text`} />
+<FormControl>
+<Input name='express' defaultValue={edit && edit?.expressNumber} mt={5} placeholder='Express Number/ Tracking Number (Optional)' type={`text`} />
+<FormHelperText>SF114...,YT...,JT..,DPK../"By car" if delivered direct</FormHelperText>
+</FormControl>
 
 <FormControl isRequired>
                                     <InputGroup  flexDirection={`column`} alignItems={`center`}>
@@ -604,7 +607,7 @@ if(!error){
                         <FormControl isRequired>
                       
 
-                        <Button w={`100%`} mb={5} onClick={() => { setShowAddressForm(false); onOpen() }} color={`#ffffff`} bgColor={`#000000`} leftIcon={<AiOutlinePlus />}>Add a consignment</Button>
+                        <Button w={`100%`} mb={5} onClick={() => { setShowAddressForm(false); onOpen() }} color={`#ffffff`} bgColor={`#000000`} leftIcon={<AiOutlinePlus />}>Add package information</Button>
                         
                             <Select onChange={(e) => { setValue(e.target.value) }} name='value' mt={5} placeholder='Value-added services' variant={`filled`} >
                             <optgroup label={`Add ons`}>  
