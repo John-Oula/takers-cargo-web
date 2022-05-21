@@ -56,7 +56,7 @@ const OrderDetails = ({payload}) => {
             bgColor={`green`}
         >
 
-            <TagLabel>{data?.status && data?.status}</TagLabel>
+            <TagLabel>{data?.status === `arrived` && data?.paymentStatus === `paid`? `Received` : data?.status }</TagLabel>
 
         </Tag></Box>
     <Box height='fit-content'><Text fontSize={`sm`}>Packages </Text><Text>{data?.bailment.length}</Text></Box>

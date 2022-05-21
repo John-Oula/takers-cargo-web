@@ -16,8 +16,10 @@ const OrderCard = ({ data}) => {
             data?.status === `arrived` ? setColor(`green`) :
             data?.status === `in-transit` ? setColor(`#000`):
             data?.status === `pending` ? setColor(`#ed8b00`) :
+            
+            data?.status === `received` ? setColor(`#000`):
+            data?.status === `arrived` && data?.paymentStatus === `paid`? `#000` :
             `#ed8b00`
-
     
     },[])
 
@@ -34,7 +36,7 @@ const OrderCard = ({ data}) => {
                         bgColor={color}
                     >
 
-                        <TagLabel>{data?.status ? data?.status : 'unknown'}</TagLabel>
+                        <TagLabel>{data?.status === `arrived` && data?.paymentStatus === `paid`? `Received` : data?.status }</TagLabel>
 
                     </Tag>
                 </Flex>
