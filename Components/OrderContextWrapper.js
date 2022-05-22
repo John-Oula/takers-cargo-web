@@ -9,6 +9,7 @@ function OrderContextWrapper({children}) {
 
     const [order, setOrder] = useState([])
     const [userId, setUserId] = useState("")
+    const userData = JSON.parse(localStorage.getItem(`userData`))
 
     const { user} = useContext(AuthContext)
    
@@ -17,15 +18,20 @@ function OrderContextWrapper({children}) {
          querySnapshot.forEach((doc) => {
   // doc.data() is never undefined for query doc snapshots
 
-  getOneDocument(doc.data().userId,`Users`)
-  .then((snap) =>{
-    if(snap.data().phone === doc.data().destination.phone ){
-      updateDocument(doc.id,`Bookings`,{bookedFor:[snap.data().userId]})
-    }
-    else  updateDocument(doc.id,`Bookings`,{bookedFor:[snap.data().userId]})
+ doc.data().bookedFor?.map(each =>
+    {
+      if(each == doc.data().userId){
+        getOneDocument(each,`Users`)
+        .then((snap) =>{
+          snap.data()?.phone &&  updateDocument(doc.id,`Bookings`,{bookedFor:[snap.data()?.phone]})
+      
+        })
+         
+        .catch(error => alert(error.message))
+      }
+    })
 
-  })
-  .catch(error => alert(error.message))
+
 
  
 });  
@@ -41,7 +47,7 @@ function OrderContextWrapper({children}) {
 
     
     if(user && user.uid){
-      const q = query(collRef, where("bookedFor", "array-contains", user.uid));
+      const q = query(collRef, where("bookedFor", "array-contains", userData.phone));
   
       const unsubscribe = onSnapshot(q , (querySnaphot) =>{
         setOrder(querySnaphot.docs.map(doc => ({...doc.data(),id: doc.id, timestamp: doc.data().creationDate?.toDate().getTime() ,latestUpdateTime: doc.data().creationDate?.toDate().getTime()})).reverse())

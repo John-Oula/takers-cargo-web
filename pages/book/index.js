@@ -341,28 +341,29 @@ const Book = () => {
         if(select?.phone != userDataObj.phone){
             // Get userId of the receiver 
             // using the receiver's phone number
-            queryOneDocument(`Users`,`phone`,`==`,select?.phone)
-            .then((querySnapshot) =>{
+            // queryOneDocument(`Users`,`phone`,`==`,select?.phone)
+            // .then((querySnapshot) =>{
                     
-                 if(!querySnapshot.empty){
-                    setBookedFor( [querySnapshot.docs[0].data().userId,user?.uid])
-                 }
-                 else{
-                     // Number does not exist
-                     showToast(`Receiver's phone number doesn't exist`,`Recheck the receiver's phone number`,`warning`)
-                     setSelect(null)
-                 setBookedFor([])
-                    }
+            //      if(!querySnapshot.empty){
+            //         setBookedFor( [querySnapshot.docs[0].data().userId,user?.uid])
+            //      }
+            //      else{
+            //          // Number does not exist
+            //          showToast(`Receiver's phone number doesn't exist`,`Recheck the receiver's phone number`,`warning`)
+            //          setSelect(null)
+            //      setBookedFor([])
+            //         }
                    
     
-            })
-            .catch(error =>{
-                setError(error.message)
-                setLoading(false)
-            })
+            // })
+            // .catch(error =>{
+            //     setError(error.message)
+            //     setLoading(false)
+            // })
+            setBookedFor([userDataObj?.phone,select?.phone])
         }
         else{
-            setBookedFor([user?.uid])
+            setBookedFor([userDataObj?.phone])
         }
     }
    },[select])
@@ -604,12 +605,9 @@ if(!error){
                         </Flex>
                         <Flex justifyContent={`center`} flexGrow={2} flexDirection={[`column`,`colum`,`colum`,`row`,`row`,]}>
                         <form onSubmit={(e) => submitForm(e)}>
-                        <FormControl isRequired>
-                      
-
                         <Button w={`100%`} mb={5} onClick={() => { setShowAddressForm(false); onOpen() }} color={`#ffffff`} bgColor={`#000000`} leftIcon={<AiOutlinePlus />}>Add package information</Button>
-                        
-                            <Select onChange={(e) => { setValue(e.target.value) }} name='value' mt={5} placeholder='Value-added services' variant={`filled`} >
+
+                        <Select onChange={(e) => { setValue(e.target.value) }} name='value' mt={5} placeholder='Value-added services' variant={`filled`} >
                             <optgroup label={`Add ons`}>  
                             <option value={0.5}>Phone cover + protector -- $ 0.5</option>
                             <option value={16}>Packaging -- $ 16</option>
@@ -620,6 +618,11 @@ if(!error){
                             <option value={5}>$5 = ¥5000</option>
                             </optgroup>
                             </Select>
+                        <FormControl isRequired>
+                      
+
+                        
+                            
                           
                            
                             
