@@ -17,19 +17,29 @@ function OrderContextWrapper({children}) {
          await  getDocs(collection(db, "Bookings")).then(querySnapshot =>{
          querySnapshot.forEach((doc) => {
   // doc.data() is never undefined for query doc snapshots
+        const secondUser = getOneDocument(doc.data().userId,`Users`)
+        secondUser
+        .then(snap =>{
+          doc.data().bookedFor?.map(each =>
+            {
+        
+              
+        if(each != snap.data()?.phone){
+          const getUser = getOneDocument(each,`Users`)
+        
+          getUser.then(x=>{
+            x.data()?.phone &&  updateDocument(x.id,`Bookings`,{bookedFor:[snap.data()?.phone,x.data()?.phone]})
 
- doc.data().bookedFor?.map(each =>
-    {
-      if(each == doc.data().userId){
-        getOneDocument(each,`Users`)
-        .then((snap) =>{
-          snap.data()?.phone &&  updateDocument(doc.id,`Bookings`,{bookedFor:[snap.data()?.phone]})
-      
-        })
+          })
+          .catch(err => alert(err.message))
          
-        .catch(error => alert(error.message))
-      }
-    })
+               }
+            })
+        })
+        .catch(err => alert(err.message))
+
+
+
 
 
 

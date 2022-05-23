@@ -39,12 +39,15 @@ function App() {
       
       const userDataObj = JSON.parse(userData)
       const receiverPhone = doc.data().destination.phone
+      doc.data().bookedFor.map(each =>{
+        if(each === userDataObj?.phone){
+          setSearch({...doc.data(),id:doc.id})
+        }
+        else null
+      })
      
       
-      
-      if( receiverPhone === userDataObj.phone){
-        setSearch({...doc.data(),id:doc.id})
-      }
+    
         
     
 

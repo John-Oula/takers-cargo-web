@@ -12,9 +12,9 @@ import FirstRowHeader from '../../../Components/FirstRowHeader';
 import BackButton from '../../../Components/BackButton';
 import { useForm } from "react-hook-form";
 import AuthContext from '../../../contexts/AuthContext';
-import {  doc,getDoc,updateDoc } from 'firebase/firestore'
+import {  doc,getDoc,query,updateDoc, where } from 'firebase/firestore'
 import {db} from '../../../firebase/initFirebase'
-import { updateDocument } from '../../../lib';
+import { updateArrField, updateDocument } from '../../../lib';
 
 
 
@@ -32,6 +32,7 @@ const EditProfile = ({data}) => {
     const userData = JSON.parse(data)
     const { user,updateUserProfile,emailUpdate,reAuthUser} = useContext(AuthContext)
     const { isOpen, onOpen, onClose } = useDisclosure()
+
 
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
@@ -95,7 +96,20 @@ const EditProfile = ({data}) => {
             updateDocument(user?.uid,`Users`,values)
             .then(()=>{
                 setSuccess(`Profile updated`)
+                // if(values.phone != userData.phone){
+                //     const q = query(collRef, where("bookedFor", "array-contains", userData.phone));
+                //     updateArrField(`Bookings`,`bookedFor`,values.phone)
+                //     .then(()=>setLoading(false))
+
+                //     .catch(error =>{
+                //         console.log(error.message);
+                //         setError(error.message)
+                //                             setLoading(false)
+        
+                //     })
+                // }
                 setLoading(false)
+
 
             })
             .catch(error =>{
