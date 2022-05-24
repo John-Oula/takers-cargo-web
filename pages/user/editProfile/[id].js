@@ -176,6 +176,7 @@ const EditProfile = ({data}) => {
             <InputGroup p={4} flexDirection={`column`} alignItems={`center`}>
                     <Input  defaultValue={userData?.fullname} {...register('fullname')}  mt={5}  type={`text`} />
                     <Input defaultValue={userData?.username || ``} placeholder={`Username`} {...register('username')}  mt={5}  type={`text`} />
+                    
                     <Input defaultValue={userData?.phoneNumber || userData?.phone } {...register('phone')}  mt={5}  type={`text`} />
                     <Input  defaultValue={userData?.email} placeholder={`Email`} {...register('email')}  mt={5}  type={`text`} />
                     

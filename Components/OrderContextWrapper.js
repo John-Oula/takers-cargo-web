@@ -56,8 +56,8 @@ function OrderContextWrapper({children}) {
 
 
     
-    if(user && user.uid){
-      const q = query(collRef, where("bookedFor", "array-contains", userData.phone));
+    if(user && user.uid && userData){
+      const q = query(collRef, where("bookedFor", "array-contains", userData?.phone));
   
       const unsubscribe = onSnapshot(q , (querySnaphot) =>{
         setOrder(querySnaphot.docs.map(doc => ({...doc.data(),id: doc.id, timestamp: doc.data().creationDate?.toDate().getTime() ,latestUpdateTime: doc.data().creationDate?.toDate().getTime()})).reverse())
