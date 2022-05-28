@@ -23,16 +23,16 @@ const Index = () => {
   </TabList>
 
   <TabPanels>
-    <TabPanel >
-      <Box backgroundColor={`#EDF2F7`} >
+    <TabPanel backgroundColor={`#EDF2F7`}>
+      <Box  >
       {
         order && order?.map(each =>(<OrderCard key={each?.id} data={each} origin={each?.origin} destination={each?.destination} id={each?.id} />
         ))
       }
       </Box>
     </TabPanel>
-    <TabPanel>
-    <Box backgroundColor={`#EDF2F7`} >
+    <TabPanel backgroundColor={`#EDF2F7`} >
+    <Box >
     {
         order && order?.map(each =>{
           if(each.paymentStatus == 'unpaid')
@@ -41,8 +41,8 @@ const Index = () => {
       }
     </Box>
     </TabPanel>
-    <TabPanel>
-<Box backgroundColor={`#EDF2F7`} >
+    <TabPanel backgroundColor={`#EDF2F7`}>
+<Box >
 {
         order && order?.map(each =>{
           if(each.status == 'in-transit')
@@ -51,7 +51,8 @@ const Index = () => {
       }
 </Box>
     </TabPanel>
-<Box backgroundColor={`#EDF2F7`} >
+<TabPanel backgroundColor={`#EDF2F7`}>
+<Box  >
 {
         order && order?.map(each =>{
           if(each.received)
@@ -59,6 +60,7 @@ const Index = () => {
         )})
       }
 </Box>
+</TabPanel>
   </TabPanels>
 </Tabs>
     );
