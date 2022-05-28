@@ -11,7 +11,17 @@ function AuthContextWrapper({children}) {
         const unsubscribe = onAuthStateChanged(auth, user =>{
             if(user){
                 setUser(user)
-            setLoading(false)
+                getOneDocument(user?.uid,`Users`)
+                .then( doc =>{
+                    localStorage.setItem(`userData`,JSON.stringify(doc.data()))
+                })
+                .catch(
+                    error =>{
+                        console.log(error.message)
+                    }
+                )
+                .finally(() =>  setLoading(false)
+                )
             }
             else{
                  setUser(null)
@@ -22,21 +32,21 @@ function AuthContextWrapper({children}) {
         return () =>{ unsubscribe()}
     },[])
 
-    useEffect(()=>{
-        const userData = localStorage.getItem(`userData`)
+    // useEffect(()=>{
+    //     const userData = localStorage.getItem(`userData`)
         
-        if(user && !userData){
-            getOneDocument(user?.uid,`Users`)
-            .then( doc =>{
-                localStorage.setItem(`userData`,JSON.stringify(doc.data()))
-            })
-            .catch(
-                error =>{
-                    console.log(error.message)
-                }
-            )
-        }
-    },[user])
+    //     if(user && !userData){
+    //         getOneDocument(user?.uid,`Users`)
+    //         .then( doc =>{
+    //             localStorage.setItem(`userData`,JSON.stringify(doc.data()))
+    //         })
+    //         .catch(
+    //             error =>{
+    //                 console.log(error.message)
+    //             }
+    //         )
+    //     }
+    // },[user])
 
 
 

@@ -36,30 +36,6 @@ var moment = require('moment'); // require
 
 const ShipperAddressBook = ({ close  }) => {
 
-    // const validateForm = async () =>{
-
-    //     // Check if phone number exists
-    //    await queryOneDocument(`Users`,`phone`,`==`,select?.phone)
-    //         .then((querySnapshot) =>{
-                    
-    //              if(!querySnapshot.empty){
-    //                 close();
-                    
-    //             }
-    //              else{
-    //                  // Number does not exist
-    //                  showToast(`Receiver's phone number doesn't exist`,`Recheck the receiver's phone number`,`warning`)
-    //                  setSelect(null)
-    //              setBookedFor(null)
-    //                 }
-                   
-    
-    //         })
-    //         .catch(error =>{
-    //             setError(error.message)
-    //             setLoading(false)
-    //         })
-    // }
 
     return (
         <Box>
@@ -201,7 +177,6 @@ const Book = () => {
     const [receiverAddressBook, setReceiverAddressBook] = useState(false)
     const [showAddressForm, setShowAddressForm] = useState(false)
     const [estimatedPrice, setEstimatedPrice] = useState(0)
-
     const [originAddressBook, setOriginAddressBook] = useState(false)
     const { isOpen, onOpen, onClose } = useDisclosure()
     const { select, setSelect, cargo, origin, setOrigin, setCargo ,transportation } = useContext(SelectAddressContext)
@@ -217,8 +192,6 @@ const Book = () => {
     const [bailments] = useCollection(query(collectionRef, where("transport", "==", transportation)))
     const [bailmentSelectValue, setBailmentSelectValue] = useState()
     const [totalQuantity, setTotalQuantity] = useState(0)
-    // const [transportation, setTransportation] = useState('')
-
     const [edit, setEdit] = useState()
     const [value,setValue] = useState(0)
     const toast = useToast()
@@ -618,15 +591,7 @@ if(!error){
                             <option value={5}>$5 = ¥5000</option>
                             </optgroup>
                             </Select>
-                        <FormControl isRequired>
-                      
-
                         
-                            
-                          
-                           
-                            
-                           </FormControl>
                            <Select name='payment_method' mt={5} placeholder='Payment method' variant={`filled`} >
                                 <option value={`MPESA`}>MPESA</option>
                                 <option value={`Cash`}>Cash</option>
