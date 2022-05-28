@@ -24,7 +24,7 @@ const OrderCard = ({ data}) => {
     },[])
 
     return (
-        <Box  p={2} mb={5} boxShadow={`md`} onClick={() => { router.push(`/user/orders/${data?.id}`) }} alignItems={`center`} _hover={{ color: '#ed8b00' }} minH={`50px`} h={`fit-content`} w={`100%`} borderRadius={10}>
+        <Box  p={2} mb={5}  onClick={() => { router.push(`/user/orders/${data?.id}`) }} alignItems={`center`} _hover={{ color: '#ed8b00' }} minH={`50px`} h={`fit-content`} w={`100%`} borderRadius={10}>
             <Flex alignItems={`center`} >
                 <Flex flexGrow={1}>
                     <Tag

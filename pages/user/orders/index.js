@@ -1,5 +1,5 @@
 import React,{useContext,useEffect, useState} from 'react';
-import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
+import { Tabs, TabList, TabPanels, Tab, TabPanel, Box } from '@chakra-ui/react'
 import OrderCard from '../../../Components/OrderCard';
 import { onSnapshot,collection, orderBy, limit,query, where, getFirestore } from "firebase/firestore";  
 import {db} from '../../../firebase/initFirebase';
@@ -23,36 +23,42 @@ const Index = () => {
   </TabList>
 
   <TabPanels>
-    <TabPanel>
-      <>
+    <TabPanel >
+      <Box backgroundColor={`#EDF2F7`} >
       {
         order && order?.map(each =>(<OrderCard key={each?.id} data={each} origin={each?.origin} destination={each?.destination} id={each?.id} />
         ))
       }
-      </>
+      </Box>
     </TabPanel>
     <TabPanel>
+    <Box backgroundColor={`#EDF2F7`} >
     {
         order && order?.map(each =>{
           if(each.paymentStatus == 'unpaid')
           return(<OrderCard key={each?.id} data={each} origin={each?.origin} destination={each?.destination} id={each?.id} />
         )})
       }
+    </Box>
     </TabPanel>
     <TabPanel>
-    {
+<Box backgroundColor={`#EDF2F7`} >
+{
         order && order?.map(each =>{
           if(each.status == 'in-transit')
           return(<OrderCard key={each?.id} data={each} origin={each?.origin} destination={each?.destination} id={each?.id} />
         )})
       }
+</Box>
     </TabPanel>
-    {
+<Box backgroundColor={`#EDF2F7`} >
+{
         order && order?.map(each =>{
           if(each.received)
           return(<OrderCard key={each?.id} data={each} origin={each?.origin} destination={each?.destination} id={each?.id} />
         )})
       }
+</Box>
   </TabPanels>
 </Tabs>
     );
