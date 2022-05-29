@@ -74,9 +74,10 @@ const Messages = () => {
     </TabPanel>
     <TabPanel>
 {
-  notice && notice.map(each =>{ if(each?.active)
+  notice && notice.map(each =>{ 
+    if(each?.active){
     return(<ListItem leftIcon={<AiOutlineAlert />} title={each?.name} label={each?.content}/>)}
-
+}
   )
 }
     </TabPanel>
