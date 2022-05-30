@@ -41,9 +41,9 @@ text: 'We offer our customers many different value add services which have been 
   export default function AppFeatures() {
     return (
       <Box mb={100} p={4}>
-        <Stack mb={10} spacing={4} as={Container} maxW={'3xl'} textAlign={'center'}>
+        <Stack mb={10} spacing={4} as={Container}  textAlign={'center'}>
           <Heading fontSize={'3xl'}>Why choose us?</Heading>
-          <Text color={'gray.600'} fontSize={'xl'}>
+          <Text color={'gray.600'} fontSize={'l'}>
           We are a team of logistics management team who you can trust and rely on to effectively manage your transportation service requirements. With good management experience, we provide our customers with cost effective transportation solutions. Our commitment to investment in state of the art business intelligence, visibility and tracking technology and taking pride in being a total solutions service provider is what sets us apart from your typical transportation company.
            Takers Cargo air freight forwarding process of planning and organizing the transport of freight from one point to another by air gives businesses the flexibility and trusted experience they need in a transportation partner.
           </Text>
