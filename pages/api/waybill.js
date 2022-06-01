@@ -25,7 +25,7 @@ export default async function  handler(req, res) {
    // Run the middleware
   await runMiddleware(req, res, cors)
 
- const qr =  QRCode.toDataURL(`/trackingNumber/${req.body.trackingNumber}`, async function (err, url) {
+ const qr =  QRCode.toDataURL(`${JSON.stringify(req.body)}`, async function (err, url) {
   const pdfStream = await ReactPDF.renderToStream(<Waybill data={req.body} qr={url} />);
   res.setHeader('Content-Type', 'application/pdf');
   pdfStream.pipe(res);
