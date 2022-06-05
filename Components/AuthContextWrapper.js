@@ -5,23 +5,25 @@ import { updatePassword,GoogleAuthProvider,signOut,reauthenticateWithCredential 
 import { getOneDocument} from '../lib'
 function AuthContextWrapper({children}) {
 
-    const [user, setUser] = useState({})
+    const [user, setUser] = useState(null)
     const [loading,setLoading] = useState(true)
     useEffect(() =>{
         const unsubscribe = onAuthStateChanged(auth, user =>{
             if(user){
-                setUser(user)
-                getOneDocument(user?.uid,`Users`)
+                
+                getOneDocument(user.uid,`Users`)
                 .then( doc =>{
                     localStorage.setItem(`userData`,JSON.stringify(doc.data()))
+                    setUser(user)
+                    setLoading(false)
                 })
                 .catch(
                     error =>{
                         console.log(error.message)
+                        setLoading(false)
                     }
                 )
-                .finally(() =>  setLoading(false)
-                )
+              
             }
             else{
                  setUser(null)

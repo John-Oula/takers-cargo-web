@@ -1,5 +1,5 @@
 import React,{useContext,useState,useEffect} from 'react';
-import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
+import { Tabs, TabList, TabPanels, Tab, TabPanel, Box, Circle,Text } from '@chakra-ui/react'
 import ListItem from "../../Components/ListItem";
 import {AiOutlineCreditCard , AiOutlineAlert , AiOutlineArrowLeft} from 'react-icons/ai'
 import FirstRowHeader from '../../Components/FirstRowHeader';
@@ -12,6 +12,7 @@ import OrderContext from '../../contexts/OrderContext';
 import { dateTime } from '../../lib';
 import {useRouter} from 'next/router'
 import NoticeContext from '../../contexts/NoticeContext';
+import { MessageSquareIcon } from '../../icons/dist/cjs';
 
 
 const Messages = () => {
@@ -52,7 +53,12 @@ const Messages = () => {
 <Tabs isFitted >
   <TabList mb='1em'>
     <Tab>Order Message</Tab>
-    <Tab>Notice</Tab>
+    <Tab>
+    <Box position={`relative`}>
+    <Text>Notice</Text>
+            {notice.length  > 0 ? <Box top={-2} right={-2} position={`absolute`}><Circle w={2} h={2} fontSize={`sm`}  p={2} bgColor={`#ed8b00`}><Text fontSize={11}></Text></Circle></Box> : <></>}
+            </Box>
+      </Tab>
   </TabList>
   <TabPanels>
     <TabPanel>

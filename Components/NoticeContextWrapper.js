@@ -15,10 +15,10 @@ function NoticeContextWrapper({children}) {
     
     const collRef =collection(db, "Notices")
     if(user && user.uid){
-      const q = query(collRef, orderBy("lastUpdate"));
+      const q = query(collRef, orderBy("lastupdate"),where(`active`,`==`,true));
   
       const unsubscribe = onSnapshot(q , (querySnaphot) =>{
-        setNotice(querySnaphot.docs.map(doc => ({...doc.data(),id: doc.id, timestamp: doc.data().lastUpdate?.toDate().getTime()})))
+        setNotice(querySnaphot.docs.map(doc => ({...doc.data(),id: doc.id, timestamp: doc.data().lastupdate?.toDate().getTime()})))
       })
     }
     

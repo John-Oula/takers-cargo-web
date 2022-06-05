@@ -4,12 +4,14 @@ import AuthContext from "../contexts/AuthContext.js";
 import { onSnapshot,collection, orderBy, limit,query, where, getFirestore ,getDocs, updateDoc} from "firebase/firestore";  
 import {db} from '../firebase/initFirebase';
 import { updateDocument ,getOneDocument } from "../lib/index.js";
+import { updatePhoneNumber, updateProfile } from "firebase/auth";
 
 function OrderContextWrapper({children}) {
 
     const [order, setOrder] = useState([])
     const [userId, setUserId] = useState("")
     const userData = JSON.parse(localStorage.getItem(`userData`))
+    const [loading,setLoading] = useState(true)
 
     const { user} = useContext(AuthContext)
    
@@ -49,6 +51,8 @@ function OrderContextWrapper({children}) {
        .catch(error => alert(error.message))
 
     }
+
+
   useEffect( ()=>{
     // update()
     
@@ -56,15 +60,16 @@ function OrderContextWrapper({children}) {
 
 
     
-    if(user && user.uid && userData){
+    if(user && userData){
       const q = query(collRef, where("bookedFor", "array-contains", userData?.phone));
   
       const unsubscribe = onSnapshot(q , (querySnaphot) =>{
         setOrder(querySnaphot.docs.map(doc => ({...doc.data(),id: doc.id, timestamp: doc.data().creationDate?.toDate().getTime() ,latestUpdateTime: doc.data().creationDate?.toDate().getTime()})).reverse())
+      
       })
     }
     
-    return unsubscribe
+    return () => unsubscribe
   },[user])
 
     const values = {
@@ -72,7 +77,7 @@ function OrderContextWrapper({children}) {
     }
     return (
         <OrderContext.Provider value={values}>
-            {children}
+            { children}
 
         </OrderContext.Provider>
     )

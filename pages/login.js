@@ -210,7 +210,7 @@ to Tanzania</Text>
                 {withEmail  && 
                 <>
                 <Input mt={5}  {...register('email')} placeholder='Email' type={`text`} />
-                <Input mt={5} {...register('password')}  placeholder='Password' type={`text`} />
+                <Input mt={5} {...register('password')}  placeholder='Password' type={`password`} />
                 </>
               
                 }
