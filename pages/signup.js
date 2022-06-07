@@ -9,7 +9,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from '../firebase/initFirebase';
 import BackButton from '../Components/BackButton';
 import { useForm } from "react-hook-form";
-import { addDocumentWithId } from '../lib';
+import { addDocumentWithId, updateDocument } from '../lib';
 import { serverTimestamp } from "firebase/firestore";
 import AuthContext from '../contexts/AuthContext';
 import { useToast } from '@chakra-ui/react'
@@ -86,7 +86,9 @@ const Signup = () => {
                     phone: values?.phoneNumber,
                     shipments: 0,
                     creationDate: serverTimestamp(),
-                    role:"user"
+                    role:"user",
+                    emailVerified: false,
+                    verificationEmailSent: false
 
                 }
                 updateUserProfile(user,{
@@ -100,10 +102,23 @@ const Signup = () => {
 
                         emailVerification(user,actionCodeSettings)
                         .then(() => {
-                            showToast('A verification link has been sent to your email.',"Click on the link in the email to verify",'success')
-                            setEmailSent(true)
 
-                            setLoading(false)
+                            updateDocument(user.uid, `Users`,{verificationEmailSent: true})
+                            .then(()=>{
+                                showToast('A verification link has been sent to your email.',"Click on the link in the email to verify",'success')
+                                setEmailSent(true)
+    
+                                setLoading(false)
+                            })
+                            .catch((error) => {
+                                const errorCode = error.code;
+                                const errorMessage = error.message;
+                                // ..
+                                console.log(errorMessage);
+                                setLoading(false)
+                                setEmailSent(false)
+    
+                            })
 
                         })
                         .catch((error) => {
