@@ -23,7 +23,7 @@ function ListItem({label,title,leftIcon,rightIcon,path,crud ,selectable,data,cli
             </Flex>
             <Flex textAlign={`left`} justifyContent={`left`} flexGrow={2} flexDirection={`column`} width={`inherit`}>
                 <Text  textAlign={`left`} >{title}</Text>
-                <Text width={`100%`} className='label'>{label && label}</Text>
+                <small width={`100%`} className='label'>{label && label}</small>
 
             </Flex>
             <Flex justifyContent={`flex-end`}>

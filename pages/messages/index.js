@@ -63,7 +63,7 @@ const Messages = () => {
   <TabPanels>
     <TabPanel>
       <>
-      <Flex flexDirection={`column`} p={2}>
+      <Flex flexDirection={`column`} p={0}>
         
      
       { 
