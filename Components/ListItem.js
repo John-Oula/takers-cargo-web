@@ -21,9 +21,9 @@ function ListItem({label,title,leftIcon,rightIcon,path,crud ,selectable,data,cli
             {leftIcon && leftIcon}
             {/* {selectable && <Radio />} */}
             </Flex>
-            <Flex textAlign={`left`} justifyContent={`left`} flexGrow={2} flexDirection={`column`}>
+            <Flex textAlign={`left`} justifyContent={`left`} flexGrow={2} flexDirection={`column`} width={`inherit`}>
                 <Text  textAlign={`left`} >{title}</Text>
-                <small className='label'>{label && label}</small>
+                <Text width={`100%`} className='label'>{label && label}</Text>
 
             </Flex>
             <Flex justifyContent={`flex-end`}>

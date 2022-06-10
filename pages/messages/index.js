@@ -1,5 +1,5 @@
 import React,{useContext,useState,useEffect} from 'react';
-import { Tabs, TabList, TabPanels, Tab, TabPanel, Box, Circle,Text } from '@chakra-ui/react'
+import { Tabs, TabList, TabPanels, Tab, TabPanel, Box, Circle,Text, Flex } from '@chakra-ui/react'
 import ListItem from "../../Components/ListItem";
 import {AiOutlineCreditCard , AiOutlineAlert , AiOutlineArrowLeft} from 'react-icons/ai'
 import FirstRowHeader from '../../Components/FirstRowHeader';
@@ -63,6 +63,9 @@ const Messages = () => {
   <TabPanels>
     <TabPanel>
       <>
+      <Flex flexDirection={`column`} p={2}>
+        
+     
       { 
         order && order?.map(each =>{
           if(each?.status === `pending` || each?.status === `arrived` || each?.status === `in-transit` || each?.status === `received`)
@@ -76,9 +79,11 @@ const Messages = () => {
           } key={each?.id} label={`${each?.trackingNumber} ${dateTime(each?.status?.latestUpdateTime)}`}/>)
       })
       }
+       </Flex>
       </>
     </TabPanel>
     <TabPanel>
+<Flex flexDirection={`column`} p={2}>
 {
   notice && notice.map(each =>{ 
     if(each?.active){
@@ -86,6 +91,8 @@ const Messages = () => {
 }
   )
 }
+</Flex>
+
     </TabPanel>
   </TabPanels>
 </Tabs>
