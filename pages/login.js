@@ -190,6 +190,7 @@ to Tanzania</Text>
 
 <Button  mb={5} w={`auto`} onClick={() => {setWithEmail(true);onOpen()}}   leftIcon={<MailIcon color={`#ffffff`} />} color={`#ffffff`} bgColor={`#000000`} >Login with email</Button>
 <Button  mb={5} w={`auto`} onClick={(e) => {setWithEmail(false);onOpen()}}   leftIcon={<PhoneIcon color={`#ffffff`} />} color={`#ffffff`} bgColor={`#000000`} disabled >Login with Phone | Coming soon</Button>
+<Text textAlign={`center`} color={`#ed8b00`}>Turn on VPN if you are based in China</Text>
 
 <Text textAlign={`center`}>Don’t have an account?<Link href={`/signup`} color={`#ed8b00`}> Sign up</Link></Text>
         </Flex>  
@@ -241,6 +242,7 @@ to Tanzania</Text>
 
           </ModalBody>
             <ModalFooter alignItems={`center`}>
+
             <Text textAlign={`center`}>Don’t have an account?<Link href={`/signup`} color={`#ed8b00`}> Sign up</Link></Text>
 
             </ModalFooter>

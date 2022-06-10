@@ -3,6 +3,7 @@ import {useState,useEffect} from "react";
 import { auth } from '../firebase/initFirebase';
 import { updatePassword,GoogleAuthProvider,signOut,reauthenticateWithCredential ,updateEmail,EmailAuthProvider, sendPasswordResetEmail ,updateProfile,onAuthStateChanged ,sendEmailVerification, signInWithEmailAndPassword ,signInWithRedirect,createUserWithEmailAndPassword} from "firebase/auth";
 import { getOneDocument} from '../lib'
+import Loading from "./Loading";
 function AuthContextWrapper({children}) {
 
     const [user, setUser] = useState(null)
@@ -102,7 +103,7 @@ function AuthContextWrapper({children}) {
     
     return (
         <AuthContext.Provider value={values}>
-            {!loading && children}
+            {loading ? <Loading />  : children}
 
         </AuthContext.Provider>
     )
