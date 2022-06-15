@@ -65,7 +65,7 @@ const Signup = () => {
     }
 
 
-    const onSubmit = (values) => {
+    const onSubmit = async (values) => {
         setError('')
         setLoading(true)
         if (values?.password != values?.confirmPassword) {
@@ -73,7 +73,7 @@ const Signup = () => {
             setLoading(false)
         }
         if(values){
-            signup(values.email, values.password)
+           await signup(values.email, values.password)
             .then((userCredential) => {
                 // Signed in 
                 const user = userCredential.user;
@@ -91,6 +91,11 @@ const Signup = () => {
                     verificationEmailSent: false
 
                 }
+
+                
+                
+             
+         
                 updateUserProfile(user,{
                     phoneNumber: values?.phoneNumber,
                     displayName: values?.fullname,
@@ -100,36 +105,48 @@ const Signup = () => {
                     addDocumentWithId(`Users`, data, user.uid)
                     .then(() => {
 
-                        emailVerification(user,actionCodeSettings)
-                        .then(() => {
+             // Set custom claim i.e Role   
+            const payload = {uid:user.uid,email:user.email}
 
-                            updateDocument(user.uid, `Users`,{verificationEmailSent: true})
-                            .then(()=>{
-                                showToast('A verification link has been sent to your email.',"Click on the link in the email to verify",'success')
-                                setEmailSent(true)
-    
-                                setLoading(false)
-                            })
-                            .catch((error) => {
-                                const errorCode = error.code;
-                                const errorMessage = error.message;
-                                // ..
-                                console.log(errorMessage);
-                                setLoading(false)
-                                setEmailSent(false)
-    
-                            })
+              fetch('http://localhost:3000/api/roles',{method:"POST",body:JSON.stringify(payload)})
+             .then(res =>{
+             
 
-                        })
-                        .catch((error) => {
-                            const errorCode = error.code;
-                            const errorMessage = error.message;
-                            // ..
-                            console.log(errorMessage);
-                            setLoading(false)
-                            setEmailSent(false)
+                emailVerification(user,actionCodeSettings)
+                .then(() => {
 
-                        })
+                    updateDocument(user.uid, `Users`,{verificationEmailSent: true})
+                    .then(()=>{
+                        showToast('A verification link has been sent to your email.',"Click on the link in the email to verify",'success')
+                        setEmailSent(true)
+
+                        setLoading(false)
+                    })
+                    .catch((error) => {
+                        const errorCode = error.code;
+                        const errorMessage = error.message;
+                        // ..
+                        console.log(errorMessage);
+                        setLoading(false)
+                        setEmailSent(false)
+
+                    })
+
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    // ..
+                    console.log(errorMessage);
+                    setLoading(false)
+                    setEmailSent(false)
+
+                })
+               
+             
+             })
+             .catch(e => console.log(e.message)) 
+                        
 
                         
                     })

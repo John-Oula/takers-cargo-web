@@ -12,7 +12,7 @@ const cors = Cors({
 function runMiddleware(req, res, fn) {
     return new Promise((resolve, reject) => {
       fn(req, res, (result) => {
-        if (result instanceof Error) {
+        if (result instanceof Error) { 
           return reject(result)
         }
   
@@ -21,15 +21,18 @@ function runMiddleware(req, res, fn) {
     })
   }
 export default  async  (req, res) => {
+
+ 
+
     const body = JSON.parse(req.body);
 
     const user = 'service@takerscargo.com'
     const pass = 'Takers2021@'
 
   // Use Smtp Protocol to send Email
-  console.log(body)
+  
   const transporter = nodemailer.createTransport({
-    host: 'server318.web-hosting.com',
+    host: 'server54.web-hosting.com',
     port: 465,
     secure: true,
     auth: {
@@ -41,18 +44,18 @@ export default  async  (req, res) => {
 let emailPromiseArray = [];
 
   //prepare the email for each receiver
-  for(let i=0;i<emails.length;i++){
+  for(let i=0;i<body.emails.length;i++){
        emailPromiseArray.push(
            sendMail({
             from: user,
-            to: body.email[i],
+            to: body.emails[i].email,
                 subject: "Your package has arrived",
                 html: `
-                <p>Dear ${body.fullname} </p><br>
-                <p>Your package <strong>${body.trackingNumber}</strong>  as arrived.</p>
-                <p>To view package details please login to your account on our website or Mobile App
+                <p>Dear ${body.emails[i].fullname} </p><br>
+                <p>Your package <strong>${body.emails[i].trackingNumber}</strong>  has arrived.</p>
+                <p>To view package details please login to your account on our <strong><a href="https://www.takerscargo.com">website</a></strong> or Mobile App
                 and collect it in our offices as soon as possible. </p><br>
-                <p>Thank you for shipping with us</p><br>
+                <p>Thank you for shipping with us.</p><br>
                 <br>
                 <br>
                 <br>
@@ -68,8 +71,12 @@ let emailPromiseArray = [];
   //run the promise
   Promise.all(emailPromiseArray).then((result)=>{
       console.log('all mail completed');
+      return res.status(200).json({ message: "Email Notifications sent" })
+
   }).catch((error)=>{
       console.log(error);
+      return res.status(200).json({ message: error.message })
+
   })
 
   function sendMail(mail){
@@ -80,7 +87,7 @@ let emailPromiseArray = [];
           console.log(error);
           reject(error);
       }else{
-          console.log("Message sent: " + JSON.stringify(response));
+          // console.log("Message sent: " + JSON.stringify(response));
           resolve(response);
       }
 

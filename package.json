@@ -17,6 +17,7 @@
     "@react-pdf/renderer": "^2.1.1",
     "cors": "^2.8.5",
     "firebase": "^9.6.10",
+    "firebase-admin": "^10.3.0",
     "framer-motion": "^6.2.8",
     "moment": "^2.29.1",
     "momentjs": "^2.0.0",

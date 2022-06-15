@@ -11,6 +11,7 @@ function AuthContextWrapper({children}) {
     useEffect(() =>{
         const unsubscribe = onAuthStateChanged(auth, user =>{
             if(user){
+
                 
                 getOneDocument(user.uid,`Users`)
                 .then( doc =>{
