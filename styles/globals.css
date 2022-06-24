@@ -15,15 +15,15 @@ a {
   box-sizing: border-box;
 }
 
-.selected{
+.selected-option{
   background-color: #ed8b00;
   color: #ffffff;
   border-radius: 10px;
 }
-.selected small{
+.selected-option small{
   color:#000;
 }
-.selected:hover{
+.selected-option:hover{
   color: #ffffff !important;
 }
 

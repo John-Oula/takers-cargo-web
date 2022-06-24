@@ -14,11 +14,13 @@ export default async function handler(req, res) {
   const uid = body.uid;
   const email = body.email;
   const domain = email.split(`@`)[email.split(`@`).length-1]
+  console.log(domain)
   
 
 
   const customClaims = {admin: domain === `takerscargo.com` ? true : false }
   try {
+    console.log(customClaims.admin)
    await admin.auth().setCustomUserClaims(uid,customClaims)
     .then((user) =>{
       // admin.auth().getUser(uid)

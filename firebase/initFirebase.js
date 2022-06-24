@@ -12,6 +12,7 @@ import { getStorage } from "firebase/storage";
 const clientCredentials = {
   apiKey: "AIzaSyABWGhE9MFRwT3b0ZuY25BArWd_KqvTbAI",
   authDomain: "takers-cargo.firebaseapp.com",
+  databaseURL: "https://takers-cargo-default-rtdb.firebaseio.com",
   projectId: "takers-cargo",
   storageBucket: "takers-cargo.appspot.com",
   messagingSenderId: "495360546641",

@@ -16,6 +16,7 @@ import { db } from '../firebase/initFirebase';
 import {  getDoc,doc } from 'firebase/firestore'
 import AuthContext from '../contexts/AuthContext';
 import LandingPage from "../Components/LandingPage.js";
+import NoticeContext from "../contexts/NoticeContext.js";
 
 
 
@@ -26,6 +27,7 @@ function App() {
   const [search,setSearch] = useState(null)
   const [loading,setLoading] = useState(true)
   const { user  } = useContext(AuthContext)
+  const {notice} = useContext(NoticeContext)
 
 
 
@@ -134,7 +136,7 @@ function App() {
     </Center>
 <Box  mt={10} overflowX={`hidden`}>
 <Center>
-  <Slider images={[1,2,3,4]} />
+  <Slider images={notice} />
 </Center>
 </Box>
   </Box>

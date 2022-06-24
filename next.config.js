@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  Images: {
+    domains: ["googleapis.com"],
+  },
   reactStrictMode: true,
   async headers() {
     return [
