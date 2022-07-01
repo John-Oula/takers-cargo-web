@@ -106,7 +106,7 @@ const OrderDetails = ({payload}) => {
                     
                         <Flex alignItems={`center`}>
                             
-                        <QRCode size={120} value="/invoice" />   
+                        <QRCode size={120} value={`${data?.trackingNumber}`}/>   
                          <Center>
                         <Box fontSize={`sm`} ml={5}>
                         <Text>Tracking Number</Text>
