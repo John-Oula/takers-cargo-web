@@ -11,8 +11,11 @@ import {
     useColorModeValue,
   } from '@chakra-ui/react';
   import Map from "../../assets/Map.png"
-  
+  import { useRouter } from 'next/router';
+
   export default function Hero() {
+    const router = useRouter();
+
     return (
       
         <Stack
@@ -54,6 +57,7 @@ import {
               direction={{ base: 'column', sm: 'row' }}>
               <Button
                 borderRadius={10}
+                onClick={() => router.push(`/signup`)}
                 size={'lg'}
                 fontWeight={'normal'}
                 px={6}
