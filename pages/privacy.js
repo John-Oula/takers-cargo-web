@@ -1,9 +1,12 @@
 import React from 'react';
+import Navbar from '../Components/Navbar';
+import Footer from '../Sections/Footer/Footer';
 
 function Privacy(props) {
     return (
         <div>
-            This privacy notice for ("Company," "we," "us," or "our"), describes how and why we might collect store, use and/or share("process") your information when you use our services("Services"), such as when you:
+            <Navbar />
+            This privacy notice for (&quot;Company,&quot; &quot;we,&quot; &quot;us,&quot; or &quot;our&quot;), describes how and why we might collect store, use and/or share(&quot;process&quot;) your information when you use our services(&quot;Services&quot;), such as when you:
 Questions or concerns? Reading this privacy notice will help you understand your privacy rights and choices. If you do not agree with our policies and practices, please do not use our Services. If you still have any questions or concerns, please contact us at takerscargo@gmail.com 
  
 SUMMARY OF KEY POINTS
@@ -78,7 +81,7 @@ We will use the information we receive only for the purposes that are described 
  
 In Short: We may transfer store and process your information in countries other than your own.
 Our servers are located in. If you are accessing our Services from outside, please be aware that your information may be transferred to. stored and processed by us in our facilities and by
-those third parties with whom we may share your personal information(see"WHEN AND WITH WHOM DO WE SHARE YOUR PERSONALINFORMATION?" above)in and other countries.
+those third parties with whom we may share your personal information(see&quot;WHEN AND WITH WHOM DO WE SHARE YOUR PERSONALINFORMATION?&quot; above)in and other countries.
  
 lf you are a resident in the European Economic Area(EEA)or United Kingdom(UK)then these countries may not necessarily have data protection laws or other similar laws as comprehensive as those in your country. However we will take all necessary measures to protect your personal information in accordance with this privacy notice and applicable law
 7.HOW LONGDO WE KEEP YOUR INFORMATION?
@@ -99,7 +102,7 @@ lf you are located in the EEA or UK and you believe we are unlawfully processing
 lf you are located in Switzerlandthe contact details for the data protection authorities are available here:https://www.edoeb.admin.ch/edoeb/en/home.html
  
 Withdrawing your consent: If we are relying on your consent to process your personal
-information,which may beexpress and/or implied consent depending on the applicable law, you have the right to withdraw your consent at any time.You can withdraw your consent at any time by contacting us by using the contact details provided in the section"HOW CAN YOU CONTACT US ABOUT THIS NOTICE?" below
+information,which may beexpress and/or implied consent depending on the applicable law, you have the right to withdraw your consent at any time.You can withdraw your consent at any time by contacting us by using the contact details provided in the section&quot;HOW CAN YOU CONTACT US ABOUT THIS NOTICE?&quot; below
 However, please note that this will not affect the lawfulness of the processing before its withdrawal, nor when applicable law allows, will it affect the processing of your personal information conducted in reliance on lawful processing grounds other than consent.
  
 Account Information
@@ -107,20 +110,22 @@ If you would at any time like to review or change the information in your accoun
  
 10.CONTROLS FOR DO-NOT-TRACKFEATURES
  
-Most web browsers and some mobile operating systems and mobile applications include a Do Not-Track("DNT") feature or setting you can activate to signal your privacy preference not to have data about your online browsing activities monitored and collected. At this stage no uniform technology standard for recognizing and implementing DNT signals has been finalized. As such. we do not currently respond to DNT browser signals or any other mechanism that automatically communicates your choice not to be tracked online If a standard for online tracking is adopted that we must follow in the future, we will inform you about that practice in a revised version of this privacy notice.
+Most web browsers and some mobile operating systems and mobile applications include a Do Not-Track(&quot;DNT&quot;) feature or setting you can activate to signal your privacy preference not to have data about your online browsing activities monitored and collected. At this stage no uniform technology standard for recognizing and implementing DNT signals has been finalized. As such. we do not currently respond to DNT browser signals or any other mechanism that automatically communicates your choice not to be tracked online If a standard for online tracking is adopted that we must follow in the future, we will inform you about that practice in a revised version of this privacy notice.
 
  
  
 11.DO WE MAKE UPDATES TO THIS NOTICE?
  
 In Short: Yes, we will update this notice as necessary to stay compliant with relevant laws.
-We may update this privacy notice from time to time. The updated version will be indicated by an updated "Revised" date and the updated version will be effective as soon as it is accessible If we make material changes to this privacy notice we may notify you either by prominently posting a notice of such changes or by directly sending you a notification. We encourage you to review this privacy notice frequently to be informed of how we are protecting your information.
+We may update this privacy notice from time to time. The updated version will be indicated by an updated &quot;Revised&quot; date and the updated version will be effective as soon as it is accessible If we make material changes to this privacy notice we may notify you either by prominently posting a notice of such changes or by directly sending you a notification. We encourage you to review this privacy notice frequently to be informed of how we are protecting your information.
 
 13.HOW, CAN YOU CONTACT US ABOUT THIS NOTICE?
 If you have questions or comments about this notice, you may email us at takerscargo@gmail.com 
  
 14.HOW CAN YOU REVIEW UPDATE OR DELETE THE DATA WE COLLECT FROM YOU?
 Based on the applicable laws of your country you may have the right to request access to the personal information we collect from you change update or delete your personal information please submit a request form To takerscargo@gmail.com  
+       
+       <Footer />
         </div>
     );
 }

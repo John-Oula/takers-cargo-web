@@ -14,7 +14,7 @@ import {
     useColorModeValue,
     useBreakpointValue,
     useDisclosure,
-    Image
+    
   } from '@chakra-ui/react';
   import {
     HamburgerIcon,
@@ -23,8 +23,9 @@ import {
     ChevronRightIcon,
   } from '@chakra-ui/icons';
   import {useRouter} from 'next/router'
-  import logo from "../assets/takers_white_bg.jpg"
-  
+  import logo from "../assets/logo_black.svg"
+  import Image from 'next/image'
+ 
   export default function Navbar() {
     const { isOpen, onToggle } = useDisclosure();
     const router = useRouter()
@@ -61,7 +62,7 @@ import {
               color={useColorModeValue('gray.800', 'white')}>
               Logo
             </Text> */}
-            <Image src={logo} w={100} h={10} />
+            <Image src={logo} width={40} height={40} />
   
             {/* <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
               <DesktopNav />

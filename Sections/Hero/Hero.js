@@ -6,12 +6,15 @@ import {
     Heading,
     Text,
     Button,
-    Image,
     Icon,
     useColorModeValue,
   } from '@chakra-ui/react';
-  import Map from "../../assets/Map.png"
+  import Truck from "../../assets/openTruck.svg"
+  import frontTruck from "../../assets/truckFront.svg"
+
   import { useRouter } from 'next/router';
+  import Image from 'next/image'
+
 
   export default function Hero() {
     const router = useRouter();
@@ -88,7 +91,7 @@ import {
               position={'relative'}
               height={'300px'}
               rounded={'2xl'}
-              boxShadow={'2xl'}
+              // boxShadow={'2xl'}
               width={'full'}
               overflow={'hidden'}>
               
@@ -96,10 +99,12 @@ import {
                 alt={'Hero Image'}
                 fit={'cover'}
                 align={'center'}
-                w={'100px'}
-                h={'100px'}
-                src={ Map}
+              
+                src={ Truck}
+                
               />
+
+
             </Box>
           </Flex>
         </Stack>

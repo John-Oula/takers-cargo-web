@@ -45,7 +45,7 @@ const OrderCard = ({ data}) => {
             </Flex>
             <Divider orientation='horizontal' />
                         <Flex>
-                            <Image alt={`Route`} src={route} h />
+                            <Image alt={`Route`} src={route} />
                 <Flex flexDirection={`column`}>
 
                 </Flex>
