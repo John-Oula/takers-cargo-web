@@ -164,7 +164,7 @@ const Waybill = ({data,qr}) => (
      <View style={styles.subSection}>
      <View style={styles.flexStartSubSection}>
       <View style={styles.flexStartSubSection} >
-        <Text>Estimated Costs</Text>
+        <Text>Total Costs</Text>
        
         </View>
         <View style={styles.flexEndSubSection}>
