@@ -21,11 +21,12 @@ function runMiddleware(req, res, fn) {
     })
   }
 export default  async  (req, res) => {
+ 
 
  
 
-    const body = JSON.parse(req.body);
-
+    const body = JSON.parse(JSON.stringify({...req.body}));
+ console.log(body.emailContent)
     const user = 'service@takerscargo.com'
     const pass = 'Takers2021@'
 
@@ -44,15 +45,15 @@ export default  async  (req, res) => {
 let emailPromiseArray = [];
 
   //prepare the email for each receiver
-  for(let i=0;i<body.emails.length;i++){
+  for(let i=0;i<body.emailContent.length;i++){
        emailPromiseArray.push(
            sendMail({
             from: user,
-            to: body.emails[i].email,
+            to: body.emailContent[i].email,
                 subject: "Your package has arrived",
                 html: `
-                <p>Dear ${body.emails[i].fullname} </p><br>
-                <p>Your package <strong>${body.emails[i].trackingNumber}</strong>  has arrived.</p>
+                <p>Dear ${body.emailContent[i].fullname},</p><br>
+                <p>Your package <strong>${body.emailContent[i].trackingNumber}</strong>  has arrived.</p>
                 <p>To view package details please login to your account on our <strong><a href="https://www.takerscargo.com">website</a></strong> or Mobile App
                 and collect it in our offices as soon as possible. </p><br>
                 <p>Thank you for shipping with us.</p><br>
