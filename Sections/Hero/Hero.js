@@ -9,8 +9,7 @@ import {
     Icon,
     useColorModeValue,
   } from '@chakra-ui/react';
-  import Truck from "../../assets/openTruck.svg"
-  import frontTruck from "../../assets/truckFront.svg"
+  import Truck from "../../assets/Home.png"
 
   import { useRouter } from 'next/router';
   import Image from 'next/image'
@@ -89,16 +88,21 @@ import {
             />
             <Box
               position={'relative'}
-              height={'300px'}
+              height={'500px'}
               rounded={'2xl'}
               // boxShadow={'2xl'}
-              width={'full'}
-              overflow={'hidden'}>
+              // width={'full'}
+              // overflow={'hidden'}
+              >
               
               <Image
                 alt={'Hero Image'}
-                fit={'cover'}
-                align={'center'}
+                // fit={'cover'}
+                // align={'center'}
+                width={350}
+                height={600}
+                
+                
               
                 src={ Truck}
                 
